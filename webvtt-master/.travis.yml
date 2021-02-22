@@ -1,0 +1,21 @@
+dist: bionic
+
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+before_install:
+  - echo $LANG
+  - echo $LC_ALL
+
+before_script:
+  - mkdir $TRAVIS_BUILD_DIR/build
+  - cd $TRAVIS_BUILD_DIR/build
+  - cmake ..
+
+script:
+  - cd $TRAVIS_BUILD_DIR/build
+  - make
+  - test/unit/unittests

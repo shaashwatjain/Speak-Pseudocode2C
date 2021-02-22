@@ -1,0 +1,8 @@
+1. Speech Stage
+2. Text Stage - text representation of speech
+3. 
+
+Deliverables
+-> Title:
+
+Think, Define a problem, Analyse for the solution, Design for the Solution, Pseudocode, Programming world -Edit the program, compile the c program, run the cprogram 
