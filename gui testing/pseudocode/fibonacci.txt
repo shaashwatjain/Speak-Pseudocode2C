@@ -1,0 +1,3 @@
+start the code 
+print fibonacci series 
+end 

@@ -1,0 +1,3 @@
+begin 
+calculate area and perimeter for square
+end
