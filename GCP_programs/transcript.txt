@@ -1,3 +1,4 @@
-start the code 
-print hello 10 times
-exit the code
+start the code
+ maglomaniac
+ this is nice
+ exit the code
