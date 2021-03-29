@@ -146,6 +146,8 @@ def main():
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
         language_code=language_code,
+        speech_contexts=[speech.SpeechContext(
+        phrases=["start a for loop"])]
     )
 
     streaming_config = speech.StreamingRecognitionConfig(
