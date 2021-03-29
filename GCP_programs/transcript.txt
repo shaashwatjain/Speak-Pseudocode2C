@@ -1,0 +1,3 @@
+start the code 
+print hello 10 times
+exit the code

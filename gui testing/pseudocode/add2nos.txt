@@ -1,0 +1,3 @@
+begin the code 
+add 2 numbers 
+exit the code 
