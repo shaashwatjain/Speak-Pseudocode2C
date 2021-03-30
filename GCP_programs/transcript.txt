@@ -1,4 +1,6 @@
-start the code
- maglomaniac
- this is nice
- exit the code
+set loopcounter to 0
+ for every third element in the array
+ replace the existing value with 10
+ increment loopcounter by 3
+ endfor
+ exit

@@ -3,6 +3,7 @@ from __future__ import division
 import re
 import sys
 import os
+from corrections import corr_list
 
 from google.cloud import speech
 
@@ -152,18 +153,19 @@ def main():
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
         language_code=language_code,
-        speech_contexts=[
-            speech.SpeechContext(phrases=["for", "while", "maglomaniac"])
-        ],
+        speech_contexts=[{"phrases": corr_list}],
     )
 
-    streaming_config = speech.StreamingRecognitionConfig(config=config,
-                                                         interim_results=True)
+    streaming_config = speech.StreamingRecognitionConfig(
+        config=config, interim_results=True
+    )
 
     with MicrophoneStream(RATE, CHUNK) as stream:
         audio_generator = stream.generator()
-        requests = (speech.StreamingRecognizeRequest(audio_content=content)
-                    for content in audio_generator)
+        requests = (
+            speech.StreamingRecognizeRequest(audio_content=content)
+            for content in audio_generator
+        )
 
         responses = client.streaming_recognize(streaming_config, requests)
 
