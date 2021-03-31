@@ -1,6 +1,8 @@
-set loopcounter to 0
- for every third element in the array
- replace the existing value with 10
- increment loopcounter by 3
- endfor
+start the program
+ read number
+ Prime = true
+ for factor ranges from 2 to number -1
+ if number divisible by factor then Prime = false
+ if time = 2 then display number is prime
+ else display number is not Prime
  exit

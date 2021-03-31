@@ -27,4 +27,14 @@ corr_list = [
     "Set loopcounter to 0",
     "to",
     "10",
+
+    "pre",
+    "remainder",
+    "code",
+    "odd",
+    "even",
+    "else",
+    "prime",
+    "false",
+    "true"
 ]
