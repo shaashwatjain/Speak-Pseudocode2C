@@ -45,7 +45,7 @@ corr_list = [
     "on the basis of",
     "Declare",
     "Declare an integer variable called",
-    "repeat n times",
+    "repeat number times",
     "add x and y, store this value in sum",
     "assign x current value to y",
     "assign sum current value to x",

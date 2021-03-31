@@ -1,12 +1,5 @@
 repeat
  set the flag to false
- for each pair of keys
- if the keys array in the room order 10
- if the keys are in the wrong order then
- set the keys
- set the flag to true
- end if
- nextpair
- until flag keys not set
- until flag is not set
+ if the flag is more Set 10
+ the flag is not set then
  exit
