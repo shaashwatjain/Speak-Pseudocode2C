@@ -1,26 +1,12 @@
-<<<<<<< HEAD
-start the program
- read number
- Prime = true
- for factor ranges from 2 to number -1
- if number divisible by factor then Prime = false
- if time = 2 then display number is prime
- else display number is not Prime
-=======
-hello
- start the program
- go to line 5
- ok
- repeat
- repeat
- repeat
- if the flag is not set
- then
- initialize x
- initialize bhai
- initialize vi
- initialize vi
- initialize b
- initialize a
->>>>>>> 72bffa1c23667809849e01c657433b0f8505e5fe
+repeat
+ set up flag to false
+ for each pair of keys
+ if the keys are in the wrong order then
+ sum of the keys
+ swap the keys
+ set the flag to true
+ end if
+ nextpair
+ until flag is not set
+ set the flag to false
  exit

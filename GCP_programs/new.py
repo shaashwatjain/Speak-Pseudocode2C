@@ -1,12 +1,10 @@
 from __future__ import division
+from google.cloud import speech_v1p1beta1 as speech
 
 import re
 import sys
 import os
 from corrections import corr_list
-
-#  from google.cloud import speech
-from google.cloud import speech_v1p1beta1 as speech
 
 import pyaudio
 from six.moves import queue
@@ -149,12 +147,16 @@ def main():
     file2 = open("transcript.txt", "w")
     file2.close()
 
+    boost = 20.0
+    speech_contexts_element = {"phrases": corr_list, "boost": boost}
+    speech_contexts = [speech_contexts_element]
+
     client = speech.SpeechClient()
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
         language_code=language_code,
-        speech_contexts=[{"phrases": corr_list, "boost":20.0}],
+        speech_contexts=speech_contexts
     )
 
     streaming_config = speech.StreamingRecognitionConfig(

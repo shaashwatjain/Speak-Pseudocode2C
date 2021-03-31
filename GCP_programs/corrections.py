@@ -1,6 +1,10 @@
 corr_list = [
+    "Pseudo Code",
+    "Programming",
+    "C Language",
     "start a for loop",
     "repeat",
+    "flag",
     "set a flag to False",
     "for each pair of keys",
     "if the keys are in the wrong order then",
@@ -27,7 +31,7 @@ corr_list = [
     "Set loopcounter to 0",
     "to",
     "10",
-    #Srishti
+    # Srishti
     "input",
     "sum",
     "average",
@@ -51,7 +55,7 @@ corr_list = [
     "Apply quick sort on left partition recursively",
     "Make any element as pivot",
     "Partition the array on the basis of pivot",
-    #Rajdeep
+    # Rajdeep
     "pre",
     "remainder",
     "code",
@@ -60,5 +64,5 @@ corr_list = [
     "else",
     "prime",
     "false",
-    "true"
+    "true",
 ]
