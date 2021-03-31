@@ -28,10 +28,10 @@ Apply quick sort on right partition recursively
 #Fibonacci
 Initialise n to fifty
 Initialise sum to zero
-Initialise x and y to zero
+Initialise a and b to zero
 repeat n times
-	add x and y, store this value in sum
-	assign x current value to y
-	assign sum current value to x
+	add a and b, store this value in sum
+	assign a current value to b
+	assign sum current value to a
 end loop
 ======================================================================

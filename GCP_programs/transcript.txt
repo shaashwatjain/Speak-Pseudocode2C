@@ -1,5 +1,16 @@
-repeat
- set the flag to false
+hello
+ start the program
+ go to line 5
+ ok
+ repeat
+ repeat
+ repeat
  if the flag is not set
- then go to line 5
+ then
+ initialize x
+ initialize bhai
+ initialize vi
+ initialize vi
+ initialize b
+ initialize a
  exit
