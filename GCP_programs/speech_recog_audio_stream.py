@@ -154,7 +154,7 @@ def main():
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=RATE,
         language_code=language_code,
-        speech_contexts=[{"phrases": corr_list, "boost":20.0}],
+        speech_contexts=[{"phrases": corr_list, "boost": 20.0}],
     )
 
     streaming_config = speech.StreamingRecognitionConfig(

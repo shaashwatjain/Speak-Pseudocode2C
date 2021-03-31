@@ -1,12 +1,12 @@
 repeat
- set up flag to false
+ set the flag to false
  for each pair of keys
+ if the keys array in the room order 10
  if the keys are in the wrong order then
- sum of the keys
- swap the keys
+ set the keys
  set the flag to true
  end if
  nextpair
+ until flag keys not set
  until flag is not set
- set the flag to false
  exit

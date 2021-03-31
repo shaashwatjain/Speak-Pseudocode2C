@@ -1,6 +1,6 @@
 #Bubble Sort
 repeat
-set thecls flag to False
+set the flag to False
 for each pair of keys
     if the keys are in the wrong order then
         swap the keys
