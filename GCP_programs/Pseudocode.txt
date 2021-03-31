@@ -1,0 +1,37 @@
+#Bubble Sort
+repeat
+set a flag to False
+for each pair of keys
+    if the keys are in the wrong order then
+        swap the keys
+        set the flag to True
+    endif
+nextpair
+until flag is not set
+
+
+#Replace every 3 element of an array to 10
+Set loopcounter to 0
+for every third element in the array
+    replace the existing value with 10
+    increment loopcounter by 3
+endfor
+
+======================================================================
+#Quick sort
+Make any element as pivot
+Partition the array on the basis of pivot
+Apply quick sort on left partition recursively
+Apply quick sort on right partition recursively
+
+
+#Fibonacci
+Initialise n to fifty
+Initialise sum to zero
+Initialise x and y to zero
+repeat n times
+	add x and y, store this value in sum
+	assign x current value to y
+	assign sum current value to x
+end loop
+======================================================================
