@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 repeat
  set the flag to false
  if the flag is more Set 10
  the flag is not set then
  exit
+=======
+मेरा नाम
+ अरे
+ बढ़िया है
+>>>>>>> fd2800e174d68ceb69d0e4b27c55a06a0c0bfcc3

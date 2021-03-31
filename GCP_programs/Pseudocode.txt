@@ -35,3 +35,22 @@ repeat n times
 	assign sum current value to a
 end loop
 ======================================================================
+# OddEven 
+
+start the program 
+read a
+if a/2 gives a remainder 
+then print its odd 
+else print its even 
+endif
+exit
+
+# Prime 
+start the program 
+read number
+prime = True
+for factor ranges from 2 to Num-1 do
+if number divisible by factor then prime = False
+if prime = True then display number is prime
+else display number is not prime
+exit 
