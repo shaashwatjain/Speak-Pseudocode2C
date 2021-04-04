@@ -1,21 +1,20 @@
-#Bubble Sort
-repeat
-set the flag to False
-for each pair of keys
-    if the keys are in the wrong order then
-        swap the keys
-        set the flag to True
-    endif
-nextpair
-until flag is not set
-
-
 #Replace every 3 element of an array to 10
 Set loopcounter to 0
 for every third element in the array
     replace the existing value with 10
     increment loopcounter by 3
 endfor
+
+#Bubble Sort
+repeat
+set the flag to False
+for each pair of keys
+    if the key is in wrong order then
+        swap the keys
+        set the flag to True
+    endif
+nextpair
+until flag is not set
 
 ======================================================================
 #Quick sort
@@ -54,3 +53,4 @@ if number divisible by factor then prime = False
 if prime = True then display number is prime
 else display number is not prime
 exit 
+===================================================================
