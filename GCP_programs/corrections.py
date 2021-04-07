@@ -29,10 +29,8 @@ corr_list = [
     "array",
     "existing",
     "increment",
-    "endfor",
+    "end for",
     "Set loopcounter to 0",
-    "to",
-    "10",
     # Srishti
     "input",
     "sum",
@@ -68,4 +66,6 @@ corr_list = [
     "false",
     "true",
     "for factor ranges from 2 to number-1 do",
+    "end",
+    "pseudocode"
 ]

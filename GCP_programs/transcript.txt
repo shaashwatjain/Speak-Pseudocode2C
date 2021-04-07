@@ -1,2 +1,17 @@
-500
- hundred thousand sixty
+start pseudocode
+procedure Armstrong number
+check = number
+remainder = 0
+while check != 0
+remainder = check % 10
+summation = summation + remainder cube
+check = check / 10
+end while
+if summation = number
+print Armstrong
+else
+print not an Armstrong
+end if
+end procedure
+end pseudocode odd
+Exit code

@@ -17,6 +17,40 @@ from six.moves import queue
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
+def indentation(transcript,indent):
+    inc_indent = ["start","procedure","while","if","for"]
+    dec_indent = "end"
+    if dec_indent in transcript:
+        return indent - 1
+    else:
+        for inc in inc_indent:
+            if inc in transcript:
+                return indent + 1
+        return indent
+
+def replacement(string1):
+    repl_dict = {
+        "is equal to":"=",
+        "equals to":"=",
+        "is not equal to":"!=",
+        "is not":"!=",
+        "addition":"+",
+        "add":"+",
+        "plus":"+",
+        "subtract":"-",
+        "minus":"-",
+        "multiplied by":"*",
+        "multiply":"*",
+        "into":"*",
+        " x ":"*",
+        "divided by":"/",
+        "divide":"/",
+        "modulo":"%",
+    }
+    for key in repl_dict.keys():
+        string1 = string1.replace(key,repl_dict[key])
+    return(string1)
+
 
 def is_number(x):
     if type(x) == str:
@@ -244,6 +278,7 @@ def listen_print_loop(responses):
     the next result to overwrite it, until the response is a final one. For the
     final one, print a newline to preserve the finalized transcription.
     """
+    indent = 0
     num_chars_printed = 0
     for response in responses:
         if not response.results:
@@ -258,26 +293,38 @@ def listen_print_loop(responses):
 
         # Display the transcription of the top alternative.
         transcript = result.alternatives[0].transcript
+        #print(transcript)
 
         # Display interim results, but with a carriage return at the end of the
         # line, so subsequent lines will overwrite them.
         #
         # If the previous result was longer than this one, we need to print
         # some extra spaces to overwrite the previous result
-        overwrite_chars = " " * (num_chars_printed - len(transcript))
+        #overwrite_chars = " " * (num_chars_printed - len(transcript))
 
-        if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + "\r")
-            sys.stdout.flush()
-
-            num_chars_printed = len(transcript)
-
-        else:
-            #  print(w2n.word_to_num(transcript + overwrite_chars))
-            print(text2int(transcript + overwrite_chars))
-            #  print(wordtodigits.convert(transcript + overwrite_chars))
+        if result.is_final:
+            if transcript[0] == " ":
+                transcript = transcript[1:]
+                transcript += " "
+            # print(transcript + overwrite_chars)
+            # print(transcript + overwrite_chars)
+            # try:
+            #     print(w2n.word_to_num(transcript + overwrite_chars))
+            # except:
+            #     print("First failed")
+            # try:
+            #     print(text2int(transcript + overwrite_chars))
+            # except:
+            #     print("Second failed")
+            try:
+                transcript = wordtodigits.convert(transcript)
+                transcript = replacement(transcript)
+                print(" "*indent+transcript)
+                indent = indentation(transcript,indent)
+            except:
+                print("Conversion failed")
             file1 = open("transcript.txt", "a")
-            file1.write(transcript + overwrite_chars + "\n")
+            file1.write(transcript + "\n")
             file1.close()
 
             # Exit recognition if any of the transcribed phrases could be
