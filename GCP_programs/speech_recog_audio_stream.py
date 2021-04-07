@@ -17,22 +17,28 @@ from six.moves import queue
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
-def indentation(transcript,indent):
-    inc_indent = ["start","procedure","while","if","for"]
-    dec_indent = "end"
-    if dec_indent in transcript:
-        return indent - 1
-    else:
-        for inc in inc_indent:
-            if inc in transcript:
-                return indent + 1
-        return indent
+def pre_indentation(transcript,indent):
+    dec_indent = ["end","else"]
+    for inc in dec_indent:
+        if inc in transcript:
+            return indent - 1
+    return indent
+
+def post_indentation(transcript,indent):
+    inc_indent = ["start","procedure","while","if","for","else"]
+    for inc in inc_indent:
+        if inc in transcript and "end" not in transcript:
+            return indent + 1
+    return indent
 
 def replacement(string1):
     repl_dict = {
         "is equal to":"=",
         "equals to":"=",
         "is not equal to":"!=",
+        "not equal to":"!=",
+        "not equals":"!=",
+        "not equal":"!=",
         "is not":"!=",
         "addition":"+",
         "add":"+",
@@ -40,12 +46,15 @@ def replacement(string1):
         "subtract":"-",
         "minus":"-",
         "multiplied by":"*",
+        "multiply by":"*",
         "multiply":"*",
         "into":"*",
         " x ":"*",
         "divided by":"/",
+        "divide by":"/",
         "divide":"/",
         "modulo":"%",
+        "mod":"%"
     }
     for key in repl_dict.keys():
         string1 = string1.replace(key,repl_dict[key])
@@ -319,13 +328,14 @@ def listen_print_loop(responses):
             try:
                 transcript = wordtodigits.convert(transcript)
                 transcript = replacement(transcript)
-                print(" "*indent+transcript)
-                indent = indentation(transcript,indent)
+                indent = pre_indentation(transcript,indent)
+                print("    "*indent+transcript)
+                file1 = open("transcript.txt", "a")
+                file1.write("    "*indent + transcript + "\n")
+                file1.close()
+                indent = post_indentation(transcript,indent)
             except:
                 print("Conversion failed")
-            file1 = open("transcript.txt", "a")
-            file1.write(transcript + "\n")
-            file1.close()
 
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
