@@ -65,7 +65,7 @@ corr_list = [
     "prime",
     "false",
     "true",
-    "for factor ranges from 2 to number-1 do",
+    "factor",
     "end",
     "pseudocode"
 ]
