@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 start pseudocode odd
     procedure Armstrong number
         check = number
@@ -15,3 +16,8 @@ start pseudocode odd
     end procedure
 end pseudocode
 Exit code
+=======
+hello
+start the pseudo code
+exit
+>>>>>>> 7b484d8b47527887e7db3d057a20adca01be5b1c
