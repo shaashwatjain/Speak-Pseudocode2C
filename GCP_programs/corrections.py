@@ -1,5 +1,4 @@
 corr_list = [
-<<<<<<< HEAD
     "start",
     "pseudocode",
     "for",
@@ -9,24 +8,6 @@ corr_list = [
     "flag",
     "set",
     "false",
-=======
-    "Pseudo Code",
-    "Programming",
-    "C Language",
-    "start",
-    "for loop",
-    "repeat",
-    "flag",
-    "set",
-    "False",
-    "for each",
-    "keys",
-    "then",
-    "wrong order",
-    "swap",
-    "end if",
-    "nextpair",
->>>>>>> 7b484d8b47527887e7db3d057a20adca01be5b1c
     "pair",
     "keys"
     "if",
@@ -36,7 +17,6 @@ corr_list = [
     "true",
     "next",
     "until",
-<<<<<<< HEAD
     "algorithm",
     "set",
     "counter",
@@ -45,18 +25,6 @@ corr_list = [
     "array",
     "existing",
     "increment",
-=======
-    "for",
-    #  "keys",
-    "Algorithm",
-    "LoopCounter",
-    "element",
-    "for every",
-    "array",
-    "existing",
-    "increment",
-    "end for",
->>>>>>> 7b484d8b47527887e7db3d057a20adca01be5b1c
     # Srishti
     "input",
     "sum",
@@ -65,10 +33,7 @@ corr_list = [
     "initialize",
     "output",
     "pivot",
-    "partition",
     "element",
-    "recursively",
-<<<<<<< HEAD
     "basis",
     "declare",
     "integer",
@@ -81,18 +46,6 @@ corr_list = [
     "recursively",
     "partition",
     "pivot",
-=======
-    "basis of",
-    "Declare",
-    "Declare",
-    "integer",
-    "variable",
-    "repeat number times",
-    "current value",
-    "end loop",
-    "sort",
-    "recursively",
->>>>>>> 7b484d8b47527887e7db3d057a20adca01be5b1c
     # Rajdeep
     "pre",
     "remainder",
