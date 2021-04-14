@@ -327,6 +327,7 @@ def listen_print_loop(responses):
             #     print("Second failed")
             try:
                 transcript = wordtodigits.convert(transcript)
+                transcript = transcript.lower()
                 transcript = replacement(transcript)
                 indent = pre_indentation(transcript,indent)
                 print("    "*indent+transcript)
