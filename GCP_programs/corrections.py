@@ -3,6 +3,8 @@ corr_list = [
     "pseudocode",
     "for",
     "end",
+    "endfor",
+    "endif",
     "loop",
     "repeat",
     "flag",
