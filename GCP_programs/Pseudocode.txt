@@ -36,11 +36,11 @@ end loop
 ======================================================================
 # OddEven 
 
-start the program 
 read a
 if a/2 gives a remainder 
-then print its odd 
-else print its even 
+    then print its odd 
+else 
+    print its even 
 endif
 exit
 

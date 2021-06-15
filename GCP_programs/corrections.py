@@ -61,5 +61,6 @@ corr_list = [
     "factor",
     "summation",
     "print",
-    "not"
+    "not",
+    "exit"
 ]

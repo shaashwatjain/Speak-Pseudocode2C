@@ -1,0 +1,7 @@
+start the program 
+    integer side 
+    print Enter side of square
+    read side 
+    result = side * side 
+    print result 
+exit the code 
