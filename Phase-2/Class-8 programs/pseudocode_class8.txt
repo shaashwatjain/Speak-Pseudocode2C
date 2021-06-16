@@ -1,0 +1,35 @@
+# print counter to number given as input
+start the program
+    input number
+    for an integer i from 0 to number increment 1
+        print number
+    end for
+end
+
+# calculator program +-*/
+start the program
+    input operation character
+    input var1 and var2 integer
+    if operation is +
+        print var1 + var2
+    else if operation is -
+        print var1 - var2
+    else if operation is *
+        print var1 * var2
+    else if operation is /
+        print var1 / var2
+    end if
+end
+
+# square root of given number
+start the program
+    input var integer
+    if integer greater than 0
+        print square root of var
+    end if
+end
+
+# finding factor of number
+start the program
+    input var integer
+    for an integer i from 2 to number increment 1
