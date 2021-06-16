@@ -1,0 +1,38 @@
+Input: READ, OBTAIN, GET
+Output: PRINT, DISPLAY, SHOW
+# Compute: COMPUTE, CALCULATE, DETERMINE
+Initialize: SET, INIT
+Add one: INCREMENT, BUMP
+
+
+IF condition THEN
+    sequence 1
+ELSE
+    sequence 2
+ENDIF
+
+
+WHILE condition
+    sequence
+ENDWHILE
+
+User has to make sure that the number of conditional staements should match
+with number of "End" statements
+
+# do-while
+REPEAT
+    sequence
+UNTIL condition
+
+
+SET total to zero
+REPEAT
+    READ Temperature
+    IF Temperature > Freezing THEN
+        INCREMENT total
+    END IF
+UNTIL Temperature < zero
+Print total
+
+
+# CALL SquareRoot with orbitHeight RETURNING nominalOrbit

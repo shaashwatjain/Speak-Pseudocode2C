@@ -1,0 +1,15 @@
+procedure listen_print_loop(responses):
+    set variable num_chars_printed to 0
+    start for loop on responses using iterator as response
+        if response.results is None
+            continue
+
+        set variable transcript to result.alternatives[0].transcript
+        if result is not final
+            write the data + "\r" on console
+            flush the buffer
+        else
+            write data on console
+            if exit or quit in transcript
+                stop the loop
+            set variable num_chars_printed to 0
