@@ -1,0 +1,6 @@
+start the pseudocode
+    initialize num to 5
+    if num is >= 1
+        print "hello World"
+    endif
+end

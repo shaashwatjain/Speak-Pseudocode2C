@@ -1,0 +1,4 @@
+start the pseudocode
+    print "Hello world"
+end
+

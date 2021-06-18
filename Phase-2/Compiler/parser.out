@@ -1,0 +1,87 @@
+Created by PLY (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ADD_EQ
+    CHAR
+    DIV_EQ
+    EQ_EQ
+    FLOAT
+    FLOAT_LIT
+    GT
+    GT_EQ
+    INT
+    INT_LIT
+    KW_ADD
+    KW_BREAK
+    KW_DECR
+    KW_DO
+    KW_ELSE
+    KW_FOR
+    KW_IF
+    KW_INCR
+    KW_INIT
+    KW_READ
+    KW_While
+    LT
+    LT_EQ
+    MOD_EQ
+    MUL_EQ
+    NOT_EQ
+    STRING_LIT
+    SUB_EQ
+
+Grammar
+
+Rule 0     S' -> Start
+Rule 1     Start -> KW_START label
+Rule 2     Label -> IDENTIFIER
+Rule 3     Print -> KW_PRINT label
+Rule 4     End -> KW_END
+Rule 5     empty -> <empty>
+
+Terminals, with rules where they appear
+
+ADD_EQ               : 
+CHAR                 : 
+DIV_EQ               : 
+EQ_EQ                : 
+FLOAT                : 
+FLOAT_LIT            : 
+GT                   : 
+GT_EQ                : 
+IDENTIFIER           : 2
+INT                  : 
+INT_LIT              : 
+KW_ADD               : 
+KW_BREAK             : 
+KW_DECR              : 
+KW_DO                : 
+KW_ELSE              : 
+KW_END               : 4
+KW_FOR               : 
+KW_IF                : 
+KW_INCR              : 
+KW_INIT              : 
+KW_PRINT             : 3
+KW_READ              : 
+KW_START             : 1
+KW_While             : 
+LT                   : 
+LT_EQ                : 
+MOD_EQ               : 
+MUL_EQ               : 
+NOT_EQ               : 
+STRING_LIT           : 
+SUB_EQ               : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+End                  : 
+Label                : 
+Print                : 
+Start                : 0
+empty                : 
+label                : 1 3
+
