@@ -33,3 +33,11 @@ end
 start the program
     input var integer
     for an integer i from 2 to number increment 1
+
+
+start the program
+    input number number2 number3
+    input char1 char2 character
+    print entered number is variable number integer and the next entered number is variable number2 integer and the third variable number3 integer
+    print entered characters are variable char1 character and variable char2 character
+end

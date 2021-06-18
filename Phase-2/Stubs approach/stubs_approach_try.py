@@ -82,6 +82,59 @@ def print_variables(string: str, variable_list, variable_type_list):
     content_string += variable_list[-1]
     insert_line(current_indent, f"printf(\"{print_string}\\n\", {content_string});")
 
+
+def if_start(comparison_list):
+    comparison_string = ''
+    for word in comparison_list:
+        if "or" == word:
+            comparison_string += "||" + " "
+        elif "and" == word:
+            comparison_string += "&&" + " "
+        else:
+            try:
+                num = int(word)
+                comparison_string += num + " "
+            except ValueError:
+                if len(word) == 1:
+                    comparison_string += "'" + word + "' "
+                else:
+                    comparison_string += word + " "
+    insert_line(current_indent, f"if({comparison_string})")
+    insert_line(current_indent, "{")
+    increase_indent()
+
+
+def continued_if(comparison_list):
+    decrease_indent()
+    insert_line(current_indent, "}")
+    comparison_string = ''
+    for word in comparison_list:
+        if "or" == word:
+            comparison_string += "||" + " "
+        elif "and" == word:
+            comparison_string += "&&" + " "
+        else:
+            try:
+                num = int(word)
+                comparison_string += num + " "
+            except ValueError:
+                if len(word) == 1:
+                    comparison_string += "'" + word + "' "
+                else:
+                    comparison_string += word + " "
+    insert_line(current_indent, f"else if({comparison_string})")
+    insert_line(current_indent, "{")
+    increase_indent()
+    
+
+def else_end():
+    decrease_indent()
+    insert_line(current_indent, "}")
+    insert_line(current_indent, f"else")
+    insert_line(current_indent, "{")
+    increase_indent()
+
+
 def end_func():
     decrease_indent()
     insert_line(current_indent, "}")
@@ -90,18 +143,27 @@ def run():
     f = open("Pseudocode.txt", "r")
     data = f.readlines()
     for line in data:
+        line = line.strip()
         if "start the program" in line:
             start_the_program()
+        elif "end" in line:
+            end_func()
         elif "input" in line:
-            content = line.strip().split(" ")[1:]
+            content = line.split(" ")[1:]
             type = ""
             if "char" in content[-1]:
                 type = "char"
+                content = content[:-1]
+            elif "int" in content[-1]:
+                type = "int"
+                content = content[:-1]
             else:
                 type = "int"
             input_variable(type, content)
+        # TODO: code for just declaring variable.
+        # TODO: Implement logic for tracking variables first.
         elif "print" in line:
-            content = line.strip().split(" ")[1:]
+            content = line.split(" ")[1:]
             string_to_send = ''
             length_content = len(content)
             index = 0
@@ -124,8 +186,14 @@ def run():
                     string_to_send += "\z "
                 index += 1
             print_variables(string_to_send, variable_names, variable_types)
-        elif "end" in line:
-            end_func()
+        elif "else" in line and "if" in line:
+            content = line.split(" ")[2:]
+            continued_if(content)
+        elif "else" in  line:
+            else_end()
+        elif "if" in line:
+            content = line.split(" ")[1:]
+            if_start(content)
     global program
     for line in program:
         print(line, end = "")

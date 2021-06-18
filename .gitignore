@@ -1,3 +1,5 @@
 __pycache__/
 transcript.txt
 .vscode
+.c
+.exe
