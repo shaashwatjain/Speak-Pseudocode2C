@@ -1,0 +1,3 @@
+start the pseudocode
+    initialize num to 5
+end
