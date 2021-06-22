@@ -1,6 +1,7 @@
 program = []
 index = 0
 current_indent = 0
+variables = dict()
 
 def start_the_program():
     """
@@ -28,10 +29,14 @@ def insert_line(indent, string_to_write = ""):
 def increase_indent():
     global current_indent
     current_indent += 1
+    if current_indent not in variables:
+        variables[current_indent] = []
 
 
 def decrease_indent():
     global current_indent
+    if current_indent in variables:
+        del variables[current_indent]
     if current_indent > 0:
         current_indent -= 1
 
@@ -53,8 +58,10 @@ def input_variable(type, content):
     for arg in content[:length_vars - 1]:
         content_string += arg + ", "
         content_input_string += "&" + arg + ", "
+        variables[current_indent].append(arg)
     content_string += content[-1]
     content_input_string += "&" + content[-1]
+    variables[current_indent].append(content[-1])
     insert_line(current_indent, f"{type} {content_string};")
     insert_line(current_indent, "scanf(\"" + length_vars* (type_conversion) + f"\", {content_input_string});")
 
