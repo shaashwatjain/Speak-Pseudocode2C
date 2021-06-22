@@ -74,17 +74,121 @@ class Pseudo_Parser:
     #
     #  def p_Simple_Stmt(self, p):
     #      """Simple_Stmt : expression
-    #      | Expr_List
     #      | Start_Stmt
-    #      | Assignment_Stmt
     #      | If_Stmt
-    #      | While_Stmt
-    #      | For_Stmt
-    #      | Output_Stmt
-    #      | Input_Stmt"""
+    #      | While_Stmt"""
     #
     #      p[0] = p[1]
+    #
+    #  def p_expression_arithmetic_binop(self, p):
+    #      """expression : expression PLUS expression
+    #      | expression MINUS expression
+    #      | expression TIMES expression
+    #      | expression DIVIDE expression
+    #      | expression PERCENT expression"""
+    #
+    #      if p[1].dType == None or p[3].dType == None:
+    #          print("Variable is undefined")
+    #          sys.exit()
+    #
+    #      elif p[1].dType == str and p[3].dType == str:
+    #
+    #          if p[2] == "+":
+    #
+    #              # Check for -1 here, as the support for ignoring whitespace is
+    #              # present
+    #              if isinstance(p[1], pseudo_ast.Variable):
+    #                  length1 = self.var_lengths[(p[1].name, self.scope)] - 1
+    #              else:
+    #                  length1 = p[1].length - 1
+    #
+    #              if isinstance(p[3], pseudo_ast.Variable):
+    #                  length2 = self.var_lengths[(p[3].name, self.scope)]
+    #              else:
+    #                  length2 = p[3].length
+    #
+    #              total_length = length1 + length2
+    #              p[0] = pseudo_ast.BinaryOp(p[2], p[1], p[3], str, total_length)
+    #
+    #          else:
+    #              print("Invalid operation")
+    #              sys.exit()
+    #
+    #      elif p[1].dType == str or p[3].dType == str:
+    #          print("Invalid operation")
+    #          sys.exit()
+    #
+    #      elif p[1].dType == float or p[3].dType == float:
+    #          p[0] = pseudo_ast.BinaryOp(p[2], p[1], p[3], float, 0)
+    #
+    #      elif p[1].dType == int and p[3].dType == int:
+    #          p[0] = pseudo_ast.BinaryOp(p[2], p[1], p[3], int, 0)
+    #
+    #      else:
+    #          print("Invalid operation")
+    #          sys.exit()
+    #
+    #  def p_expression_comp_binop(self, p):
+    #      """expression : expression LT expression
+    #      | expression GT expression
+    #      | expression LT_EQ expression
+    #      | expression GT_EQ expression
+    #      | expression EQ_EQ expression
+    #      | expression NOT_EQ expression"""
+    #
+    #      if p[1].dType == None or p[3].dType == None:
+    #          print("Variable is undefined")
+    #          sys.exit()
+    #
+    #      elif p[1].dType == str or p[3].dType == str:
+    #          print("Strings cannot be compared")
+    #          sys.exit()
+    #
+    #      else:
+    #          if p[1].dType == float or p[3].dType == float:
+    #              p[0] = pseudo_ast.BinaryOp(p[2], p[1], p[3], float, 0)
+    #
+    #          elif p[1].dType == int and p[3].dType == int:
+    #              p[0] = pseudo_ast.BinaryOp(p[2], p[1], p[3], int, 0)
+    #
+    #  def p_expression_literal(self, p):
+    #      """expression : literal"""
+    #
+    #      p[0] = p[1]
+    #
+    #  def p_literal_int_constant(self, p):
+    #      """literal : INT_LIT"""
+    #
+    #      p[0] = pseudo_ast.Constant(int, p[1], 0)
+    #
+    #  def p_literal_float_constant(self, p):
+    #      """literal : FLOAT_LIT"""
+    #
+    #      p[0] = pseudo_ast.Constant(float, p[1], 0)
+    #
+    #  def p_literal_string_constant(self, p):
+    #      """literal : STRING_LIT"""
+    #
+    #      p[0] = pseudo_ast.Constant(str, str(p[1]), len(p[1]) + 1)
+    #
+    #  def p_expression_var(self, p):
+    #      "expression : KW_VAR"
+    #
+    #      if (p[1], self.scope) in self.variable_types:
+    #          length = self.var_lengths[(p[1], self.scope)]
+    #          p[0] = pseudo_ast.Variable(
+    #              self.variable_types[(p[1], self.scope)], p[1], length
+    #          )
+    #
+    #      else:
+    #          p[0] = pseudo_ast.Variable(None, p[1], 0)
+    #
+    #  def p_error(self, p):
+    #      print(f"Syntax error at {p.value!r}")
 
+    ###############
+    # OLD GRAMMAR #
+    ###############
     def p_Start_Stmt(self, p):
         """
         Start_Stmt : KW_START Program

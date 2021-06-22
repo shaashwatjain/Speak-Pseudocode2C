@@ -27,19 +27,6 @@ class BinaryOp:
         return nodelist
 
 
-class UnaryOp:
-    __slots__ = ("dType", "op", "right", "length")
-
-    def __init__(self, dType, op, right, length):
-        self.dType = dType
-        self.op = op
-        self.right = right
-        self.length = length
-
-    def children(self):
-        return self.right
-
-
 class Constant:
     __slots__ = ("dType", "value", "length")
 

@@ -29,7 +29,7 @@ Unused terminals:
     KW_SET
     KW_THEN
     KW_VAR
-    KW_While
+    KW_WHILE
     LBRACKET
     LPAREN
     LT
@@ -97,7 +97,7 @@ KW_START             : 1
 KW_THEN              : 
 KW_TO                : 6
 KW_VAR               : 
-KW_While             : 
+KW_WHILE             : 
 LBRACKET             : 
 LPAREN               : 
 LT                   : 

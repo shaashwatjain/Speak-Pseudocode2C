@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEPERCENTADD_EQ CHAR COMMA DIVIDE DIV_EQ EQUALS EQ_EQ FLOAT FLOAT_LIT GT GT_EQ IDENTIFIER INT INT_LIT KW_ADD KW_BREAK KW_DECR KW_DO KW_ELSE KW_END KW_ENDFOR KW_ENDIF KW_ENDWHILE KW_FOR KW_IF KW_INCR KW_INIT KW_PRINT KW_READ KW_SET KW_START KW_THEN KW_TO KW_VAR KW_While LBRACKET LPAREN LT LT_EQ MINUS MOD_EQ MUL_EQ NEWLINE NOT_EQ PERCENT PLUS RBRACKET RPAREN STRING_LIT SUB_EQ TIMES\n        Start_Stmt : KW_START Program\n        \n        Program : IDENTIFIER Program\n        | NEWLINE Program\n        | Print\n        | Initialization\n        \n        Initialization : KW_INIT IDENTIFIER KW_TO Number\n        \n        Number : INT_LIT NEWLINE End\n        \n        IfStmt : empty\n        \n        Print : KW_PRINT STRING_LIT NEWLINE End\n        | End\n        \n        End : KW_END\n        empty :'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEPERCENTADD_EQ CHAR COMMA DIVIDE DIV_EQ EQUALS EQ_EQ FLOAT FLOAT_LIT GT GT_EQ IDENTIFIER INT INT_LIT KW_ADD KW_BREAK KW_DECR KW_DO KW_ELSE KW_END KW_ENDFOR KW_ENDIF KW_ENDWHILE KW_FOR KW_IF KW_INCR KW_INIT KW_PRINT KW_READ KW_SET KW_START KW_THEN KW_TO KW_VAR KW_WHILE LBRACKET LPAREN LT LT_EQ MINUS MOD_EQ MUL_EQ NEWLINE NOT_EQ PERCENT PLUS RBRACKET RPAREN STRING_LIT SUB_EQ TIMES\n        Start_Stmt : KW_START Program\n        \n        Program : IDENTIFIER Program\n        | NEWLINE Program\n        | Print\n        | Initialization\n        \n        Initialization : KW_INIT IDENTIFIER KW_TO Number\n        \n        Number : INT_LIT NEWLINE End\n        \n        IfStmt : empty\n        \n        Print : KW_PRINT STRING_LIT NEWLINE End\n        | End\n        \n        End : KW_END\n        empty :'
     
 _lr_action_items = {'KW_START':([0,],[2,]),'$end':([1,3,6,7,9,11,12,13,18,19,22,],[0,-1,-4,-5,-10,-11,-2,-3,-9,-6,-7,]),'IDENTIFIER':([2,4,5,10,],[4,4,4,15,]),'NEWLINE':([2,4,5,14,20,],[5,5,5,16,21,]),'KW_PRINT':([2,4,5,],[8,8,8,]),'KW_INIT':([2,4,5,],[10,10,10,]),'KW_END':([2,4,5,16,21,],[11,11,11,11,11,]),'STRING_LIT':([8,],[14,]),'KW_TO':([15,],[17,]),'INT_LIT':([17,],[20,]),}
 
@@ -27,16 +27,16 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> Start_Stmt","S'",1,None,None,None),
-  ('Start_Stmt -> KW_START Program','Start_Stmt',2,'p_Start_Stmt','pseudo_parser.py',90),
-  ('Program -> IDENTIFIER Program','Program',2,'p_Program','pseudo_parser.py',99),
-  ('Program -> NEWLINE Program','Program',2,'p_Program','pseudo_parser.py',100),
-  ('Program -> Print','Program',1,'p_Program','pseudo_parser.py',101),
-  ('Program -> Initialization','Program',1,'p_Program','pseudo_parser.py',102),
-  ('Initialization -> KW_INIT IDENTIFIER KW_TO Number','Initialization',4,'p_Initialization','pseudo_parser.py',108),
-  ('Number -> INT_LIT NEWLINE End','Number',3,'p_Number','pseudo_parser.py',114),
-  ('IfStmt -> empty','IfStmt',1,'p_IfStmt','pseudo_parser.py',120),
-  ('Print -> KW_PRINT STRING_LIT NEWLINE End','Print',4,'p_Print','pseudo_parser.py',125),
-  ('Print -> End','Print',1,'p_Print','pseudo_parser.py',126),
-  ('End -> KW_END','End',1,'p_End','pseudo_parser.py',132),
-  ('empty -> <empty>','empty',0,'p_empty','pseudo_parser.py',137),
+  ('Start_Stmt -> KW_START Program','Start_Stmt',2,'p_Start_Stmt','pseudo_parser.py',194),
+  ('Program -> IDENTIFIER Program','Program',2,'p_Program','pseudo_parser.py',203),
+  ('Program -> NEWLINE Program','Program',2,'p_Program','pseudo_parser.py',204),
+  ('Program -> Print','Program',1,'p_Program','pseudo_parser.py',205),
+  ('Program -> Initialization','Program',1,'p_Program','pseudo_parser.py',206),
+  ('Initialization -> KW_INIT IDENTIFIER KW_TO Number','Initialization',4,'p_Initialization','pseudo_parser.py',212),
+  ('Number -> INT_LIT NEWLINE End','Number',3,'p_Number','pseudo_parser.py',218),
+  ('IfStmt -> empty','IfStmt',1,'p_IfStmt','pseudo_parser.py',224),
+  ('Print -> KW_PRINT STRING_LIT NEWLINE End','Print',4,'p_Print','pseudo_parser.py',229),
+  ('Print -> End','Print',1,'p_Print','pseudo_parser.py',230),
+  ('End -> KW_END','End',1,'p_End','pseudo_parser.py',236),
+  ('empty -> <empty>','empty',0,'p_empty','pseudo_parser.py',241),
 ]

@@ -14,8 +14,6 @@ def find_column(token):
     return (token.lexpos - line_start) + 1
 
 
-literals = ".=+-*/%!"
-
 tokens = (
     "NEWLINE",
     # Arithmetic Operator
@@ -60,7 +58,7 @@ keywords = {
     "then": "KW_THEN",
     "else": "KW_ELSE",
     "for": "KW_FOR",
-    "while": "KW_While",
+    "while": "KW_WHILE",
     "add": "KW_ADD",
     "do": "KW_DO",
     "increment": "KW_INCR",

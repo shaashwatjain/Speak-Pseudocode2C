@@ -1,0 +1,12 @@
+x = 100
+
+i = 0
+
+while i < x do
+    if i % 2 == 0 then
+        output "even"
+    else
+        output "odd"
+    endif
+    i = i + 1
+endwhile
