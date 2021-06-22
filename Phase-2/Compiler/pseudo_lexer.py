@@ -65,6 +65,7 @@ keywords = {
     "do": "KW_DO",
     "increment": "KW_INCR",
     "decrement": "KW_DECR",
+    "set": "KW_SET",
     "initialize": "KW_INIT",
     "read": "KW_READ",
     "break": "KW_BREAK",
@@ -186,7 +187,6 @@ def t_error(t):
 
 lexer = lex.lex()
 lexer.input(input_code)
-lines = input_code.split("\n")
 
 if __name__ == "__main__":
     for tok in lexer:

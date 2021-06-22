@@ -1,0 +1,25 @@
+start the pseudocode
+    initialize num
+    initialize count
+    initialize c
+    set i to 3
+    print "enter the number of prime number to prill till"
+    input num
+    if nums greater than equal to 1
+      print "first num prime number are"
+      print "2"
+    endif
+    for count in range from 2 until count <= num
+        for c in range from 2 until c less than equal to i-1 increment c
+            if i mod c eual to 0
+                break
+            endif
+        endfor
+        if c equal to i
+            print "i"
+            increment count
+        endif
+        increment i
+    endfor
+end
+

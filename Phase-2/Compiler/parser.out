@@ -1,0 +1,346 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ADD_EQ
+    CHAR
+    COMMA
+    DIVIDE
+    DIV_EQ
+    EQUALS
+    EQ_EQ
+    FLOAT
+    FLOAT_LIT
+    GT
+    GT_EQ
+    INT
+    KW_ADD
+    KW_BREAK
+    KW_DECR
+    KW_DO
+    KW_ELSE
+    KW_ENDFOR
+    KW_ENDIF
+    KW_ENDWHILE
+    KW_FOR
+    KW_IF
+    KW_INCR
+    KW_READ
+    KW_SET
+    KW_THEN
+    KW_VAR
+    KW_While
+    LBRACKET
+    LPAREN
+    LT
+    LT_EQ
+    MINUS
+    MOD_EQ
+    MUL_EQ
+    NOT_EQ
+    PERCENT
+    PLUS
+    RBRACKET
+    RPAREN
+    SUB_EQ
+    TIMES
+
+Grammar
+
+Rule 0     S' -> Start_Stmt
+Rule 1     Start_Stmt -> KW_START Program
+Rule 2     Program -> IDENTIFIER Program
+Rule 3     Program -> NEWLINE Program
+Rule 4     Program -> Print
+Rule 5     Program -> Initialization
+Rule 6     Initialization -> KW_INIT IDENTIFIER KW_TO Number
+Rule 7     Number -> INT_LIT NEWLINE End
+Rule 8     IfStmt -> empty
+Rule 9     Print -> KW_PRINT STRING_LIT NEWLINE End
+Rule 10    Print -> End
+Rule 11    End -> KW_END
+Rule 12    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ADD_EQ               : 
+CHAR                 : 
+COMMA                : 
+DIVIDE               : 
+DIV_EQ               : 
+EQUALS               : 
+EQ_EQ                : 
+FLOAT                : 
+FLOAT_LIT            : 
+GT                   : 
+GT_EQ                : 
+IDENTIFIER           : 2 6
+INT                  : 
+INT_LIT              : 7
+KW_ADD               : 
+KW_BREAK             : 
+KW_DECR              : 
+KW_DO                : 
+KW_ELSE              : 
+KW_END               : 11
+KW_ENDFOR            : 
+KW_ENDIF             : 
+KW_ENDWHILE          : 
+KW_FOR               : 
+KW_IF                : 
+KW_INCR              : 
+KW_INIT              : 6
+KW_PRINT             : 9
+KW_READ              : 
+KW_SET               : 
+KW_START             : 1
+KW_THEN              : 
+KW_TO                : 6
+KW_VAR               : 
+KW_While             : 
+LBRACKET             : 
+LPAREN               : 
+LT                   : 
+LT_EQ                : 
+MINUS                : 
+MOD_EQ               : 
+MUL_EQ               : 
+NEWLINE              : 3 7 9
+NOT_EQ               : 
+PERCENT              : 
+PLUS                 : 
+RBRACKET             : 
+RPAREN               : 
+STRING_LIT           : 9
+SUB_EQ               : 
+TIMES                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+End                  : 7 9 10
+IfStmt               : 
+Initialization       : 5
+Number               : 6
+Print                : 4
+Program              : 1 2 3
+Start_Stmt           : 0
+empty                : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Start_Stmt
+    (1) Start_Stmt -> . KW_START Program
+
+    KW_START        shift and go to state 2
+
+    Start_Stmt                     shift and go to state 1
+
+state 1
+
+    (0) S' -> Start_Stmt .
+
+
+
+state 2
+
+    (1) Start_Stmt -> KW_START . Program
+    (2) Program -> . IDENTIFIER Program
+    (3) Program -> . NEWLINE Program
+    (4) Program -> . Print
+    (5) Program -> . Initialization
+    (9) Print -> . KW_PRINT STRING_LIT NEWLINE End
+    (10) Print -> . End
+    (6) Initialization -> . KW_INIT IDENTIFIER KW_TO Number
+    (11) End -> . KW_END
+
+    IDENTIFIER      shift and go to state 4
+    NEWLINE         shift and go to state 5
+    KW_PRINT        shift and go to state 8
+    KW_INIT         shift and go to state 10
+    KW_END          shift and go to state 11
+
+    Program                        shift and go to state 3
+    Print                          shift and go to state 6
+    Initialization                 shift and go to state 7
+    End                            shift and go to state 9
+
+state 3
+
+    (1) Start_Stmt -> KW_START Program .
+
+    $end            reduce using rule 1 (Start_Stmt -> KW_START Program .)
+
+
+state 4
+
+    (2) Program -> IDENTIFIER . Program
+    (2) Program -> . IDENTIFIER Program
+    (3) Program -> . NEWLINE Program
+    (4) Program -> . Print
+    (5) Program -> . Initialization
+    (9) Print -> . KW_PRINT STRING_LIT NEWLINE End
+    (10) Print -> . End
+    (6) Initialization -> . KW_INIT IDENTIFIER KW_TO Number
+    (11) End -> . KW_END
+
+    IDENTIFIER      shift and go to state 4
+    NEWLINE         shift and go to state 5
+    KW_PRINT        shift and go to state 8
+    KW_INIT         shift and go to state 10
+    KW_END          shift and go to state 11
+
+    Program                        shift and go to state 12
+    Print                          shift and go to state 6
+    Initialization                 shift and go to state 7
+    End                            shift and go to state 9
+
+state 5
+
+    (3) Program -> NEWLINE . Program
+    (2) Program -> . IDENTIFIER Program
+    (3) Program -> . NEWLINE Program
+    (4) Program -> . Print
+    (5) Program -> . Initialization
+    (9) Print -> . KW_PRINT STRING_LIT NEWLINE End
+    (10) Print -> . End
+    (6) Initialization -> . KW_INIT IDENTIFIER KW_TO Number
+    (11) End -> . KW_END
+
+    IDENTIFIER      shift and go to state 4
+    NEWLINE         shift and go to state 5
+    KW_PRINT        shift and go to state 8
+    KW_INIT         shift and go to state 10
+    KW_END          shift and go to state 11
+
+    Program                        shift and go to state 13
+    Print                          shift and go to state 6
+    Initialization                 shift and go to state 7
+    End                            shift and go to state 9
+
+state 6
+
+    (4) Program -> Print .
+
+    $end            reduce using rule 4 (Program -> Print .)
+
+
+state 7
+
+    (5) Program -> Initialization .
+
+    $end            reduce using rule 5 (Program -> Initialization .)
+
+
+state 8
+
+    (9) Print -> KW_PRINT . STRING_LIT NEWLINE End
+
+    STRING_LIT      shift and go to state 14
+
+
+state 9
+
+    (10) Print -> End .
+
+    $end            reduce using rule 10 (Print -> End .)
+
+
+state 10
+
+    (6) Initialization -> KW_INIT . IDENTIFIER KW_TO Number
+
+    IDENTIFIER      shift and go to state 15
+
+
+state 11
+
+    (11) End -> KW_END .
+
+    $end            reduce using rule 11 (End -> KW_END .)
+
+
+state 12
+
+    (2) Program -> IDENTIFIER Program .
+
+    $end            reduce using rule 2 (Program -> IDENTIFIER Program .)
+
+
+state 13
+
+    (3) Program -> NEWLINE Program .
+
+    $end            reduce using rule 3 (Program -> NEWLINE Program .)
+
+
+state 14
+
+    (9) Print -> KW_PRINT STRING_LIT . NEWLINE End
+
+    NEWLINE         shift and go to state 16
+
+
+state 15
+
+    (6) Initialization -> KW_INIT IDENTIFIER . KW_TO Number
+
+    KW_TO           shift and go to state 17
+
+
+state 16
+
+    (9) Print -> KW_PRINT STRING_LIT NEWLINE . End
+    (11) End -> . KW_END
+
+    KW_END          shift and go to state 11
+
+    End                            shift and go to state 18
+
+state 17
+
+    (6) Initialization -> KW_INIT IDENTIFIER KW_TO . Number
+    (7) Number -> . INT_LIT NEWLINE End
+
+    INT_LIT         shift and go to state 20
+
+    Number                         shift and go to state 19
+
+state 18
+
+    (9) Print -> KW_PRINT STRING_LIT NEWLINE End .
+
+    $end            reduce using rule 9 (Print -> KW_PRINT STRING_LIT NEWLINE End .)
+
+
+state 19
+
+    (6) Initialization -> KW_INIT IDENTIFIER KW_TO Number .
+
+    $end            reduce using rule 6 (Initialization -> KW_INIT IDENTIFIER KW_TO Number .)
+
+
+state 20
+
+    (7) Number -> INT_LIT . NEWLINE End
+
+    NEWLINE         shift and go to state 21
+
+
+state 21
+
+    (7) Number -> INT_LIT NEWLINE . End
+    (11) End -> . KW_END
+
+    KW_END          shift and go to state 11
+
+    End                            shift and go to state 22
+
+state 22
+
+    (7) Number -> INT_LIT NEWLINE End .
+
+    $end            reduce using rule 7 (Number -> INT_LIT NEWLINE End .)
+
