@@ -1,0 +1,55 @@
+text	code
+print hello world 	printf(“hello word”);
+integer num1 and num2 	int num1, num2;
+print Enter first number 	"printf(""Enter first number"");"
+read num1	"scanf(""%d"", &num1);"
+print Enter second number 	"printf(""Enter second number"");"
+read num2	"scanf(""%d"", &num2);"
+sum = num1 + num2	sum = num1 + num2;
+print sum 	"printf(""%d\n"", sum);"
+integer side	int side;
+print Enter side of square	"printf(""Enter side of square"");"
+read side 	"scanf(""%d"", &side);"
+result = side * side 	result = side * side;
+print result 	"printf(""%d\n"", result);"
+integer side	int side;
+print Enter side of square	"printf(""Enter side of square"");"
+read side 	"scanf(""%d"", &side);"
+result = 4 * side 	result = 4 * side;
+print result 	"printf(""%d\n"", result);"
+sum = num1 - num2	sum = num1 - num2; 
+sum = num1 * num2	sum = num1 * num2; 
+sum = num1 / num2	sum = num1 / num2; 
+integer radius	int radius;
+print Enter radius of circle 	"printf(""Enter radius of cicle"");"
+read radius 	"scanf(""%d"", &radius);"
+result = 2 * radius * 22 / 7	result = 2 * radius * 22 / 7;
+print result 	"printf(""%d\n"", result);"
+result = radius * radius * 22 / 7	result = radius * radius * 22 / 7;
+print Enter base length	"printf(""Enter base length"");"
+integer a and b	int a, b;
+read a	"scanf(""%d"", &a);"
+read b	"scanf(""%d"", &b);"
+print Enter perpendicular height 	"printf(""Enter perpendicular height"");"
+result = a * b * 1/2	result = a * b * 1/2;
+print result 	"printf(""%d\n"", result);"
+integer num1, num2 and num3	int num1, num2, num3; 
+print Enter third number  	"print(""Enter third number"");"
+read num3 	"scanf(""%d"", &num3);"
+result = result / 3	result = result / 3;
+result = num1 + num2 + num3	result = num1 + num2 + num3;
+integer num 	int num;
+print 0 is neither positive nor negative	"printf(""0 is neither positive nor negative"");"
+else 	else 
+read num 	"scanf(""%d"",&num);"
+if num%13 = 0	if (num % 13==0)
+read number	"scanf(""%d"",&number);"
+print number equals 100	"printf(""number equals 100""); "
+print number equals 50	"printf(""number equals 50""); "
+if number1 >= number2	if (number1 >= number2)
+read exp	"scanf(""%d"", &exp);"
+print enter any character	"printf(""enter any character"");"
+print number	printf(“%d”, num);
+for i in range of n+1	for(int i = 0; i <= n; i++)
+read n 	"scanf(""%d"", &n);"
+initialize total to 0	total = 0;
