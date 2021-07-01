@@ -2,7 +2,7 @@ start the program
     input operation character
     input var1 var2
     if operation == + and operation == +
-        print variable var1 integer + variable var2 integer - variable var1 integer
+        print variable var1 integer + variable var2 integer
     else if operation == -
         print variable var1 integer - variable var2 integer
     else if operation == *

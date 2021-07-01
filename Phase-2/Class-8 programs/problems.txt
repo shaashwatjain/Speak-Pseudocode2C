@@ -1,4 +1,4 @@
-# Modify the previous program such that only the users Alice and Bob are greeted with their names.
+Modify the previous program such that only the users Alice and Bob are greeted with their names.
 Write a program that asks the user for a number n and prints the sum of the numbers 1 to n
 Modify the previous program such that only multiples of three or five are considered in the sum, e.g. 3, 5, 6, 9, 10, 12, 15 for n=17
 Write a program that asks the user for a number n and gives them the possibility to choose between computing the sum and computing the product of 1,…,n.
@@ -6,3 +6,8 @@ Write a program that prints a multiplication table for a number.
 Write a program that prints all prime numbers. (Note: if your programming language does not support arbitrary size numbers, printing all primes up to the largest number you can easily represent is fine too.)
 Write a program that prints the next 20 leap years.
 Write a program divisor.py which calculates the smallest divisor of a number.
+Write a program to print counter to number given as input.
+Write a program to generate a calculator program +-*/.
+Write a program to find square root of given number.
+Write a program for finding factor of number.
+Write a program to check divisibility of two numbers simultaneously.

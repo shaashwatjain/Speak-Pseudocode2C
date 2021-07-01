@@ -11,12 +11,3 @@ Problem Statements:
 9) Write a program to find the area of a circle given the radius.
 10) Write a program to find the area of a triangle given the base and height.
 11) Write a program to find the average of three given integers.
-
-
-
-
-
-
-
-
-
