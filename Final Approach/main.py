@@ -15,11 +15,13 @@ class Mapper:
         """
         Function to add headers to file
         """
-        self.insert_line("#include <stdio.h>")
-        self.insert_line()
+        self.insert_line("#include <stdio.h>\n")
+        #  self.insert_line()
 
     def insert_line(self, string_to_write=""):
-        self.program.insert(self.index, (self.current_indent * "\t") + string_to_write + "\n")
+        self.program.insert(
+            self.index, (self.current_indent * "\t") + string_to_write + "\n"
+        )
         self.index += 1
 
     def increase_indent(self):
@@ -31,7 +33,7 @@ class Mapper:
         if self.current_indent in self.variables:
             del self.variables[self.current_indent]
         if self.current_indent > 0:
-           self.current_indent -= 1
+            self.current_indent -= 1
 
     def add_main(self):
         self.insert_line("int main(int argc, char* argv[])")
@@ -46,7 +48,7 @@ class Mapper:
         type_conversion = "%d" if var_type == "int" else "%c"
         content_string = ""
         content_input_string = ""
-        for arg in content[:length_vars - 1]:
+        for arg in content[: length_vars - 1]:
             content_string += arg + ", "
             content_input_string += "&" + arg + ", "
             self.variables[self.current_indent].append(arg)
@@ -54,7 +56,9 @@ class Mapper:
         content_input_string += "&" + content[-1]
         self.variables[self.current_indent].append(content[-1])
         self.insert_line(f"{var_type} {content_string};")
-        self.insert_line("scanf(\"" + length_vars * (type_conversion) + f"\", {content_input_string});")
+        self.insert_line(
+            'scanf("' + length_vars * (type_conversion) + f'", {content_input_string});'
+        )
 
     def print_variables(self, string: str, variable_list, variable_type_list):
         count = string.count("\z")
@@ -65,7 +69,7 @@ class Mapper:
                 variable_list_converted.append("%d")
             else:
                 variable_list_converted.append("%c")
-        print_string = ''
+        print_string = ""
         index = 0
         length_vars = len(variable_list)
         for temp_string in string_list:
@@ -73,14 +77,14 @@ class Mapper:
             if index < length_vars:
                 print_string += variable_list_converted[index]
                 index += 1
-        content_string = ''
-        for arg in variable_list[:length_vars - 1]:
+        content_string = ""
+        for arg in variable_list[: length_vars - 1]:
             content_string += arg + ", "
         content_string += variable_list[-1]
-        self.insert_line(f"printf(\"{print_string}\\n\", {content_string});")
+        self.insert_line(f'printf("{print_string}\\n", {content_string});')
 
     def if_start(self, comparison_list):
-        comparison_string = ''
+        comparison_string = ""
         for word in comparison_list:
             if "or" == word:
                 comparison_string += "||" + " "
@@ -102,7 +106,7 @@ class Mapper:
     def continued_if(self, comparison_list):
         self.decrease_indent()
         self.insert_line("}")
-        comparison_string = ''
+        comparison_string = ""
         for word in comparison_list:
             if "or" == word:
                 comparison_string += "||" + " "
@@ -118,7 +122,7 @@ class Mapper:
                     else:
                         comparison_string += word + " "
         self.insert_line(f"else if({comparison_string})")
-        self.insert_line( "{")
+        self.insert_line("{")
         self.increase_indent()
 
     def else_end(self):
@@ -132,17 +136,42 @@ class Mapper:
         self.decrease_indent()
         self.insert_line("}")
 
+    def for_loop(self, content):
+        """
+        For loop construct
+        """
+        #  Till keyword is compulsory
+        #  Have to take care of iteration of char
+        #  need to handle if user doesn't want to initalize the iterator
+        #  decrement
+        #  data type add before initialization
+        #  Check the greater of the two number
+        incr = 1
+        pos = content.index("till")
+        if "increment" in content or "increase" in content:
+            incr = content[-1]
+        init, range_start, range_end = content[0], content[pos - 1], content[pos + 1]
+
+        self.insert_line(
+            "for({0}={1}; {0}<={2}; {0}+={3})\n{4}\n".format(
+                init, range_start, range_end, incr, "{"
+            )
+        )
+        self.increase_indent
+
+    def end_for(self):
+        self.decrease_indent()
+        self.insert_line("}")
+
 
 def run():
     f = open("test.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
-        line = line.strip()
+        line = line.lower().strip()
         if "start the program" in line:
             map_obj.start_the_program()
-        elif "end" in line:
-            map_obj.end_func()
         elif "input" in line:
             content = line.split(" ")[1:]
             var_type = ""
@@ -159,7 +188,7 @@ def run():
         # TODO: Implement logic for tracking variables first.
         elif "print" in line:
             content = line.split(" ")[1:]
-            string_to_send = ''
+            string_to_send = ""
             length_content = len(content)
             index = 0
             variable_names = []
@@ -189,6 +218,18 @@ def run():
         elif "if" in line:
             content = line.split(" ")[1:]
             map_obj.if_start(content)
+
+        # My changes
+        elif "end" in line and "for" in line:
+            map_obj.end_for()
+
+        elif "for" in line:
+            content = line.split()[1:]
+            map_obj.for_loop(content)
+
+        elif "end" in line:
+            map_obj.end_func()
+
     for line in map_obj.program:
         print(line, end="")
 
