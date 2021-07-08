@@ -57,27 +57,31 @@ class Mapper:
         self.insert_line("scanf(\"" + length_vars * (type_conversion) + f"\", {content_input_string});")
 
     def print_variables(self, string: str, variable_list, variable_type_list):
-        count = string.count("\z")
-        string_list = string.split("\z")
-        variable_list_converted = []
-        for i in variable_type_list:
-            if i == "int":
-                variable_list_converted.append("%d")
-            else:
-                variable_list_converted.append("%c")
-        print_string = ''
-        index = 0
-        length_vars = len(variable_list)
-        for temp_string in string_list:
-            print_string += temp_string
-            if index < length_vars:
-                print_string += variable_list_converted[index]
-                index += 1
-        content_string = ''
-        for arg in variable_list[:length_vars - 1]:
-            content_string += arg + ", "
-        content_string += variable_list[-1]
-        self.insert_line(f"printf(\"{print_string}\\n\", {content_string});")
+        if variable_list == []:
+            content_string = "printf(\"" + string[:-1] + "\\n\");"
+            self.insert_line(content_string)
+        else:
+            count = string.count("\z")
+            string_list = string.split("\z")
+            variable_list_converted = []
+            for i in variable_type_list:
+                if i == "int":
+                    variable_list_converted.append("%d")
+                else:
+                    variable_list_converted.append("%c")
+            print_string = ''
+            index = 0
+            length_vars = len(variable_list)
+            for temp_string in string_list:
+                print_string += temp_string
+                if index < length_vars:
+                    print_string += variable_list_converted[index]
+                    index += 1
+            content_string = ''
+            for arg in variable_list[:length_vars - 1]:
+                content_string += arg + ", "
+            content_string += variable_list[-1]
+            self.insert_line(f"printf(\"{print_string}\\n\", {content_string});")
 
     def if_start(self, comparison_list):
         comparison_string = ''
@@ -143,7 +147,7 @@ def run():
             map_obj.start_the_program()
         elif "end" in line:
             map_obj.end_func()
-        elif "input" in line:
+        elif any(key in line for key in ['input', 'read', 'declare', 'define']):
             content = line.split(" ")[1:]
             var_type = ""
             if "char" in content[-1]:
@@ -157,7 +161,7 @@ def run():
             map_obj.input_variable(var_type, content)
         # TODO: code for just declaring variable.
         # TODO: Implement logic for tracking variables first.
-        elif "print" in line:
+        elif any(ele in line for ele in ['output', 'display', 'print']):
             content = line.split(" ")[1:]
             string_to_send = ''
             length_content = len(content)
