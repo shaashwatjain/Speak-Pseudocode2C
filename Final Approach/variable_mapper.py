@@ -3,28 +3,22 @@ from typing import List
 from exceptions import VariableNotDeclared, VariableAlreadyDeclared
 
 
-class Variable:
-    __instance = None
+class Singleton(type):
+    _instances = {}
 
-    @staticmethod
-    def getInstance():
-        """ Static access method. """
-        if Variable.__instance is None:
-            Variable()
-        return Variable.__instance
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
 
-    def __init__(self):
-        """ Virtually private constructor. """
-        if Variable.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            Variable.__instance = self
 
+class Variable(object):
+    __metaclass__ = Singleton
     __variable_map = dict()
 
     def insert_variable(self,
                         var_name: str,
-                        var_scope: int,
+                        var_scope: int,  # current_indent
                         var_type: VariableTypes = VariableTypes.int,
                         var_value=None):
         key = var_dict_key(var_name, var_scope)
@@ -34,11 +28,17 @@ class Variable:
             mapped_variable_info_object = VariableInfo(var_name, var_type, var_value, var_type.value)
             self.__variable_map[key] = mapped_variable_info_object
 
+    def exit_scope(self,
+                   var_scope: int):
+        for key in self.__variable_map.keys():
+            if key[1] == var_scope:
+                del self.__variable_map[key]
+
     def get_variable(self,
                      var_name: str,
                      var_scope: int) -> VariableInfo:
         current_scope = var_scope
-        while current_scope > 0:
+        while current_scope >= 0:
             key = var_dict_key(var_name, current_scope)
             if key in self.__variable_map:
                 return self.__variable_map[key]
