@@ -11,6 +11,7 @@ class Mapper:
         self.add_headers()
         self.add_main()
 
+
     def add_headers(self):
         """
         Function to add headers to file
