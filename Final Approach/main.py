@@ -146,8 +146,9 @@ class Mapper:
             if content[i] in rel_op:
                 break
         else:
-            if "1" in content:
+            if "true" in content:
                 self.insert_line("while(1)\n{0}".format("{"))
+            return
 
         self.insert_line(
             "while({0} {1} {2})\n{3}".format(
@@ -181,6 +182,7 @@ class Mapper:
         #####################################
         # Check for declaration of iterator #
         #####################################
+
         type_ = "int" + " "
         update_val = 1
         pos = content.index("till")

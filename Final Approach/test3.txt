@@ -1,5 +1,5 @@
-for i in range from 5 till 1
+for i in range till 5 increment by 2
 endfor
 
-while iter != num
+while true
 endwhile
