@@ -1,4 +1,4 @@
-for i in range from 1 till 5
+for i in range from 5 till 1
 endfor
 
 while iter != num

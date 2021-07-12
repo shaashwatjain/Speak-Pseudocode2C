@@ -151,30 +151,71 @@ class Mapper:
 
         self.insert_line(
             "while({0} {1} {2})\n{3}".format(
-                content[i - 1], content[i], content[i + 1], '{'
+                content[i - 1], content[i], content[i + 1], "{"
             )
         )
+        self.increase_indent
+
 
     def for_loop(self, content):
         """
         For loop construct
         """
+        def check_oper_for(val, type_):
+            op = ""
+            flag = 1
+            if abs(val) > 1:
+                if type_=="incr":
+                    op = "+="
+                else:
+                    op = "-="
+                flag = 0
+            return val, op, flag
         #  Till keyword is compulsory
         #  Have to take care of iteration of char
         #  need to handle if user doesn't want to initalize the iterator
         #  decrement
         #  data type add before initialization
         #  Check the greater of the two number
-        type_ = "int"
-        incr = 1
+
+        #####################################
+        # Check for declaration of iterator #
+        #####################################
+        type_ = "int" + " "
+        update_val = 1
         pos = content.index("till")
+        flag = 1
         if "increment" in content or "increase" in content:
-            incr = content[-1]
-        init, range_start, range_end = content[0], content[pos - 1], content[pos + 1]
+            update_val, oper, flag = check_oper_for(int(content[-1]), "incr")
+
+        if "decrement" in content or "decrease" in content:
+            update_val, oper, flag = check_oper_for(int(content[-1]), 'decr')
+        try:
+            range_start = int(content[pos - 1])
+        except:
+            ###################################################
+            # get the value of iterator from variable tracker #
+            ###################################################
+            range_start = 0  # Replace by value from value tracker
+
+        range_end = int(content[pos + 1])
+        if flag:
+            if range_end > range_start:
+                oper = "++"
+            else:
+                oper = "--"
+
+        flag2 = 1
 
         self.insert_line(
-            "for({0} {1}={2}; {1}<={3}; {1}+={4})\n{5}\n".format(
-                type_, init, range_start, range_end, incr, "{"
+            "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{open_par}\n".format(
+                type=type_ if flag2 == 1 else "",
+                var=content[0],
+                start=range_start,
+                end=range_end,
+                op=oper,
+                update=update_val if update_val != 1 else "",
+                open_par="{",
             )
         )
         self.increase_indent
