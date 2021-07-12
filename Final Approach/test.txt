@@ -1,2 +1,2 @@
-for i Till 5 increment by 1
+for i in range from 1 Till 5 increment by 1
 endfor

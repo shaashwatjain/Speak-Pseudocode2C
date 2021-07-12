@@ -1,0 +1,5 @@
+for i in range from 1 till 5
+endfor
+
+while iter != num
+endwhile

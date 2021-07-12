@@ -136,6 +136,25 @@ class Mapper:
         self.decrease_indent()
         self.insert_line("}")
 
+    def while_loop(self, content):
+        """
+        while loop construct
+        """
+        #  TODO: Check if i is inititalized or not
+        rel_op = ["!=", "==", "<", "<=", ">", ">="]
+        for i in range(len(content)):
+            if content[i] in rel_op:
+                break
+        else:
+            if "1" in content:
+                self.insert_line("while(1)\n{0}".format("{"))
+
+        self.insert_line(
+            "while({0} {1} {2})\n{3}".format(
+                content[i - 1], content[i], content[i + 1], '{'
+            )
+        )
+
     def for_loop(self, content):
         """
         For loop construct
@@ -146,6 +165,7 @@ class Mapper:
         #  decrement
         #  data type add before initialization
         #  Check the greater of the two number
+        type_ = "int"
         incr = 1
         pos = content.index("till")
         if "increment" in content or "increase" in content:
@@ -153,8 +173,8 @@ class Mapper:
         init, range_start, range_end = content[0], content[pos - 1], content[pos + 1]
 
         self.insert_line(
-            "for({0}={1}; {0}<={2}; {0}+={3})\n{4}\n".format(
-                init, range_start, range_end, incr, "{"
+            "for({0} {1}={2}; {1}<={3}; {1}+={4})\n{5}\n".format(
+                type_, init, range_start, range_end, incr, "{"
             )
         )
         self.increase_indent
@@ -165,7 +185,7 @@ class Mapper:
 
 
 def run():
-    f = open("test.txt", "r")
+    f = open("test3.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
@@ -220,12 +240,16 @@ def run():
             map_obj.if_start(content)
 
         # My changes
-        elif "end" in line and "for" in line:
+        elif "end" in line and ("for" in line or "while" in line):
             map_obj.end_for()
 
         elif "for" in line:
             content = line.split()[1:]
             map_obj.for_loop(content)
+
+        elif "while" in line:
+            content = line.split()[1:]
+            map_obj.while_loop(content)
 
         elif "end" in line:
             map_obj.end_func()
