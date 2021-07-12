@@ -1,0 +1,24 @@
+start the program
+    input val float
+    input x 
+    input y u integer 
+    input z character 
+    input p q r s character 
+
+    print hello world 
+    print variable x
+    print the value of x is variable x metres in height
+    print the length and breadth of rectangle are variable x variable y metres 
+    print the length and breadth of rectangle are variable x and variable y metres 
+
+    if x>y
+        input a integer 
+        print variable a
+        print variable x
+    end 
+    print variable x 
+end
+
+declare
+initialize 
+space scanf 

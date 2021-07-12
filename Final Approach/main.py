@@ -1,3 +1,9 @@
+from variable_mapper import Variable 
+from userDefinedTypes import VariableTypes
+from exceptions import *
+
+variable_obj = Variable()
+
 class Mapper:
     program = []
     index = 0
@@ -10,7 +16,6 @@ class Mapper:
         """
         self.add_headers()
         self.add_main()
-
 
     def add_headers(self):
         """
@@ -41,48 +46,45 @@ class Mapper:
 
     def input_variable(self, var_type, content):
         """
-        Only support for integer and character for now.
+        pseudocode format: input <variable name> <variable type>
+        pseudocode format: input <space separated variable names> <type of variables>
         """
-        length_vars = len(content)
-        type_conversion = "%d" if var_type == "int" else "%c"
-        content_string = ""
-        content_input_string = ""
-        for arg in content[:length_vars - 1]:
-            content_string += arg + ", "
-            content_input_string += "&" + arg + ", "
-            self.variables[self.current_indent].append(arg)
-        content_string += content[-1]
-        content_input_string += "&" + content[-1]
-        self.variables[self.current_indent].append(content[-1])
-        self.insert_line(f"{var_type} {content_string};")
-        self.insert_line("scanf(\"" + length_vars * (type_conversion) + f"\", {content_input_string});")
+        for i in range(len(content)):
+            if var_type == "int":
+                var_type_final = VariableTypes.int 
+            elif var_type == "char":
+                var_type_final = VariableTypes.char
+            elif var_type == "float":
+                var_type_final = VariableTypes.float 
+            variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
+            self.insert_line(f"{var_type} {content[i]};")
+            self.insert_line(f"scanf(\"{var_type_final.value} \", &{content[i]});")
 
-    def print_variables(self, string: str, variable_list, variable_type_list):
-        if variable_list == []:
-            content_string = "printf(\"" + string[:-1] + "\\n\");"
-            self.insert_line(content_string)
-        else:
-            count = string.count("\z")
-            string_list = string.split("\z")
-            variable_list_converted = []
-            for i in variable_type_list:
-                if i == "int":
-                    variable_list_converted.append("%d")
-                else:
-                    variable_list_converted.append("%c")
-            print_string = ''
-            index = 0
-            length_vars = len(variable_list)
-            for temp_string in string_list:
-                print_string += temp_string
-                if index < length_vars:
-                    print_string += variable_list_converted[index]
-                    index += 1
-            content_string = ''
-            for arg in variable_list[:length_vars - 1]:
-                content_string += arg + ", "
-            content_string += variable_list[-1]
-            self.insert_line(f"printf(\"{print_string}\\n\", {content_string});")
+    def print_variables(self, string: str, variable_list):
+        """
+        pseudocode format: print variable <variable name>
+        pseudocode format: print <string>
+        """
+        i = 0
+        variable_count = 0
+        string_to_print = "printf(\""
+        content_list = string.split(" ")
+        while i < len(content_list):
+            if content_list[i] != "variable":
+                string_to_print += content_list[i] + " "
+                i += 1 
+            else:
+                i += 1
+                result = variable_obj.get_variable(variable_list[variable_count], self.current_indent)
+                variable_count += 1
+                string_to_print += result.var_type.value + " "
+        string_to_print = string_to_print.rstrip()
+        string_to_print += "\\n\", "
+        for j in variable_list:
+            string_to_print += j + ", "
+        string_to_print = string_to_print[:-2]
+        string_to_print += ");"
+        self.insert_line(string_to_print)
 
     def if_start(self, comparison_list):
         comparison_string = ''
@@ -139,7 +141,7 @@ class Mapper:
 
 
 def run():
-    f = open("test.txt", "r")
+    f = open("test_read_display.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
@@ -148,44 +150,36 @@ def run():
             map_obj.start_the_program()
         elif "end" in line:
             map_obj.end_func()
-        elif any(key in line for key in ['input', 'read', 'declare', 'define']):
+        elif "input" in line:
             content = line.split(" ")[1:]
             var_type = ""
-            if "char" in content[-1]:
+            if "character" in content:
                 var_type = "char"
                 content = content[:-1]
-            elif "int" in content[-1]:
+            elif "integer" in content:
                 var_type = "int"
+                content = content[:-1]
+            elif "float" in content:
+                var_type = "float"
                 content = content[:-1]
             else:
                 var_type = "int"
             map_obj.input_variable(var_type, content)
-        # TODO: code for just declaring variable.
-        # TODO: Implement logic for tracking variables first.
-        elif any(ele in line for ele in ['output', 'display', 'print']):
-            content = line.split(" ")[1:]
-            string_to_send = ''
-            length_content = len(content)
-            index = 0
+        elif "print" in line:
             variable_names = []
-            variable_types = []
-            while index != length_content:
-                if "variable" != content[index]:
-                    string_to_send += content[index] + " "
+            string_to_send = ""
+            content_list = line.split(" ")[1:]
+            i = 0
+            while i < len(content_list):
+                if content_list[i] != "variable":
+                    string_to_send += content_list[i] + " "
+                    i += 1
                 else:
-                    index += 1
-                    variable_names.append(content[index])
-                    index += 1
-                    if index < length_content and "int" in content[index]:
-                        variable_types.append("int")
-                    elif index < length_content and "char" in content[index]:
-                        variable_types.append("char")
-                    else:
-                        # default value
-                        variable_types.append("int")
-                    string_to_send += "\z "
-                index += 1
-            map_obj.print_variables(string_to_send, variable_names, variable_types)
+                    string_to_send += content_list[i] + " "
+                    i += 1
+                    variable_names.append(content_list[i])
+                    i += 1
+            map_obj.print_variables(string_to_send, variable_names)
         elif "else" in line and "if" in line:
             content = line.split(" ")[2:]
             map_obj.continued_if(content)
