@@ -58,7 +58,7 @@ class Mapper:
                 var_type_final = VariableTypes.float 
             variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
             self.insert_line(f"{var_type} {content[i]};")
-            self.insert_line(f"scanf(\"{var_type_final.value} \", &{content[i]});")
+            self.insert_line(f"scanf(\"{var_type_final.value}\", &{content[i]});")
 
     def print_variables(self, string: str, variable_list):
         """
