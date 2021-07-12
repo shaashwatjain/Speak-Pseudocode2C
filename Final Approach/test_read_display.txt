@@ -1,5 +1,8 @@
 start the program
-    input val float
+    declare decInt integer 
+    declare decChar character 
+    declare decFloat float
+     
     input x 
     input y u integer 
     input z character 

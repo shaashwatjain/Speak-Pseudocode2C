@@ -44,6 +44,18 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
+    def declare_variable(self, var_type, content):
+        for i in range(len(content)):
+            if var_type == "int":
+                var_type_final = VariableTypes.int 
+            elif var_type == "char":
+                var_type_final = VariableTypes.char
+            elif var_type == "float":
+                var_type_final = VariableTypes.float 
+            variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
+            self.insert_line(f"{var_type} {content[i]};")
+            # self.insert_line(f"scanf(\"{var_type_final.value}\", &{content[i]});")
+        
     def input_variable(self, var_type, content):
         """
         pseudocode format: input <variable name> <variable type>
@@ -165,6 +177,21 @@ def run():
             else:
                 var_type = "int"
             map_obj.input_variable(var_type, content)
+        elif "declare" in line:
+            content = line.split(" ")[1:]
+            var_type = ""
+            if "character" in content:
+                var_type = "char"
+                content = content[:-1]
+            elif "integer" in content:
+                var_type = "int"
+                content = content[:-1]
+            elif "float" in content:
+                var_type = "float"
+                content = content[:-1]
+            else:
+                var_type = "int"
+            map_obj.declare_variable(var_type, content)
         elif "print" in line:
             variable_names = []
             string_to_send = ""
