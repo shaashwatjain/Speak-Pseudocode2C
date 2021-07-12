@@ -8,7 +8,7 @@ var_dict_key = namedtuple('var_dict_key', ['var_name', 'var_scope'])
 class VariableTypes(Enum):
     int = "%d"
     char = "%c"
-    double = "%f"
+    float = "%f"
 
 
 class VariableInfo:
