@@ -45,6 +45,9 @@ class Mapper:
         self.increase_indent()
 
     def declare_variable(self, var_type, content):
+        """
+        pseudocode format: declare <variable name> <variable type>
+        """
         for i in range(len(content)):
             if var_type == "int":
                 var_type_final = VariableTypes.int 
@@ -54,8 +57,25 @@ class Mapper:
                 var_type_final = VariableTypes.float 
             variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
             self.insert_line(f"{var_type} {content[i]};")
-            # self.insert_line(f"scanf(\"{var_type_final.value}\", &{content[i]});")
         
+    def initialize_variable(self, var_name, var_value):
+        """
+        pseudocode format: initialize <variable name> = <variable value>
+        """
+        if var_value.isnumeric():
+            var_type = VariableTypes.int 
+            variable_obj.insert_variable(var_name, self.current_indent, VariableTypes.int, int(var_value))
+            self.insert_line(f"int {var_name} = {int(var_value)};")
+        else:
+            try:
+                is_float = float(var_value)
+                variable_obj.insert_variable(var_name, self.current_indent, VariableTypes.float)
+                self.insert_line(f"float {var_name} = {is_float};")
+            except:
+                self.insert_line(f"char {var_name} = \"{var_value}\";")
+                variable_obj.insert_variable(var_name, self.current_indent, VariableTypes.char)
+
+
     def input_variable(self, var_type, content):
         """
         pseudocode format: input <variable name> <variable type>
@@ -162,6 +182,12 @@ def run():
             map_obj.start_the_program()
         elif "end" in line:
             map_obj.end_func()
+        elif "initialize" in line and "=" in line:
+            content = line.split(" ")[1:]
+            content = line.split(" ")[1:]
+            var_name = content[0]
+            var_value =  content[-1]
+            map_obj.initialize_variable(var_name, var_value)
         elif "input" in line:
             content = line.split(" ")[1:]
             var_type = ""

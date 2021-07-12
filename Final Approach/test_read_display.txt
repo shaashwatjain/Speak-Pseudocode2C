@@ -2,6 +2,14 @@ start the program
     declare decInt integer 
     declare decChar character 
     declare decFloat float
+    print variable decFloat 
+
+    initialize i = 21
+    initialize f = 3.14
+    initialize c = h
+    print variable i
+    print variable f
+    print variable c
      
     input x 
     input y u integer 
