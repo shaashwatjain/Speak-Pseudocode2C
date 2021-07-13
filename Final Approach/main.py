@@ -92,6 +92,27 @@ class Mapper:
             self.insert_line(f"{var_type} {content[i]};")
             self.insert_line(f"scanf(\"{var_type_final.value}\", &{content[i]});")
 
+    def assign_variable(self, content):
+        """
+        pseudocode format: <variable result> = <variable 1> <operator> <variable 2>
+        if variable already declared, just output the assignment statement 
+        else, check the type of the <variable 1> and assign that type to the result variable 
+        """
+        type_dict = {"%d": "int", "%f": "float", "%c": "char"}
+        try:
+            # if variable already declared  
+            result = variable_obj.get_variable(content[0], self.current_indent)
+            assn_stmt = " ".join(content)
+        except:
+            # variable not declared earlier
+            try:
+                result_var_1 = variable_obj.get_variable(content[2], self.current_indent)
+                type_var = type_dict[result_var_1.var_type.value]
+                assn_stmt = type_var + " " + " ".join(content)
+            except:
+                assn_stmt = "int " + " ".join(content)
+        self.insert_line(assn_stmt)
+
     def print_variables(self, string: str, variable_list):
         """
         pseudocode format: print variable <variable name>
@@ -173,7 +194,7 @@ class Mapper:
 
 
 def run():
-    f = open("test_read_display.txt", "r")
+    f = open("test_case.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
@@ -184,10 +205,16 @@ def run():
             map_obj.end_func()
         elif "initialize" in line and "=" in line:
             content = line.split(" ")[1:]
-            content = line.split(" ")[1:]
             var_name = content[0]
             var_value =  content[-1]
             map_obj.initialize_variable(var_name, var_value)
+        elif "=" in line or "assign" in line and "initialize" not in line:
+            content = line.split(" ")
+            try: 
+                content.remove("assign")
+            except:
+                 pass 
+            map_obj.assign_variable(content)
         elif "input" in line:
             content = line.split(" ")[1:]
             var_type = ""

@@ -28,8 +28,15 @@ start the program
         print variable x
     end 
     print variable x 
+
+    declare first integer 
+    declare second integer 
+    declare res 
+    res = first * second
+    assign res2 = first + second
+
+    declare fch character
+    declare sch character
+    assign res3 = fch + sch
 end
 
-declare
-initialize 
-space scanf 
