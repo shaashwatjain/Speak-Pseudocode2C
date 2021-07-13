@@ -49,14 +49,8 @@ class Mapper:
         pseudocode format: declare <variable name> <variable type>
         """
         for i in range(len(content)):
-            if var_type == "int":
-                var_type_final = VariableTypes.int 
-            elif var_type == "char":
-                var_type_final = VariableTypes.char
-            elif var_type == "float":
-                var_type_final = VariableTypes.float 
-            variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
-            self.insert_line(f"{var_type} {content[i]};")
+            variable_obj.insert_variable(content[i], self.current_indent, var_type)
+            self.insert_line(f"{var_type.name} {content[i]};")
         
     def initialize_variable(self, var_name, var_value):
         """
@@ -82,15 +76,9 @@ class Mapper:
         pseudocode format: input <space separated variable names> <type of variables>
         """
         for i in range(len(content)):
-            if var_type == "int":
-                var_type_final = VariableTypes.int 
-            elif var_type == "char":
-                var_type_final = VariableTypes.char
-            elif var_type == "float":
-                var_type_final = VariableTypes.float 
-            variable_obj.insert_variable(content[i], self.current_indent, var_type_final)
-            self.insert_line(f"{var_type} {content[i]};")
-            self.insert_line(f"scanf(\"{var_type_final.value}\", &{content[i]});")
+            variable_obj.insert_variable(content[i], self.current_indent, var_type)
+            self.insert_line(f"{var_type.name} {content[i]};")
+            self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
 
     def assign_variable(self, content):
         """
@@ -98,19 +86,18 @@ class Mapper:
         if variable already declared, just output the assignment statement 
         else, check the type of the <variable 1> and assign that type to the result variable 
         """
-        type_dict = {"%d": "int", "%f": "float", "%c": "char"}
         try:
             # if variable already declared  
             result = variable_obj.get_variable(content[0], self.current_indent)
-            assn_stmt = " ".join(content)
+            assn_stmt = " ".join(content) + ";"
         except:
             # variable not declared earlier
             try:
                 result_var_1 = variable_obj.get_variable(content[2], self.current_indent)
-                type_var = type_dict[result_var_1.var_type.value]
-                assn_stmt = type_var + " " + " ".join(content)
+                type_var = result_var_1.var_type.name
+                assn_stmt = type_var + " " + " ".join(content) + ";"
             except:
-                assn_stmt = "int " + " ".join(content)
+                assn_stmt = "int " + " ".join(content) + ";"
         self.insert_line(assn_stmt)
 
     def print_variables(self, string: str, variable_list):
@@ -219,31 +206,31 @@ def run():
             content = line.split(" ")[1:]
             var_type = ""
             if "character" in content:
-                var_type = "char"
+                var_type = VariableTypes.char
                 content = content[:-1]
             elif "integer" in content:
-                var_type = "int"
+                var_type = VariableTypes.char
                 content = content[:-1]
             elif "float" in content:
-                var_type = "float"
+                var_type = VariableTypes.float
                 content = content[:-1]
             else:
-                var_type = "int"
+                var_type = VariableTypes.int 
             map_obj.input_variable(var_type, content)
         elif "declare" in line:
             content = line.split(" ")[1:]
             var_type = ""
             if "character" in content:
-                var_type = "char"
+                var_type = VariableTypes.char 
                 content = content[:-1]
             elif "integer" in content:
-                var_type = "int"
+                var_type = VariableTypes.int
                 content = content[:-1]
             elif "float" in content:
-                var_type = "float"
+                var_type = VariableTypes.float 
                 content = content[:-1]
             else:
-                var_type = "int"
+                var_type = VariableTypes.int 
             map_obj.declare_variable(var_type, content)
         elif "print" in line:
             variable_names = []

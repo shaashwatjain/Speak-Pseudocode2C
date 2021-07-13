@@ -32,7 +32,7 @@ start the program
     declare first integer 
     declare second integer 
     declare res 
-    res = first * second
+    assign res = first * second
     assign res2 = first + second
 
     declare fch character
