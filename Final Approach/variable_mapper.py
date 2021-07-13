@@ -47,9 +47,10 @@ class Variable(object):
         raise VariableNotDeclared
 
     def get_variable_list(self,
-                          list_of_name_and_scopes: list) -> List[VariableInfo]:
+                          list_of_names: list,
+                          scope: int) -> List[VariableInfo]:
         list_of_variable_info: List[VariableInfo] = []
-        for name, scope in list_of_name_and_scopes:
+        for name in list_of_names:
             variable_info_obj = self.get_variable(name, scope)
             list_of_variable_info.append(variable_info_obj)
         return list_of_variable_info
