@@ -1,3 +1,6 @@
+from variable_mapper import Variable, VariableTypes
+
+
 class Mapper:
     program = []
     index = 0
@@ -10,7 +13,6 @@ class Mapper:
         """
         self.add_headers()
         self.add_main()
-
 
     def add_headers(self):
         """
@@ -143,12 +145,15 @@ class Mapper:
         """
         #  TODO: Check if i is inititalized or not
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
+
         for i in range(len(content)):
             if content[i] in rel_op:
                 break
         else:
-            if "true" in content:
+            if any(x in content for x in ["true", "1"]):
                 self.insert_line("while(1)\n{0}".format("{"))
+            elif any(x in content for x in ["false", "0"]):
+                self.insert_line("while(0)\n{0}".format("{"))
             return
 
         self.insert_line(
@@ -158,21 +163,22 @@ class Mapper:
         )
         self.increase_indent
 
-
     def for_loop(self, content):
         """
         For loop construct
         """
+
         def check_oper_for(val, type_):
             op = ""
             flag = 1
             if abs(val) > 1:
-                if type_=="incr":
+                if type_ == "incr":
                     op = "+="
                 else:
                     op = "-="
                 flag = 0
             return val, op, flag
+
         #  Till keyword is compulsory
         #  Have to take care of iteration of char
         #  need to handle if user doesn't want to initalize the iterator
@@ -184,46 +190,76 @@ class Mapper:
         # Check for declaration of iterator #
         #####################################
 
-        type_ = "int" + " "
+        #  vobj = Variable()
+        #  vobj.insert_variable("i", self.current_indent, VariableTypes.int, 5)
+        #  temp = vobj.get_variable(content[0], self.current_indent)
+
+        type_ = "int "
         update_val = 1
         pos = content.index("till")
         flag = 1
-        if "increment" in content or "increase" in content:
+        if any(x in content for x in ["increment", "increase"]):
+            #  if "increment" in content or "increase" in content:
             update_val, oper, flag = check_oper_for(int(content[-1]), "incr")
 
-        if "decrement" in content or "decrease" in content:
-            update_val, oper, flag = check_oper_for(int(content[-1]), 'decr')
+        if any(x in content for x in ["decrement", "decrease"]):
+            update_val, oper, flag = check_oper_for(int(content[-1]), "decr")
+
         try:
             range_start = int(content[pos - 1])
         except:
             ###################################################
             # get the value of iterator from variable tracker #
             ###################################################
-            range_start = 0  # Replace by value from value tracker
+            if content[pos - 1] == "range":
+                range_start = 1
+            else:
+                range_start = content[pos - 1]
+            #  range_start = vobj.get_variable(
+            #      content[0], self.current_indent
+            #  )  # Replace by value from value tracker
 
-        range_end = int(content[pos + 1])
+        flag2 = 1
+        try:
+            range_end = int(content[pos + 1])
+        except:
+            range_end = content[pos + 1]
+            flag2 = 0
+
         if flag:
             if range_end > range_start:
                 oper = "++"
             else:
                 oper = "--"
 
-        flag2 = 1
 
-        self.insert_line(
-            "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{open_par}\n".format(
-                type=type_ if flag2 == 1 else "",
-                var=content[0],
-                start=range_start,
-                end=range_end,
-                op=oper,
-                update=update_val if update_val != 1 else "",
-                open_par="{",
+        # if no update is present in the statement
+        if all(x in content for x in ["no", "update"]):
+            self.insert_line(
+                "for({type}{var}={start}; {var}<={end};)\n{open_par}\n".format(
+                    var=content[0],
+                    type=type_ if flag2 == 1 else 'char ',
+                    start=range_start,
+                    end=range_end,
+                    open_par="{",
+                )
             )
-        )
+
+        else:
+            self.insert_line(
+                "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{open_par}\n".format(
+                    type=type_ if flag2 == 1 else 'char ',
+                    var=content[0],
+                    start=range_start,
+                    end=range_end,
+                    op=oper,
+                    update=update_val if update_val != 1 else "",
+                    open_par="{",
+                )
+            )
         self.increase_indent
 
-    def end_for(self):
+    def end_loop(self):
         self.decrease_indent()
         self.insert_line("}")
 
@@ -285,7 +321,7 @@ def run():
 
         # My changes
         elif "end" in line and ("for" in line or "while" in line):
-            map_obj.end_for()
+            map_obj.end_loop()
 
         elif "for" in line:
             content = line.split()[1:]

@@ -1,5 +1,2 @@
-for i in range till 5 increment by 2
+for i in range from 5 till 1 decrement 8
 endfor
-
-while true
-endwhile
