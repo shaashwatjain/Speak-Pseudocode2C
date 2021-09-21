@@ -209,7 +209,7 @@ def run():
                 var_type = VariableTypes.char
                 content = content[:-1]
             elif "integer" in content:
-                var_type = VariableTypes.char
+                var_type = VariableTypes.int
                 content = content[:-1]
             elif "float" in content:
                 var_type = VariableTypes.float
