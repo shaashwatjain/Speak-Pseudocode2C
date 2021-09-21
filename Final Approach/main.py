@@ -236,32 +236,34 @@ class Mapper:
         # if no update is present in the statement
         if all(x in content for x in ["no", "update"]):
             self.insert_line(
-                "for({type}{var}={start}; {var}<={end};)\n{open_par}\n".format(
+                "for({type}{var}={start}; {var}<={end};)\n{ind}{open_par}\n".format(
                     var=content[0],
                     type=type_ if flag2 == 1 else 'char ',
                     start=range_start,
                     end=range_end,
+                    ind=self.current_indent*'\t',
                     open_par="{",
                 )
             )
 
         else:
             self.insert_line(
-                "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{open_par}\n".format(
+                "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{ind}{open_par}\n".format(
                     type=type_ if flag2 == 1 else 'char ',
                     var=content[0],
                     start=range_start,
                     end=range_end,
                     op=oper,
                     update=update_val if update_val != 1 else "",
+                    ind=self.current_indent*'\t',
                     open_par="{",
                 )
             )
-        self.increase_indent
+        self.increase_indent()
 
     def end_loop(self):
         self.decrease_indent()
-        self.insert_line("}")
+        self.insert_line("}\n")
 
 
 def run():

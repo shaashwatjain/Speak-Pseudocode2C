@@ -1,2 +1,18 @@
-for i in range from 5 till 1 decrement 8
-endfor
+while count < 10
+endwhile
+
+
+while count > 10
+endwhile
+
+
+while count != 10
+endwhile
+
+
+while 1
+endwhile
+
+
+while 0
+endwhile
