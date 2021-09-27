@@ -30,9 +30,19 @@ class Variable(object):
 
     def exit_scope(self,
                    var_scope: int):
-        for key in self.__variable_map.keys():
+        mapped_keys = list(self.__variable_map.keys())
+        for key in mapped_keys:
             if key[1] == var_scope:
                 del self.__variable_map[key]
+
+    def check_variable_in_scope(self,
+                                var_name: str,
+                                var_scope: int) -> bool:
+        key = var_dict_key(var_name, var_scope)
+        if key in self.__variable_map:
+            return True
+        else:
+            return False
 
     def get_variable(self,
                      var_name: str,

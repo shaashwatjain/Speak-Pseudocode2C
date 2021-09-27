@@ -22,11 +22,11 @@ start the program
     print the length and breadth of rectangle are variable x variable y metres 
     print the length and breadth of rectangle are variable x and variable y metres 
 
-    if x>y
+    if x > y
         input a integer 
         print variable a
         print variable x
-    end 
+    end if
     print variable x 
 
     declare first integer 
@@ -38,5 +38,63 @@ start the program
     declare fch character
     declare sch character
     assign res3 = fch + sch
-end
 
+    input operation character
+    input var1 var2
+
+    if operation == + and operation == +
+        print variable var1 + variable var2
+    else if operation == -
+        print variable var1 - variable var2
+    else if operation == *
+        print variable var1 * variable var2
+    else if operation == /
+        print variable var1 / variable var2
+    end if
+
+    for i in range from 1 till 5 increment by 1
+    end for
+
+    for j in range from 5 till 1 decrement by 2
+    end for
+
+    for i in range till 5
+        if x > y
+            input a integer
+            print variable a
+            print variable x
+        end if
+    end for
+
+    for i in range from 1 till 10
+    end for
+
+    for j in range from 10 till 1
+    end for
+
+    for j in range from a till z
+    end for
+
+    for i in range from 1 till 10 no update
+    end for
+
+    for i in range from 1 till 10
+    for j in range from 20 till 10
+    end for
+    end for
+
+    while count < 10
+    end while
+
+    while count > 10
+    end while
+
+    while count != 10
+    end while
+
+    while 1
+    end while
+
+    while 0
+    end while
+end
