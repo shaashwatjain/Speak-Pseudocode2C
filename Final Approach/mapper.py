@@ -208,6 +208,13 @@ class Mapper:
         content: String
         """
 
+        try:
+            iterator_exist = variable_obj.get_variable(
+                content[0], self.__current_indent
+            )
+        except:
+            iterator_exist = 0
+
         def check_oper_for(val, type_):
             op = ""
             flag = 1
@@ -227,16 +234,20 @@ class Mapper:
         update_flag = 1
         pos = content.index("till")
 
-        if content[pos + 1].isdigit():
-            type_ = "int "
+        if iterator_exist:
+            type_ = ""
+
         else:
-            variable_exist = variable_obj.get_variable(
-                content[pos + 1], self.__current_indent
-            )
-            if variable_exist:
-                type_ = str(variable_exist.var_type.value) + " "
+            if content[pos + 1].isdigit():
+                type_ = "int "
             else:
-                raise VariableNotDeclared
+                variable_exist = variable_obj.get_variable(
+                    content[pos + 1], self.__current_indent
+                )
+                if variable_exist:
+                    type_ = str(variable_exist.var_type.value) + " "
+                else:
+                    raise VariableNotDeclared
 
         #  flag is used to check whether oper -> ++ or +=
         flag = 1
@@ -275,14 +286,16 @@ class Mapper:
             update_val = 1
 
         self.insert_line(
-            "for({type}{var}={start}; {var}<={end}; {nu_var}{op} {update})".format(
+            "for({type}{var_exist}{equal_sign}{start}; {var}<={end}; {nu_var}{op} {update})".format(
                 type=type_ if flag2 == 1 else "char ",
                 var=content[0],
+                var_exist = content[0] if not iterator_exist else "",
                 nu_var=content[0] if update_flag == 1 else "",
-                start=range_start,
+                start=range_start if not iterator_exist else "",
                 end=range_end,
                 op=oper if update_flag == 1 else "",
                 update=update_val if update_val != 1 else "",
+                equal_sign = "=" if not iterator_exist else "",
             )
         )
         self.insert_line("{")

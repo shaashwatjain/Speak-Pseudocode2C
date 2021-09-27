@@ -1,0 +1,20 @@
+while count < 10
+while count > 10
+endwhile
+endwhile
+
+
+while count > 10
+endwhile
+
+
+while num != 10
+endwhile
+
+
+while 1
+endwhile
+
+
+while false
+endwhile
