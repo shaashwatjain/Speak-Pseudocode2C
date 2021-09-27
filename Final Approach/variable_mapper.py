@@ -30,9 +30,19 @@ class Variable(object):
 
     def exit_scope(self,
                    var_scope: int):
-        for key in self.__variable_map.keys():
+        mapped_keys = list(self.__variable_map.keys())
+        for key in mapped_keys:
             if key[1] == var_scope:
                 del self.__variable_map[key]
+
+    def check_variable_in_scope(self,
+                                var_name: str,
+                                var_scope: int) -> bool:
+        key = var_dict_key(var_name, var_scope)
+        if key in self.__variable_map:
+            return True
+        else:
+            return False
 
     def get_variable(self,
                      var_name: str,
@@ -47,9 +57,10 @@ class Variable(object):
         raise VariableNotDeclared
 
     def get_variable_list(self,
-                          list_of_name_and_scopes: list) -> List[VariableInfo]:
+                          list_of_names: list,
+                          scope: int) -> List[VariableInfo]:
         list_of_variable_info: List[VariableInfo] = []
-        for name, scope in list_of_name_and_scopes:
+        for name in list_of_names:
             variable_info_obj = self.get_variable(name, scope)
             list_of_variable_info.append(variable_info_obj)
         return list_of_variable_info

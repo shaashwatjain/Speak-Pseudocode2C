@@ -1,0 +1,10 @@
+start the program 
+
+    if x>y
+        input a 
+        print variable a 
+    end
+
+    print variable a 
+
+end 

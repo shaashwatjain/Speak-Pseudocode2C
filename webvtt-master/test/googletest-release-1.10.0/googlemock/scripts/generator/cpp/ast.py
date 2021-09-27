@@ -665,7 +665,7 @@ class TypeConverter(object):
 
     def GetTemplateIndices(self, names):
         # names is a list of strings.
-        start = names.index('<')
+        start = names.__index('<')
         end = len(names) - 1
         while end > 0:
             if names[end] == '>':
