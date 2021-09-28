@@ -38,10 +38,10 @@ class Variable(object):
     def check_variable_in_scope(self,
                                 var_name: str,
                                 var_scope: int) -> bool:
-        key = var_dict_key(var_name, var_scope)
-        if key in self.__variable_map:
+        try:
+            variable = self.get_variable(var_name, var_scope)
             return True
-        else:
+        except VariableNotDeclared:
             return False
 
     def get_variable(self,

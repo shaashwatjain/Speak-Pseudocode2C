@@ -87,6 +87,8 @@ class Mapper:
             # if variable already declared
             if variable_obj.check_variable_in_scope(content[0], self.__current_indent):
                 assn_stmt = " ".join(content) + ";"
+            else:
+                raise VariableNotDeclared
         except VariableNotDeclared:
             # variable not declared earlier
             try:
@@ -151,40 +153,60 @@ class Mapper:
     def while_loop(self, content):
         """
         while loop construct
+        content: string
         """
         #  TODO: Check if i is inititalized or not
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
 
         for i in range(len(content)):
             if content[i] in rel_op:
+                #  var = content[i - 1]
+                # comment this to check without variable tracker
+                if not variable_obj.check_variable_in_scope(
+                        content[i - 1], self.__current_indent
+                ) or (
+                        not content[i + 1].isdigit()
+                        and not variable_obj.check_variable_in_scope(
+                    content[i + 1], self.__current_indent
+                )
+                ):
+                    self.initialize_variable(content[i - 1], '0')
+                    # self.insert_line("Error: Variable is not initialized")
+
+                self.insert_line(
+                    "while({0} {1} {2})".format(
+                        content[i - 1], content[i], content[i + 1]
+                    )
+                )
                 break
         else:
             if any(x in content for x in ["true", "1"]):
                 self.insert_line("while(1)")
+
             elif any(x in content for x in ["false", "0"]):
                 self.insert_line("while(0)")
-            self.insert_line("{")
-            self.increase_indent()
-            return
 
-        self.insert_line(
-            "while({0} {1} {2})".format(
-                content[i - 1], content[i], content[i + 1]
-            )
-        )
         self.insert_line("{")
         self.increase_indent()
 
     def for_loop(self, content):
         """
         For loop construct
+        content: String
         """
+
+        try:
+            iterator_exist = variable_obj.get_variable(
+                content[0], self.__current_indent
+            )
+        except:
+            iterator_exist = 0
 
         def check_oper_for(val, type_):
             op = ""
             flag = 1
-            if abs(val) > 1:
-                if type_ == "incr":
+            if val > 1:
+                if type_:
                     op = "+="
                 else:
                     op = "-="
@@ -194,47 +216,49 @@ class Mapper:
         #  Till keyword is compulsory
         #  Have to take care of iteration of char
         #  need to handle if user doesn't want to initalize the iterator
-        #  decrement
         #  data type add before initialization
-        #  Check the greater of the two number
-
-        #####################################
-        # Check for declaration of iterator #
-        #####################################
-
-        #  vobj = Variable()
-        #  vobj.insert_variable("i", self.current_indent, VariableTypes.int, 5)
-        #  temp = vobj.get_variable(content[0], self.current_indent)
-
-        type_ = "int "
         update_val = 1
+        update_flag = 1
         pos = content.index("till")
+
+        if iterator_exist:
+            type_ = ""
+
+        else:
+            if content[pos + 1].isdigit():
+                type_ = "int "
+            else:
+                variable_exist = variable_obj.get_variable(
+                    content[pos + 1], self.__current_indent
+                )
+                if variable_exist:
+                    type_ = str(variable_exist.var_type.value) + " "
+                else:
+                    raise VariableNotDeclared
+
+        #  flag is used to check whether oper -> ++ or +=
         flag = 1
         if any(x in content for x in ["increment", "increase"]):
-            #  if "increment" in content or "increase" in content:
-            update_val, oper, flag = check_oper_for(int(content[-1]), "incr")
+            #  check_oper_for(int_content_val, check)
+            #  check -> 1 for increment check -> 0 for decrement
+            update_val, oper, flag = check_oper_for(int(content[-1]), 1)
 
         if any(x in content for x in ["decrement", "decrease"]):
-            update_val, oper, flag = check_oper_for(int(content[-1]), "decr")
+            update_val, oper, flag = check_oper_for(int(content[-1]), 0)
 
-        try:
+        if content[pos - 1].isdigit():
             range_start = int(content[pos - 1])
-        except:
-            ###################################################
-            # get the value of iterator from variable tracker #
-            ###################################################
+        else:
             if content[pos - 1] == "range":
                 range_start = 1
             else:
                 range_start = content[pos - 1]
-            #  range_start = vobj.get_variable(
-            #      content[0], self.current_indent
-            #  )  # Replace by value from value tracker
 
+        #  flag2 is used to check whether range -> int or char
         flag2 = 1
-        try:
+        if content[pos + 1].isdigit():
             range_end = int(content[pos + 1])
-        except:
+        else:
             range_end = content[pos + 1]
             flag2 = 0
 
@@ -244,32 +268,24 @@ class Mapper:
             else:
                 oper = "--"
 
-        # if no update is present in the statement
         if all(x in content for x in ["no", "update"]):
-            self.insert_line(
-                "for({type}{var}={start}; {var}<={end};)\n{ind}{open_par}".format(
-                    var=content[0],
-                    type=type_ if flag2 == 1 else 'char ',
-                    start=range_start,
-                    end=range_end,
-                    ind=self.__current_indent*'\t',
-                    open_par="{",
-                )
-            )
+            update_flag = 0
+            update_val = 1
 
-        else:
-            self.insert_line(
-                "for({type}{var}={start}; {var}<={end}; {var}{op} {update})\n{ind}{open_par}".format(
-                    type=type_ if flag2 == 1 else 'char ',
-                    var=content[0],
-                    start=range_start,
-                    end=range_end,
-                    op=oper,
-                    update=update_val if update_val != 1 else "",
-                    ind=self.__current_indent*'\t',
-                    open_par="{",
-                )
+        self.insert_line(
+            "for({type}{var_exist}{equal_sign}{start}; {var}<={end}; {nu_var}{op} {update})".format(
+                type=type_ if flag2 == 1 else "char ",
+                var=content[0],
+                var_exist=content[0] if not iterator_exist else "",
+                nu_var=content[0] if update_flag == 1 else "",
+                start=range_start if not iterator_exist else "",
+                end=range_end,
+                op=oper if update_flag == 1 else "",
+                update=update_val if update_val != 1 else "",
+                equal_sign="=" if not iterator_exist else "",
             )
+        )
+        self.insert_line("{")
         self.increase_indent()
 
     def end_func(self):
@@ -365,6 +381,8 @@ def run():
             map_obj.while_loop(content)
 
     map_obj.get_output_program()
+
+# TODO: add comments support, break support, increment operation support.
 
 
 if __name__ == "__main__":
