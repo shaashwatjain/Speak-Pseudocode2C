@@ -298,7 +298,7 @@ class Mapper:
 
 
 def run():
-    f = open("test_case.txt", "r")
+    f = open("3. divisible by 13.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
