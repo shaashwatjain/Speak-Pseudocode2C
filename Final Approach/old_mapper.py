@@ -196,122 +196,104 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-    #################################
-    # Helper fucntions for for loop #
-    #################################
-    def helper_oper_(self, val, sign):
-        if int(val) > 1:
-            oper = "{0}=".format(sign)
-        else:
-            oper = "{0}{0}".format(sign)
-            val = ""
-        return oper, val
-
-    def helper_greater_(self, x, y):
-        if x > y:
-            oper = "--"
-        else:
-            oper = "++"
-        return oper
-
-    #######################
-    # For loop constructs #
-    #######################
     def for_loop(self, content):
         """
         For loop construct
         content: String
         """
-        init = update = ""
-        variable_exist = 0
-        iterator = content[0]
+
+        try:
+            iterator_exist = variable_obj.get_variable(
+                content[0], self.__current_indent
+            )
+        except:
+            iterator_exist = 0
+
+        def check_oper_for(val, type_):
+            op = ""
+            flag = 1
+            if val > 1:
+                if type_:
+                    op = "+="
+                else:
+                    op = "-="
+                flag = 0
+            return val, op, flag
+
+        #  Till keyword is compulsory
+        #  Have to take care of iteration of char
+        #  need to handle if user doesn't want to initalize the iterator
+        #  data type add before initialization
+        update_val = 1
+        update_flag = 1
         pos = content.index("till")
 
-        # For range starting
-        range_start = content[pos - 1]
-        type_ = "int "
+        if iterator_exist:
+            type_ = ""
 
-        # Required if value of pre initialized iterator is changed
-        need_init = 1
-        if not range_start.isdigit():
-            if range_start in ["a", "z"]:
-                type_ = "char "
+        else:
+            if content[pos + 1].isdigit():
+                type_ = "int "
             else:
-                range_start = "1"
-            need_init = 0
-
-        # For range ending
-        range_end = content[pos + 1]
-        if not range_end.isdigit():
-            if range_end in ["z", "a"]:
-                type_ = "char "
-
-            else:
-                variable_exist = variable_obj.check_variable_in_scope(
+                variable_exist = variable_obj.get_variable(
                     content[pos + 1], self.__current_indent
                 )
                 if variable_exist:
-                    type_ = (
-                        str(
-                            variable_obj.get_variable(
-                                content[pos + 1], self.__current_indent
-                            ).var_type.name
-                        )
-                        + " "
-                    )
-                    val = int(
-                        variable_obj.get_variable(
-                            content[pos + 1], self.__current_indent
-                        ).var_value
-                    )
-                    #  print(val)
+                    type_ = str(variable_exist.var_type.value) + " "
                 else:
-                    self.insert_line(
-                        "Error: Variable {0} is not defined".format(content[pos + 1])
-                    )
-                    #  XXX: Check whether to raise exception or not
-                    #  raise VariableNotDeclared
+                    raise VariableNotDeclared
 
-        # if iterator is not defined
-        if (
-            not variable_obj.check_variable_in_scope(iterator, self.__current_indent)
-            or need_init
-        ):
-            init = "{0}{1} = {2}".format(type_, iterator, range_start)
+        #  flag is used to check whether oper -> ++ or +=
+        flag = 1
+        if any(x in content for x in ["increment", "increase"]):
+            #  check_oper_for(int_content_val, check)
+            #  check -> 1 for increment check -> 0 for decrement
+            update_val, oper, flag = check_oper_for(int(content[-1]), 1)
+
+        if any(x in content for x in ["decrement", "decrease"]):
+            update_val, oper, flag = check_oper_for(int(content[-1]), 0)
+
+        if content[pos - 1].isdigit():
+            range_start = int(content[pos - 1])
         else:
-            range_start = int(
-                variable_obj.get_variable(content[0], self.__current_indent).var_value
-            )
-
-        # evaluate the condition of for loop
-        condition = "{0} <= {1}".format(iterator, range_end)
-
-        last = content[-1]
-        if not all(x in content for x in ["no", "update"]):
-
-            if any(x in content for x in ["increment", "increase"]):
-                oper, last = self.helper_oper_(last, "+")
-
-            elif any(x in content for x in ["decrement", "decrease"]):
-                oper, last = self.helper_oper_(last, "-")
-
+            if content[pos - 1] == "range":
+                range_start = 1
             else:
-                last = ""
-                if type_ == "char ":
-                    range_start = ord(range_start)
-                    range_end = ord(range_end)
+                range_start = content[pos - 1]
 
-                if variable_exist:
-                    oper = self.helper_greater_(int(range_start), val)
-                else:
-                    oper = self.helper_greater_(int(range_start), int(range_end))
+        #  flag2 is used to check whether range -> int or char
+        flag2 = 1
+        if content[pos + 1].isdigit():
+            range_end = int(content[pos + 1])
+        else:
+            range_end = content[pos + 1]
+            flag2 = 0
 
-            update = "{0}{1}{2}".format(iterator, oper, last)
+        if flag:
+            if range_end > range_start:
+                oper = "++"
+            else:
+                oper = "--"
 
-        self.insert_line("for({0}; {1}; {2})".format(init, condition, update))
+        if all(x in content for x in ["no", "update"]):
+            update_flag = 0
+            update_val = 1
+
+        self.insert_line(
+            "for({type}{var_exist}{equal_sign}{start}; {var}<={end}; {nu_var}{op} {update})".format(
+                type=type_ if flag2 == 1 else "char ",
+                var=content[0],
+                var_exist=content[0] if not iterator_exist else "",
+                nu_var=content[0] if update_flag == 1 else "",
+                start=range_start if not iterator_exist else "",
+                end=range_end,
+                op=oper if update_flag == 1 else "",
+                update=update_val if update_val != 1 else "",
+                equal_sign="=" if not iterator_exist else "",
+            )
+        )
         self.insert_line("{")
         self.increase_indent()
-
 
     def end_func(self):
         self.decrease_indent()
@@ -323,7 +305,7 @@ class Mapper:
 
 
 def run():
-    f = open("test_for.txt", "r")
+    f = open("test_case.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:

@@ -18,8 +18,27 @@ for j in range from 10 till 1
 endfor
 
 
-initialize i = 10
+initialize i = 1000
+initialize num = 100
+
+
+for i in range from 500 till num
+endfor
+
+
+for i in range till num decrement by 5
+endfor
+
+
 for i in range from 1 till 10 no update
+endfor
+
+
+for k in range from a till z
+endfor
+
+
+for k in range from z till a
 endfor
 
 

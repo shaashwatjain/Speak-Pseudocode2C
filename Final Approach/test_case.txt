@@ -1,8 +1,8 @@
 start the program
-    declare decInt integer 
-    declare decChar character 
+    declare decInt integer
+    declare decChar character
     declare decFloat float
-    print variable decFloat 
+    print variable decFloat
 
     initialize i = 21
     initialize f = 3.14
@@ -10,28 +10,28 @@ start the program
     print variable i
     print variable f
     print variable c
-     
-    input x 
-    input y u integer 
-    input z character 
-    input p q r s character 
 
-    print hello world 
+    input x
+    input y u integer
+    input z character
+    input p q r s character
+
+    print hello world
     print variable x
     print the value of x is variable x metres in height
-    print the length and breadth of rectangle are variable x variable y metres 
-    print the length and breadth of rectangle are variable x and variable y metres 
+    print the length and breadth of rectangle are variable x variable y metres
+    print the length and breadth of rectangle are variable x and variable y metres
 
     if x > y
-        input a integer 
+        input a integer
         print variable a
         print variable x
     end if
-    print variable x 
+    print variable x
 
-    declare first integer 
-    declare second integer 
-    declare res 
+    declare first integer
+    declare second integer
+    declare res
     assign res = first * second
     assign res2 = first + second
 
@@ -83,11 +83,12 @@ start the program
     end for
     end for
 
-    while count < 10
+    while count < num
         assign count = count + 1
     end while
 
-    while count > 10
+    initialize num = 10
+    while count > num
     end while
 
     while count != 10
