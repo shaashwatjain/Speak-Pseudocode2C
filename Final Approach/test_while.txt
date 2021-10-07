@@ -18,3 +18,12 @@ endwhile
 
 while false
 endwhile
+
+while 10 >= count
+endwhile
+
+while 10 > count
+endwhile
+
+
+

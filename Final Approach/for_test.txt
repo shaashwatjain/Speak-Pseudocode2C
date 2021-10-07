@@ -1,3 +1,9 @@
+initialize abc = 4
+initialize num = 5
+for i in range from num till abc
+endfor
+
+
 for i in range from 1 till 5 increment by 1
 endfor
 
@@ -19,10 +25,11 @@ endfor
 
 
 initialize i = 1000
-initialize num = 100
-
-
 for i in range from 500 till num
+endfor
+
+
+for i in range till num
 endfor
 
 
@@ -42,7 +49,7 @@ for k in range from z till a
 endfor
 
 
-for i in range from 1 till 10
-for j in range from 20 till 10
+for m in range from 1 till 10
+for n in range from 20 till 10
 endfor
 endfor

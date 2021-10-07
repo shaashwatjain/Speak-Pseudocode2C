@@ -150,9 +150,8 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-    #  def variable_check(self, var, index):
-    #      return variable_obj.check_variable_in_scope(var, index)
-
+    #  FIXME: if initialize count = 10 -> int count = 10;    (Rajdeep's part)
+    #  FIXME: if initialize count =10 -> char count = "=10";
     def while_loop(self, content):
         """
         while loop construct
@@ -160,39 +159,65 @@ class Mapper:
         """
 
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
+        bin_op = {"or":"||", "and":"&&"}
 
-        for i, word in enumerate(content):
-            if word in rel_op:
+        string_to_print = "while( "
 
-                # if iterator is not initialized then initialize it
-                if not variable_obj.check_variable_in_scope(
-                    content[i - 1], self.__current_indent
-                ):
-                    self.initialize_variable(content[i - 1], "0")
+        bin_pos = []
+        cnt = 1
+        for idx, word in enumerate(content):
+            if word in bin_op.keys():
+                bin_pos.append(idx)
+                cnt+=1
+        bin_pos.append(len(content)-1)
 
-                # If the rhs of condition is not initialized then print error
-                if not (
-                    content[i + 1].isdigit()
-                    or variable_obj.check_variable_in_scope(
-                        content[i + 1], self.__current_indent
-                    )
-                ):
-                    self.insert_line(
-                        "Error: Variable {0} is not initialized".format(content[i + 1])
-                    )
+        start = 0
+        print(bin_pos)
+        print(content)
+        while bin_pos:
+            end = bin_pos.pop(0)
+            for i,word in enumerate(content[start:end+1]):
+                if word in rel_op:
 
-                self.insert_line(
-                    "while({0} {1} {2})".format(content[i - 1], word, content[i + 1])
-                )
-                break
-        else:
-            if any(x in content for x in ["true", "1"]):
-                self.insert_line("while(1)")
+                    # if iterator is not initialized then initialize it
+                    if not content[start + i - 1].isdigit():
+                        if not variable_obj.check_variable_in_scope(
+                            content[start + i - 1], self.__current_indent
+                        ):
+                            self.initialize_variable(content[i - 1], "0")
 
-            # XXX: Should be replaced with else?
-            elif any(x in content for x in ["false", "0"]):
-                self.insert_line("while(0)")
+                    else:
+                        if not variable_obj.check_variable_in_scope(
+                            content[start + i + 1], self.__current_indent
+                        ):
+                            self.initialize_variable(content[start + i + 1], "0")
 
+                        # If the rhs of condition is not initialized then print error
+                    if not (
+                        content[start + i + 1].isdigit()
+                        or variable_obj.check_variable_in_scope(
+                            content[start + i + 1], self.__current_indent
+                        )
+                    ):
+                        raise VariableNotDeclared
+
+                    string_to_print += "{0} {1} {2}".format(content[start + i - 1], word, content[start + i + 1])
+            else:
+                if any(x in content[start : end+1] for x in ["true", "1"]):
+                    string_to_print += "1"
+
+                elif any(x in content[start : end+1] for x in ["false", "0"]):
+                    string_to_print += "0"
+
+            cnt-=1
+            string_to_print += " "
+            print("end:",end)
+            print(content[end])
+            if cnt>1:
+                string_to_print += bin_op.get(content[end],"") + " "
+            start = end
+
+        self.insert_line(string_to_print+")")
         self.insert_line("{")
         self.increase_indent()
 
@@ -232,19 +257,32 @@ class Mapper:
         type_ = "int "
 
         # Required if value of pre initialized iterator is changed
-        need_init = 1
+        is_init = 1
         if not range_start.isdigit():
             if range_start in ["a", "z"]:
                 type_ = "char "
+                range_start_val = ord(range_start)
+
+            elif range_start != "range" and variable_obj.get_variable(
+                range_start, self.__current_indent
+            ):
+                obj = variable_obj.get_variable(range_start, self.__current_indent)
+                type_ = str(obj.var_type.name) + " "
+                range_start_val = obj.var_value
+
             else:
                 range_start = "1"
-            need_init = 0
+                range_start_val = 1
+            is_init = 0
+        else:
+            range_start_val = int(range_start)
 
         # For range ending
         range_end = content[pos + 1]
         if not range_end.isdigit():
             if range_end in ["z", "a"]:
                 type_ = "char "
+                range_end_val = ord(range_end)
 
             else:
                 variable_exist = variable_obj.check_variable_in_scope(
@@ -259,32 +297,30 @@ class Mapper:
                         )
                         + " "
                     )
-                    val = int(
+                    range_end_val = int(
                         variable_obj.get_variable(
                             content[pos + 1], self.__current_indent
                         ).var_value
                     )
-                    #  print(val)
                 else:
-                    self.insert_line(
-                        "Error: Variable {0} is not defined".format(content[pos + 1])
-                    )
-                    #  XXX: Check whether to raise exception or not
-                    #  raise VariableNotDeclared
+                    raise VariableNotDeclared
+        else:
+            range_end_val = int(range_end)
 
         # if iterator is not defined
-        if (
-            not variable_obj.check_variable_in_scope(iterator, self.__current_indent)
-            or need_init
-        ):
+        if not variable_obj.check_variable_in_scope(iterator, self.__current_indent):
             init = "{0}{1} = {2}".format(type_, iterator, range_start)
         else:
+            if is_init:
+                init = "{0} = {1}".format(iterator, range_start)
+
             range_start = int(
                 variable_obj.get_variable(content[0], self.__current_indent).var_value
             )
 
         # evaluate the condition of for loop
-        condition = "{0} <= {1}".format(iterator, range_end)
+        cond_oper = "<=" if range_start_val < range_end_val else ">="
+        condition = "{0} {1} {2}".format(iterator, cond_oper, range_end)
 
         last = content[-1]
         if not all(x in content for x in ["no", "update"]):
@@ -297,14 +333,7 @@ class Mapper:
 
             else:
                 last = ""
-                if type_ == "char ":
-                    range_start = ord(range_start)
-                    range_end = ord(range_end)
-
-                if variable_exist:
-                    oper = self.helper_greater_(int(range_start), val)
-                else:
-                    oper = self.helper_greater_(int(range_start), int(range_end))
+                oper = self.helper_greater_(range_start_val, range_end_val)
 
             update = "{0}{1}{2}".format(iterator, oper, last)
 
@@ -323,7 +352,7 @@ class Mapper:
 
 
 def run():
-    f = open("test_for.txt", "r")
+    f = open("test_while.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for line in data:
