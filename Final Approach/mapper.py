@@ -150,141 +150,189 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
+    #  FIXME: if initialize count = 10 -> int count = 10;    (Rajdeep's part)
+    #  FIXME: if initialize count =10 -> char count = "=10";
     def while_loop(self, content):
         """
         while loop construct
         content: string
         """
-        #  TODO: Check if i is inititalized or not
+
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
+        bin_op = {"and": "&& ", "or": "|| "}
 
-        for i in range(len(content)):
-            if content[i] in rel_op:
-                #  var = content[i - 1]
-                # comment this to check without variable tracker
-                if not variable_obj.check_variable_in_scope(
+        string = "while("
+
+        # used to prevent double printing of 1 or 0
+        flag = 1
+        for i, word in enumerate(content):
+            if word in rel_op:
+
+                # if lhs is not digit and not initialized then initialize it
+                if content[i + 1] in ["1", "0"]:
+                    flag = 0
+
+                if not content[i - 1].isdigit():
+                    if not variable_obj.check_variable_in_scope(
                         content[i - 1], self.__current_indent
-                ) or (
-                        not content[i + 1].isdigit()
-                        and not variable_obj.check_variable_in_scope(
-                    content[i + 1], self.__current_indent
-                )
-                ):
-                    self.initialize_variable(content[i - 1], '0')
-                    # self.insert_line("Error: Variable is not initialized")
+                    ):
+                        self.initialize_variable(content[i - 1], "0")
 
-                self.insert_line(
-                    "while({0} {1} {2})".format(
-                        content[i - 1], content[i], content[i + 1]
+                # If lhs is digit and rhs is not initialized then initialize rhs
+                else:
+                    if not content[
+                        i + 1
+                    ].isdigit() and not variable_obj.check_variable_in_scope(
+                        content[i + 1], self.__current_indent
+                    ):
+                        self.initialize_variable(content[i + 1], "0")
+
+                # If rhs is not digit and not initialized then raise exception
+                if not (
+                    content[i + 1].isdigit()
+                    or variable_obj.check_variable_in_scope(
+                        content[i + 1], self.__current_indent
                     )
-                )
-                break
-        else:
-            if any(x in content for x in ["true", "1"]):
-                self.insert_line("while(1)")
+                ):
+                    raise VariableNotDeclared
 
-            elif any(x in content for x in ["false", "0"]):
-                self.insert_line("while(0)")
+                string += "{0} {1} {2}".format(content[i - 1], word, content[i + 1])
 
+            elif word in bin_op.keys():
+                string += " " + bin_op[word] + " "
+
+            elif word in ["true", "1"] and flag:
+                string += "1"
+                flag = 1
+
+            elif word in ["false", "0"] and flag:
+                string += "0"
+                flag = 1
+
+        self.insert_line(string + ")")
         self.insert_line("{")
         self.increase_indent()
 
+
+    #################################
+    # Helper fucntions for for loop #
+    #################################
+    def helper_oper_(self, val, sign):
+        if int(val) > 1:
+            oper = "{0}=".format(sign)
+        else:
+            oper = "{0}{0}".format(sign)
+            val = ""
+        return oper, val
+
+
+    def helper_greater_(self, x, y):
+        if x > y:
+            oper = "--"
+        else:
+            oper = "++"
+        return oper
+
+
+    #######################
+    # For loop constructs #
+    #######################
     def for_loop(self, content):
         """
         For loop construct
         content: String
         """
-
-        try:
-            iterator_exist = variable_obj.get_variable(
-                content[0], self.__current_indent
-            )
-        except:
-            iterator_exist = 0
-
-        def check_oper_for(val, type_):
-            op = ""
-            flag = 1
-            if val > 1:
-                if type_:
-                    op = "+="
-                else:
-                    op = "-="
-                flag = 0
-            return val, op, flag
-
-        #  Till keyword is compulsory
-        #  Have to take care of iteration of char
-        #  need to handle if user doesn't want to initalize the iterator
-        #  data type add before initialization
-        update_val = 1
-        update_flag = 1
+        init = update = ""
+        variable_exist = 0
+        iterator = content[0]
         pos = content.index("till")
 
-        if iterator_exist:
-            type_ = ""
+        # For range starting
+        range_start = content[pos - 1]
+        type_ = "int "
 
-        else:
-            if content[pos + 1].isdigit():
-                type_ = "int "
+        # Required if value of pre initialized iterator is changed
+        is_init = 1
+        if not range_start.isdigit():
+            if range_start in ["a", "z"]:
+                type_ = "char "
+                range_start_val = ord(range_start)
+
+            elif range_start != "range" and variable_obj.get_variable(
+                range_start, self.__current_indent
+            ):
+                obj = variable_obj.get_variable(range_start, self.__current_indent)
+                type_ = str(obj.var_type.name) + " "
+                range_start_val = obj.var_value
+
             else:
-                variable_exist = variable_obj.get_variable(
+                range_start = "1"
+                range_start_val = 1
+            is_init = 0
+        else:
+            range_start_val = int(range_start)
+
+        # For range ending
+        range_end = content[pos + 1]
+        if not range_end.isdigit():
+            if range_end in ["z", "a"]:
+                type_ = "char "
+                range_end_val = ord(range_end)
+
+            else:
+                variable_exist = variable_obj.check_variable_in_scope(
                     content[pos + 1], self.__current_indent
                 )
                 if variable_exist:
-                    type_ = str(variable_exist.var_type.value) + " "
+                    type_ = (
+                        str(
+                            variable_obj.get_variable(
+                                content[pos + 1], self.__current_indent
+                            ).var_type.name
+                        )
+                        + " "
+                    )
+                    range_end_val = int(
+                        variable_obj.get_variable(
+                            content[pos + 1], self.__current_indent
+                        ).var_value
+                    )
                 else:
                     raise VariableNotDeclared
-
-        #  flag is used to check whether oper -> ++ or +=
-        flag = 1
-        if any(x in content for x in ["increment", "increase"]):
-            #  check_oper_for(int_content_val, check)
-            #  check -> 1 for increment check -> 0 for decrement
-            update_val, oper, flag = check_oper_for(int(content[-1]), 1)
-
-        if any(x in content for x in ["decrement", "decrease"]):
-            update_val, oper, flag = check_oper_for(int(content[-1]), 0)
-
-        if content[pos - 1].isdigit():
-            range_start = int(content[pos - 1])
         else:
-            if content[pos - 1] == "range":
-                range_start = 1
-            else:
-                range_start = content[pos - 1]
+            range_end_val = int(range_end)
 
-        #  flag2 is used to check whether range -> int or char
-        flag2 = 1
-        if content[pos + 1].isdigit():
-            range_end = int(content[pos + 1])
+        # if iterator is not defined
+        if not variable_obj.check_variable_in_scope(iterator, self.__current_indent):
+            init = "{0}{1} = {2}".format(type_, iterator, range_start)
         else:
-            range_end = content[pos + 1]
-            flag2 = 0
+            if is_init:
+                init = "{0} = {1}".format(iterator, range_start)
 
-        if flag:
-            if range_end > range_start:
-                oper = "++"
-            else:
-                oper = "--"
-
-        if all(x in content for x in ["no", "update"]):
-            update_flag = 0
-            update_val = 1
-
-        self.insert_line(
-            "for({type}{var_exist}{equal_sign}{start}; {var}<={end}; {nu_var}{op} {update})".format(
-                type=type_ if flag2 == 1 else "char ",
-                var=content[0],
-                var_exist=content[0] if not iterator_exist else "",
-                nu_var=content[0] if update_flag == 1 else "",
-                start=range_start if not iterator_exist else "",
-                end=range_end,
-                op=oper if update_flag == 1 else "",
-                update=update_val if update_val != 1 else "",
-                equal_sign="=" if not iterator_exist else "",
+            range_start = int(
+                variable_obj.get_variable(content[0], self.__current_indent).var_value
             )
-        )
+
+        # evaluate the condition of for loop
+        cond_oper = "<=" if range_start_val < range_end_val else ">="
+        condition = "{0} {1} {2}".format(iterator, cond_oper, range_end)
+
+        last = content[-1]
+        if not all(x in content for x in ["no", "update"]):
+
+            if any(x in content for x in ["increment", "increase"]):
+                oper, last = self.helper_oper_(last, "+")
+
+            elif any(x in content for x in ["decrement", "decrease"]):
+                oper, last = self.helper_oper_(last, "-")
+
+            else:
+                last = ""
+                oper = self.helper_greater_(range_start_val, range_end_val)
+
+            update = "{0}{1}{2}".format(iterator, oper, last)
+
+        self.insert_line("for({0}; {1}; {2})".format(init, condition, update))
         self.insert_line("{")
         self.increase_indent()
 
