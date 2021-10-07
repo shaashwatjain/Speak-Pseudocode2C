@@ -159,65 +159,55 @@ class Mapper:
         """
 
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
-        bin_op = {"or":"||", "and":"&&"}
+        bin_op = {"and": "&& ", "or": "|| "}
 
-        string_to_print = "while( "
+        string = "while("
 
-        bin_pos = []
-        cnt = 1
-        for idx, word in enumerate(content):
-            if word in bin_op.keys():
-                bin_pos.append(idx)
-                cnt+=1
-        bin_pos.append(len(content)-1)
+        # used to prevent double printing of 1 or 0
+        flag = 1
+        for i, word in enumerate(content):
+            if word in rel_op:
 
-        start = 0
-        print(bin_pos)
-        print(content)
-        while bin_pos:
-            end = bin_pos.pop(0)
-            for i,word in enumerate(content[start:end+1]):
-                if word in rel_op:
+                # if lhs is not digit and not initialized then initialize it
+                if content[i + 1] in ["1","0"]:
+                    flag = 0
 
-                    # if iterator is not initialized then initialize it
-                    if not content[start + i - 1].isdigit():
-                        if not variable_obj.check_variable_in_scope(
-                            content[start + i - 1], self.__current_indent
-                        ):
-                            self.initialize_variable(content[i - 1], "0")
-
-                    else:
-                        if not variable_obj.check_variable_in_scope(
-                            content[start + i + 1], self.__current_indent
-                        ):
-                            self.initialize_variable(content[start + i + 1], "0")
-
-                        # If the rhs of condition is not initialized then print error
-                    if not (
-                        content[start + i + 1].isdigit()
-                        or variable_obj.check_variable_in_scope(
-                            content[start + i + 1], self.__current_indent
-                        )
+                if not content[i - 1].isdigit():
+                    if not variable_obj.check_variable_in_scope(
+                        content[i - 1], self.__current_indent
                     ):
-                        raise VariableNotDeclared
+                        self.initialize_variable(content[i - 1], "0")
 
-                    string_to_print += "{0} {1} {2}".format(content[start + i - 1], word, content[start + i + 1])
-            else:
-                if any(x in content[start : end+1] for x in ["true", "1"]):
-                    string_to_print += "1"
+                # If lhs is digit and rhs is not initialized then initialize rhs
+                else:
+                    if not content[i+1].isdigit() and not variable_obj.check_variable_in_scope(
+                        content[i + 1], self.__current_indent
+                    ):
+                        self.initialize_variable(content[i + 1], "0")
 
-                elif any(x in content[start : end+1] for x in ["false", "0"]):
-                    string_to_print += "0"
+                # If rhs is not digit and not initialized then raise exception
+                if not (
+                    content[i + 1].isdigit()
+                    or variable_obj.check_variable_in_scope(
+                        content[i + 1], self.__current_indent
+                    )
+                ):
+                    raise VariableNotDeclared
 
-            cnt-=1
-            string_to_print += " "
-            print("end:",end)
-            print(content[end])
-            if cnt>1:
-                string_to_print += bin_op.get(content[end],"") + " "
-            start = end
+                string+= "{0} {1} {2}".format(content[i - 1], word, content[i + 1])
 
-        self.insert_line(string_to_print+")")
+            elif word in bin_op.keys():
+                string+= " " + bin_op[word] + " "
+
+            elif word in ["true", "1"] and flag:
+                string+="1"
+                flag = 1
+
+            elif word in ["false", "0"] and flag:
+                string+="0"
+                flag = 1
+
+        self.insert_line(string+")")
         self.insert_line("{")
         self.increase_indent()
 
