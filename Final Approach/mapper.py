@@ -41,18 +41,35 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-    def declare_variable(self, var_type, content):
+    def declare_variable(self, content):
         """
         pseudocode format: declare <variable name> <variable type>
         """
+        content.pop(0)
+        var_type = ""
+        if "character" in content:
+            var_type = VariableTypes.char
+            content = content[:-1]
+        elif "integer" in content:
+            var_type = VariableTypes.int
+            content = content[:-1]
+        elif "float" in content:
+            var_type = VariableTypes.float
+            content = content[:-1]
+        else:
+            var_type = VariableTypes.int
+
         for i in range(len(content)):
             variable_obj.insert_variable(content[i], self.__current_indent, var_type)
             self.insert_line(f"{var_type.name} {content[i]};")
 
-    def initialize_variable(self, var_name, var_value):
+    def initialize_variable(self, content):
         """
         pseudocode format: initialize <variable name> = <variable value>
         """
+        content.pop(0)
+        var_name = content[0]
+        var_value = content[-1]
         if var_value.isnumeric():
             variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.int, int(var_value))
             self.insert_line(f"int {var_name} = {int(var_value)};")
@@ -65,16 +82,33 @@ class Mapper:
                 variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.char)
                 self.insert_line(f"char {var_name} = \"{var_value}\";")
 
-    def input_variable(self, var_type, content):
+    def input_variable(self, content):
         """
         pseudocode format: input <variable name> <variable type>
         pseudocode format: input <space separated variable names> <type of variables>
         """
+        content.pop(0)
+        var_type = ""
+        if "character" in content:
+            var_type = VariableTypes.char
+            content = content[:-1]
+        elif "integer" in content:
+            var_type = VariableTypes.int
+            content = content[:-1]
+        elif "float" in content:
+            var_type = VariableTypes.float
+            content = content[:-1]
+        else:
+            var_type = VariableTypes.int
+
         for i in range(len(content)):
             if not variable_obj.check_variable_in_scope(content[i], self.__current_indent):
                 variable_obj.insert_variable(content[i], self.__current_indent, var_type)
                 self.insert_line(f"{var_type.name} {content[i]};")
-            self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
+                self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
+            else:
+                current_var = variable_obj.get_variable(content[i], self.__current_indent)
+                self.insert_line(f"scanf(\"{current_var.fmt_specifier}\", &{current_var.var_name});")
 
     def assign_variable(self, content):
         """
@@ -82,6 +116,7 @@ class Mapper:
         if variable already declared, just output the assignment statement 
         else, check the type of the <variable 1> and assign that type to the result variable 
         """
+        content.pop(0)
         assn_stmt = ""
         try:
             # if variable already declared
@@ -99,27 +134,40 @@ class Mapper:
                 assn_stmt = "int " + " ".join(content) + ";"
         self.insert_line(assn_stmt)
 
-    def print_variables(self, string: str, variable_list):
+    def print_variables(self, content_list):
         """
         pseudocode format: print variable <variable name>
         pseudocode format: print <string>
         """
+        variable_names = []
+        string_to_send = ""
+        content_list.pop(0)
+        i = 0
+        while i < len(content_list):
+            if content_list[i] != "variable":
+                string_to_send += content_list[i] + " "
+                i += 1
+            else:
+                string_to_send += content_list[i] + " "
+                i += 1
+                variable_names.append(content_list[i])
+                i += 1
         i = 0
         variable_count = 0
         string_to_print = "printf(\""
-        content_list = string.split(" ")
+        content_list = string_to_send.split(" ")
         while i < len(content_list):
             if content_list[i] != "variable":
                 string_to_print += content_list[i] + " "
                 i += 1
             else:
                 i += 1
-                result = variable_obj.get_variable(variable_list[variable_count], self.__current_indent)
+                result = variable_obj.get_variable(variable_names[variable_count], self.__current_indent)
                 variable_count += 1
                 string_to_print += result.var_type.value + " "
         string_to_print = string_to_print.rstrip()
         string_to_print += "\\n\", "
-        for j in variable_list:
+        for j in variable_names:
             string_to_print += j + ", "
         string_to_print = string_to_print[:-2]
         string_to_print += ");"
@@ -157,7 +205,7 @@ class Mapper:
         while loop construct
         content: string
         """
-
+        content.pop(0)
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
         bin_op = {"and": "&& ", "or": "|| "}
 
@@ -176,7 +224,7 @@ class Mapper:
                     if not variable_obj.check_variable_in_scope(
                         content[i - 1], self.__current_indent
                     ):
-                        self.initialize_variable(content[i - 1], "0")
+                        self.initialize_variable(['', content[i - 1], "0"])
 
                 # If lhs is digit and rhs is not initialized then initialize rhs
                 else:
@@ -185,7 +233,7 @@ class Mapper:
                     ].isdigit() and not variable_obj.check_variable_in_scope(
                         content[i + 1], self.__current_indent
                     ):
-                        self.initialize_variable(content[i + 1], "0")
+                        self.initialize_variable(['', content[i + 1], "0"])
 
                 # If rhs is not digit and not initialized then raise exception
                 if not (
@@ -213,9 +261,8 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-
     #################################
-    # Helper fucntions for for loop #
+    # Helper functions for for loop #
     #################################
     def helper_oper_(self, val, sign):
         if int(val) > 1:
@@ -225,14 +272,12 @@ class Mapper:
             val = ""
         return oper, val
 
-
     def helper_greater_(self, x, y):
         if x > y:
             oper = "--"
         else:
             oper = "++"
         return oper
-
 
     #######################
     # For loop constructs #
@@ -242,6 +287,7 @@ class Mapper:
         For loop construct
         content: String
         """
+        content.pop(0)
         init = update = ""
         variable_exist = 0
         iterator = content[0]
@@ -344,94 +390,62 @@ class Mapper:
         for line in self.__program:
             print(line, end="")
 
+    def comment(self, content: list):
+        if "comment" in content[0]:
+            content.pop(0)
+        str_to_write = "// "
+        for word in content:
+            if word not in '':
+                str_to_write += word + " "
+        if len(str_to_write) > 3:
+            self.insert_line(str_to_write)
 
-def run():
-    f = open("3. divisible by 13.txt", "r")
-    data = f.readlines()
-    map_obj = Mapper()
-    for line in data:
+    def break_stmt(self):
+        self.insert_line("break;")
+
+    def continue_stmt(self):
+        self.insert_line("continue;")
+
+    __no_args_dict = {
+        "start": start_the_program,
+        "end": end_func,
+        "break": break_stmt,
+        "continue": continue_stmt,
+    }
+    __content_args_dict = {
+        "initialize": initialize_variable,
+        "assign": assign_variable,
+        "input": input_variable,
+        "declare": declare_variable,
+        "print": print_variables,
+        "if": continued_if,
+        "else": continued_if,
+        "for": for_loop,
+        "while": while_loop,
+        "comment": comment
+    }
+
+    def process_input(self, line: str) -> list:
+        start_len = len(self.__program)
         line = line.strip()
-        if "start the program" in line:
-            map_obj.start_the_program()
-        elif "end" in line:
-            map_obj.end_func()
-        elif "initialize" in line and "=" in line:
-            content = line.split(" ")[1:]
-            var_name = content[0]
-            var_value = content[-1]
-            map_obj.initialize_variable(var_name, var_value)
-        elif "assign" in line and "initialize" not in line:
-            content = line.split(" ")
-            try:
-                content.remove("assign")
-            except:
-                pass
-            map_obj.assign_variable(content)
-        elif "input" in line:
-            content = line.split(" ")[1:]
-            var_type = ""
-            if "character" in content:
-                var_type = VariableTypes.char
-                content = content[:-1]
-            elif "integer" in content:
-                var_type = VariableTypes.int
-                content = content[:-1]
-            elif "float" in content:
-                var_type = VariableTypes.float
-                content = content[:-1]
-            else:
-                var_type = VariableTypes.int
-            map_obj.input_variable(var_type, content)
-        elif "declare" in line:
-            content = line.split(" ")[1:]
-            var_type = ""
-            if "character" in content:
-                var_type = VariableTypes.char
-                content = content[:-1]
-            elif "integer" in content:
-                var_type = VariableTypes.int
-                content = content[:-1]
-            elif "float" in content:
-                var_type = VariableTypes.float
-                content = content[:-1]
-            else:
-                var_type = VariableTypes.int
-            map_obj.declare_variable(var_type, content)
-        elif "print" in line:
-            variable_names = []
-            string_to_send = ""
-            content_list = line.split(" ")[1:]
-            i = 0
-            while i < len(content_list):
-                if content_list[i] != "variable":
-                    string_to_send += content_list[i] + " "
-                    i += 1
-                else:
-                    string_to_send += content_list[i] + " "
-                    i += 1
-                    variable_names.append(content_list[i])
-                    i += 1
-            map_obj.print_variables(string_to_send, variable_names)
-        elif "else" in line or "if" in line:
-            content = line.split(" ")
-            map_obj.continued_if(content)
+        content = line.split(" ")
+        if content[0] in self.__content_args_dict:
+            self.__content_args_dict[content[0]](self, content)
+        elif content[0] in self.__no_args_dict:
+            self.__no_args_dict[content[0]](self)
+        elif "end" in content[0]:
+            self.__no_args_dict["end"](self)
+        else:
+            self.comment(content)
+        return self.__program[start_len:]
 
-        # While and For
-        elif "end" in line and ("for" in line or "while" in line):
-            map_obj.end_func()
-
-        elif "for" in line:
-            content = line.split()[1:]
-            map_obj.for_loop(content)
-
-        elif "while" in line:
-            content = line.split()[1:]
-            map_obj.while_loop(content)
-
-    map_obj.get_output_program()
-
-# TODO: add comments support, break support, increment operation support.
+# TODO: (optional) add increment operation support.
 
 
 if __name__ == "__main__":
-    run()
+    f = open("test_case.txt", "r")
+    data = f.readlines()
+    map_obj = Mapper()
+    for text in data:
+        map_obj.process_input(text)
+    map_obj.get_output_program()
