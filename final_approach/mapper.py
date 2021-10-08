@@ -2,13 +2,13 @@ from variable_mapper import Variable
 from userDefinedTypes import VariableTypes
 from exceptions import *
 
-variable_obj = Variable()
-
 
 class Mapper:
-    __program = []
-    __index = 0
-    __current_indent = 0
+    def __init__(self):
+        self._program = []
+        self._index = 0
+        self._current_indent = 0
+        self.variable_obj = Variable()
 
     def start_the_program(self):
         """
@@ -25,16 +25,16 @@ class Mapper:
         self.insert_line()
 
     def insert_line(self, string_to_write=""):
-        self.__program.insert(self.__index, (self.__current_indent * "\t") + string_to_write + "\n")
-        self.__index += 1
+        self._program.insert(self._index, (self._current_indent * "\t") + string_to_write + "\n")
+        self._index += 1
 
     def increase_indent(self):
-        self.__current_indent += 1
+        self._current_indent += 1
 
     def decrease_indent(self):
-        variable_obj.exit_scope(self.__current_indent)
-        if self.__current_indent > 0:
-            self.__current_indent -= 1
+        self.variable_obj.exit_scope(self._current_indent)
+        if self._current_indent > 0:
+            self._current_indent -= 1
 
     def add_main(self):
         self.insert_line("int main(int argc, char* argv[])")
@@ -60,7 +60,7 @@ class Mapper:
             var_type = VariableTypes.int
 
         for i in range(len(content)):
-            variable_obj.insert_variable(content[i], self.__current_indent, var_type)
+            self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
             self.insert_line(f"{var_type.name} {content[i]};")
 
     def initialize_variable(self, content):
@@ -71,15 +71,15 @@ class Mapper:
         var_name = content[0]
         var_value = content[-1]
         if var_value.isnumeric():
-            variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.int, int(var_value))
+            self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.int, int(var_value))
             self.insert_line(f"int {var_name} = {int(var_value)};")
         else:
             try:
                 is_float = float(var_value)
-                variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.float)
+                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.float)
                 self.insert_line(f"float {var_name} = {is_float};")
             except ValueError:
-                variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.char)
+                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.char)
                 self.insert_line(f"char {var_name} = \"{var_value}\";")
 
     def input_variable(self, content):
@@ -102,12 +102,12 @@ class Mapper:
             var_type = VariableTypes.int
 
         for i in range(len(content)):
-            if not variable_obj.check_variable_in_scope(content[i], self.__current_indent):
-                variable_obj.insert_variable(content[i], self.__current_indent, var_type)
+            if not self.variable_obj.check_variable_in_scope(content[i], self._current_indent):
+                self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
                 self.insert_line(f"{var_type.name} {content[i]};")
                 self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
             else:
-                current_var = variable_obj.get_variable(content[i], self.__current_indent)
+                current_var = self.variable_obj.get_variable(content[i], self._current_indent)
                 self.insert_line(f"scanf(\"{current_var.fmt_specifier}\", &{current_var.var_name});")
 
     def assign_variable(self, content):
@@ -120,14 +120,14 @@ class Mapper:
         assn_stmt = ""
         try:
             # if variable already declared
-            if variable_obj.check_variable_in_scope(content[0], self.__current_indent):
+            if self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                 assn_stmt = " ".join(content) + ";"
             else:
                 raise VariableNotDeclared
         except VariableNotDeclared:
             # variable not declared earlier
             try:
-                result_var_1 = variable_obj.get_variable(content[2], self.__current_indent)
+                result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
             except VariableNotDeclared:
@@ -162,7 +162,7 @@ class Mapper:
                 i += 1
             else:
                 i += 1
-                result = variable_obj.get_variable(variable_names[variable_count], self.__current_indent)
+                result = self.variable_obj.get_variable(variable_names[variable_count], self._current_indent)
                 variable_count += 1
                 string_to_print += result.var_type.value + " "
         string_to_print = string_to_print.rstrip()
@@ -221,8 +221,8 @@ class Mapper:
                     flag = 0
 
                 if not content[i - 1].isdigit():
-                    if not variable_obj.check_variable_in_scope(
-                        content[i - 1], self.__current_indent
+                    if not self.variable_obj.check_variable_in_scope(
+                        content[i - 1], self._current_indent
                     ):
                         self.initialize_variable(['', content[i - 1], "0"])
 
@@ -230,16 +230,16 @@ class Mapper:
                 else:
                     if not content[
                         i + 1
-                    ].isdigit() and not variable_obj.check_variable_in_scope(
-                        content[i + 1], self.__current_indent
+                    ].isdigit() and not self.variable_obj.check_variable_in_scope(
+                        content[i + 1], self._current_indent
                     ):
                         self.initialize_variable(['', content[i + 1], "0"])
 
                 # If rhs is not digit and not initialized then raise exception
                 if not (
                     content[i + 1].isdigit()
-                    or variable_obj.check_variable_in_scope(
-                        content[i + 1], self.__current_indent
+                    or self.variable_obj.check_variable_in_scope(
+                        content[i + 1], self._current_indent
                     )
                 ):
                     raise VariableNotDeclared
@@ -304,10 +304,10 @@ class Mapper:
                 type_ = "char "
                 range_start_val = ord(range_start)
 
-            elif range_start != "range" and variable_obj.get_variable(
-                range_start, self.__current_indent
+            elif range_start != "range" and self.variable_obj.get_variable(
+                range_start, self._current_indent
             ):
-                obj = variable_obj.get_variable(range_start, self.__current_indent)
+                obj = self.variable_obj.get_variable(range_start, self._current_indent)
                 type_ = str(obj.var_type.name) + " "
                 range_start_val = obj.var_value
 
@@ -326,21 +326,21 @@ class Mapper:
                 range_end_val = ord(range_end)
 
             else:
-                variable_exist = variable_obj.check_variable_in_scope(
-                    content[pos + 1], self.__current_indent
+                variable_exist = self.variable_obj.check_variable_in_scope(
+                    content[pos + 1], self._current_indent
                 )
                 if variable_exist:
                     type_ = (
                         str(
-                            variable_obj.get_variable(
-                                content[pos + 1], self.__current_indent
+                            self.variable_obj.get_variable(
+                                content[pos + 1], self._current_indent
                             ).var_type.name
                         )
                         + " "
                     )
                     range_end_val = int(
-                        variable_obj.get_variable(
-                            content[pos + 1], self.__current_indent
+                        self.variable_obj.get_variable(
+                            content[pos + 1], self._current_indent
                         ).var_value
                     )
                 else:
@@ -349,14 +349,14 @@ class Mapper:
             range_end_val = int(range_end)
 
         # if iterator is not defined
-        if not variable_obj.check_variable_in_scope(iterator, self.__current_indent):
+        if not self.variable_obj.check_variable_in_scope(iterator, self._current_indent):
             init = "{0}{1} = {2}".format(type_, iterator, range_start)
         else:
             if is_init:
                 init = "{0} = {1}".format(iterator, range_start)
 
             range_start = int(
-                variable_obj.get_variable(content[0], self.__current_indent).var_value
+                self.variable_obj.get_variable(content[0], self._current_indent).var_value
             )
 
         # evaluate the condition of for loop
@@ -387,8 +387,11 @@ class Mapper:
         self.insert_line("}")
 
     def get_output_program(self):
-        for line in self.__program:
+        for line in self._program:
             print(line, end="")
+
+    def get_program_list(self) -> list:
+        return self._program
 
     def comment(self, content: list):
         if "comment" in content[0]:
@@ -426,7 +429,7 @@ class Mapper:
     }
 
     def process_input(self, line: str) -> list:
-        start_len = len(self.__program)
+        start_len = len(self._program)
         line = line.strip()
         content = line.split(" ")
         if content[0] in self.__content_args_dict:
@@ -437,7 +440,7 @@ class Mapper:
             self.__no_args_dict["end"](self)
         else:
             self.comment(content)
-        return self.__program[start_len:]
+        return self._program[start_len:]
 
 # TODO: (optional) add increment operation support.
 
