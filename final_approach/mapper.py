@@ -446,7 +446,7 @@ class Mapper:
 
 
 if __name__ == "__main__":
-    f = open("test_case.txt", "r")
+    f = open("3. divisible by 13.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for text in data:
