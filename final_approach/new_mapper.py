@@ -2,13 +2,13 @@ from variable_mapper import Variable
 from userDefinedTypes import VariableTypes
 from exceptions import *
 
-variable_obj = Variable()
-
 
 class Mapper:
-    __program = []
-    __index = 0
-    __current_indent = 0
+    def __init__(self):
+        self._program = []
+        self._index = 0
+        self._current_indent = 0
+        self.variable_obj = Variable()
 
     def start_the_program(self):
         """
@@ -25,56 +25,90 @@ class Mapper:
         self.insert_line()
 
     def insert_line(self, string_to_write=""):
-        self.__program.insert(self.__index, (self.__current_indent * "\t") + string_to_write + "\n")
-        self.__index += 1
+        self._program.insert(self._index, (self._current_indent * "\t") + string_to_write + "\n")
+        self._index += 1
 
     def increase_indent(self):
-        self.__current_indent += 1
+        self._current_indent += 1
 
     def decrease_indent(self):
-        variable_obj.exit_scope(self.__current_indent)
-        if self.__current_indent > 0:
-            self.__current_indent -= 1
+        self.variable_obj.exit_scope(self._current_indent)
+        if self._current_indent > 0:
+            self._current_indent -= 1
 
     def add_main(self):
         self.insert_line("int main(int argc, char* argv[])")
         self.insert_line("{")
         self.increase_indent()
 
-    def declare_variable(self, var_type, content):
+    def declare_variable(self, content):
         """
         pseudocode format: declare <variable name> <variable type>
         """
+        content.pop(0)
+        var_type = ""
+        if "character" in content:
+            var_type = VariableTypes.char
+            content = content[:-1]
+        elif "integer" in content:
+            var_type = VariableTypes.int
+            content = content[:-1]
+        elif "float" in content:
+            var_type = VariableTypes.float
+            content = content[:-1]
+        else:
+            var_type = VariableTypes.int
+
         for i in range(len(content)):
-            variable_obj.insert_variable(content[i], self.__current_indent, var_type)
+            self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
             self.insert_line(f"{var_type.name} {content[i]};")
 
-    def initialize_variable(self, var_name, var_value):
+    def initialize_variable(self, content):
         """
         pseudocode format: initialize <variable name> = <variable value>
         """
+        content.pop(0)
+        var_name = content[0]
+        var_value = content[-1]
         if var_value.isnumeric():
-            variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.int, int(var_value))
+            self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.int, int(var_value))
             self.insert_line(f"int {var_name} = {int(var_value)};")
         else:
             try:
                 is_float = float(var_value)
-                variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.float)
+                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.float)
                 self.insert_line(f"float {var_name} = {is_float};")
             except ValueError:
-                variable_obj.insert_variable(var_name, self.__current_indent, VariableTypes.char)
+                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.char)
                 self.insert_line(f"char {var_name} = \"{var_value}\";")
 
-    def input_variable(self, var_type, content):
+    def input_variable(self, content):
         """
         pseudocode format: input <variable name> <variable type>
         pseudocode format: input <space separated variable names> <type of variables>
         """
+        content.pop(0)
+        var_type = ""
+        if "character" in content:
+            var_type = VariableTypes.char
+            content = content[:-1]
+        elif "integer" in content:
+            var_type = VariableTypes.int
+            content = content[:-1]
+        elif "float" in content:
+            var_type = VariableTypes.float
+            content = content[:-1]
+        else:
+            var_type = VariableTypes.int
+
         for i in range(len(content)):
-            if not variable_obj.check_variable_in_scope(content[i], self.__current_indent):
-                variable_obj.insert_variable(content[i], self.__current_indent, var_type)
+            if not self.variable_obj.check_variable_in_scope(content[i], self._current_indent):
+                self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
                 self.insert_line(f"{var_type.name} {content[i]};")
-            self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
+                self.insert_line(f"scanf(\"{var_type.value}\", &{content[i]});")
+            else:
+                current_var = self.variable_obj.get_variable(content[i], self._current_indent)
+                self.insert_line(f"scanf(\"{current_var.fmt_specifier}\", &{current_var.var_name});")
 
     def assign_variable(self, content):
         """
@@ -82,44 +116,58 @@ class Mapper:
         if variable already declared, just output the assignment statement
         else, check the type of the <variable 1> and assign that type to the result variable
         """
+        content.pop(0)
         assn_stmt = ""
         try:
             # if variable already declared
-            if variable_obj.check_variable_in_scope(content[0], self.__current_indent):
+            if self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                 assn_stmt = " ".join(content) + ";"
             else:
                 raise VariableNotDeclared
         except VariableNotDeclared:
             # variable not declared earlier
             try:
-                result_var_1 = variable_obj.get_variable(content[2], self.__current_indent)
+                result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
             except VariableNotDeclared:
                 assn_stmt = "int " + " ".join(content) + ";"
         self.insert_line(assn_stmt)
 
-    def print_variables(self, string: str, variable_list):
+    def print_variables(self, content_list):
         """
         pseudocode format: print variable <variable name>
         pseudocode format: print <string>
         """
+        variable_names = []
+        string_to_send = ""
+        content_list.pop(0)
+        i = 0
+        while i < len(content_list):
+            if content_list[i] != "variable":
+                string_to_send += content_list[i] + " "
+                i += 1
+            else:
+                string_to_send += content_list[i] + " "
+                i += 1
+                variable_names.append(content_list[i])
+                i += 1
         i = 0
         variable_count = 0
         string_to_print = "printf(\""
-        content_list = string.split(" ")
+        content_list = string_to_send.split(" ")
         while i < len(content_list):
             if content_list[i] != "variable":
                 string_to_print += content_list[i] + " "
                 i += 1
             else:
                 i += 1
-                result = variable_obj.get_variable(variable_list[variable_count], self.__current_indent)
+                result = self.variable_obj.get_variable(variable_names[variable_count], self._current_indent)
                 variable_count += 1
                 string_to_print += result.var_type.value + " "
         string_to_print = string_to_print.rstrip()
         string_to_print += "\\n\", "
-        for j in variable_list:
+        for j in variable_names:
             string_to_print += j + ", "
         string_to_print = string_to_print[:-2]
         string_to_print += ");"
@@ -150,69 +198,49 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-    #  FIXME: if initialize count = 10 -> int count = 10;    (Rajdeep's part)
-    #  FIXME: if initialize count =10 -> char count = "=10";
     def while_loop(self, content):
         """
         while loop construct
         content: string
         """
-
+        content.pop(0)
         rel_op = ["!=", "==", "<", "<=", ">", ">="]
-        bin_op = {"and": "&& ", "or": "|| "}
+        bin_op = {"and": "&&", "or": "||"}
 
         string = "while("
 
-        # used to prevent double printing of 1 or 0
         flag = 1
         for i, word in enumerate(content):
             if word in rel_op:
+                string += " " + word + " "
 
-                # if lhs is not digit and not initialized then initialize it
-                if content[i + 1] in ["1","0"]:
-                    flag = 0
+            elif word.isdigit():
+                string += word
 
-                if not content[i - 1].isdigit():
-                    if not variable_obj.check_variable_in_scope(
-                        content[i - 1], self.__current_indent
-                    ):
-                        self.initialize_variable(content[i - 1], "0")
+            elif word in bin_op:
+                string += " " + bin_op[word] + " "
 
-                # If lhs is digit and rhs is not initialized then initialize rhs
+            elif word in ["true", "false"]:
+                string += word
+            else:
+                if self.variable_obj.check_variable_in_scope(word, self._current_indent):
+                    string += word
                 else:
-                    if not content[i+1].isdigit() and not variable_obj.check_variable_in_scope(
-                        content[i + 1], self.__current_indent
-                    ):
-                        self.initialize_variable(content[i + 1], "0")
+                    if flag:
+                        self.initialize_variable(['', word, "0"])
+                        string += word
+                        flag = 0
+                    else:
+                        raise VariableNotDeclared
 
-                # If rhs is not digit and not initialized then raise exception
-                if not (
-                    content[i + 1].isdigit()
-                    or variable_obj.check_variable_in_scope(
-                        content[i + 1], self.__current_indent
-                    )
-                ):
-                    raise VariableNotDeclared
 
-                string+= "{0} {1} {2}".format(content[i - 1], word, content[i + 1])
 
-            elif word in bin_op.keys():
-                string+= " " + bin_op[word] + " "
-
-            elif word in ["true", "1"] and flag:
-                string+="1"
-                flag = 1
-
-            elif word in ["false", "0"] and flag:
-                string+="0"
-                flag = 1
-
-        self.insert_line(string+")")
+        self.insert_line(string + ")")
         self.insert_line("{")
         self.increase_indent()
 
     #################################
-    # Helper fucntions for for loop #
+    # Helper functions for for loop #
     #################################
     def helper_oper_(self, val, sign):
         if int(val) > 1:
@@ -237,6 +265,7 @@ class Mapper:
         For loop construct
         content: String
         """
+        content.pop(0)
         init = update = ""
         variable_exist = 0
         iterator = content[0]
@@ -253,10 +282,10 @@ class Mapper:
                 type_ = "char "
                 range_start_val = ord(range_start)
 
-            elif range_start != "range" and variable_obj.get_variable(
-                range_start, self.__current_indent
+            elif range_start != "range" and self.variable_obj.get_variable(
+                range_start, self._current_indent
             ):
-                obj = variable_obj.get_variable(range_start, self.__current_indent)
+                obj = self.variable_obj.get_variable(range_start, self._current_indent)
                 type_ = str(obj.var_type.name) + " "
                 range_start_val = obj.var_value
 
@@ -275,21 +304,21 @@ class Mapper:
                 range_end_val = ord(range_end)
 
             else:
-                variable_exist = variable_obj.check_variable_in_scope(
-                    content[pos + 1], self.__current_indent
+                variable_exist = self.variable_obj.check_variable_in_scope(
+                    content[pos + 1], self._current_indent
                 )
                 if variable_exist:
                     type_ = (
                         str(
-                            variable_obj.get_variable(
-                                content[pos + 1], self.__current_indent
+                            self.variable_obj.get_variable(
+                                content[pos + 1], self._current_indent
                             ).var_type.name
                         )
                         + " "
                     )
                     range_end_val = int(
-                        variable_obj.get_variable(
-                            content[pos + 1], self.__current_indent
+                        self.variable_obj.get_variable(
+                            content[pos + 1], self._current_indent
                         ).var_value
                     )
                 else:
@@ -298,14 +327,14 @@ class Mapper:
             range_end_val = int(range_end)
 
         # if iterator is not defined
-        if not variable_obj.check_variable_in_scope(iterator, self.__current_indent):
+        if not self.variable_obj.check_variable_in_scope(iterator, self._current_indent):
             init = "{0}{1} = {2}".format(type_, iterator, range_start)
         else:
             if is_init:
                 init = "{0} = {1}".format(iterator, range_start)
 
             range_start = int(
-                variable_obj.get_variable(content[0], self.__current_indent).var_value
+                self.variable_obj.get_variable(content[0], self._current_indent).var_value
             )
 
         # evaluate the condition of for loop
@@ -331,103 +360,73 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-
     def end_func(self):
         self.decrease_indent()
         self.insert_line("}")
 
     def get_output_program(self):
-        for line in self.__program:
+        for line in self._program:
             print(line, end="")
 
+    def get_program_list(self) -> list:
+        return self._program
 
-def run():
-    f = open("test_while.txt", "r")
-    data = f.readlines()
-    map_obj = Mapper()
-    for line in data:
+    def comment(self, content: list):
+        if "comment" in content[0]:
+            content.pop(0)
+        str_to_write = "// "
+        for word in content:
+            if word not in '':
+                str_to_write += word + " "
+        if len(str_to_write) > 3:
+            self.insert_line(str_to_write)
+
+    def break_stmt(self):
+        self.insert_line("break;")
+
+    def continue_stmt(self):
+        self.insert_line("continue;")
+
+    __no_args_dict = {
+        "start": start_the_program,
+        "end": end_func,
+        "break": break_stmt,
+        "continue": continue_stmt,
+    }
+    __content_args_dict = {
+        "initialize": initialize_variable,
+        "assign": assign_variable,
+        "input": input_variable,
+        "declare": declare_variable,
+        "print": print_variables,
+        "if": continued_if,
+        "else": continued_if,
+        "for": for_loop,
+        "while": while_loop,
+        "comment": comment
+    }
+
+    def process_input(self, line: str) -> list:
+        start_len = len(self._program)
         line = line.strip()
-        if "start the program" in line:
-            map_obj.start_the_program()
-        elif "end" in line:
-            map_obj.end_func()
-        elif "initialize" in line and "=" in line:
-            content = line.split(" ")[1:]
-            var_name = content[0]
-            var_value = content[-1]
-            map_obj.initialize_variable(var_name, var_value)
-        elif "assign" in line and "initialize" not in line:
-            content = line.split(" ")
-            try:
-                content.remove("assign")
-            except:
-                pass
-            map_obj.assign_variable(content)
-        elif "input" in line:
-            content = line.split(" ")[1:]
-            var_type = ""
-            if "character" in content:
-                var_type = VariableTypes.char
-                content = content[:-1]
-            elif "integer" in content:
-                var_type = VariableTypes.int
-                content = content[:-1]
-            elif "float" in content:
-                var_type = VariableTypes.float
-                content = content[:-1]
-            else:
-                var_type = VariableTypes.int
-            map_obj.input_variable(var_type, content)
-        elif "declare" in line:
-            content = line.split(" ")[1:]
-            var_type = ""
-            if "character" in content:
-                var_type = VariableTypes.char
-                content = content[:-1]
-            elif "integer" in content:
-                var_type = VariableTypes.int
-                content = content[:-1]
-            elif "float" in content:
-                var_type = VariableTypes.float
-                content = content[:-1]
-            else:
-                var_type = VariableTypes.int
-            map_obj.declare_variable(var_type, content)
-        elif "print" in line:
-            variable_names = []
-            string_to_send = ""
-            content_list = line.split(" ")[1:]
-            i = 0
-            while i < len(content_list):
-                if content_list[i] != "variable":
-                    string_to_send += content_list[i] + " "
-                    i += 1
-                else:
-                    string_to_send += content_list[i] + " "
-                    i += 1
-                    variable_names.append(content_list[i])
-                    i += 1
-            map_obj.print_variables(string_to_send, variable_names)
-        elif "else" in line or "if" in line:
-            content = line.split(" ")
-            map_obj.continued_if(content)
+        content = line.split(" ")
+        if content[0] in self.__content_args_dict:
+            self.__content_args_dict[content[0]](self, content)
+        elif content[0] in self.__no_args_dict:
+            self.__no_args_dict[content[0]](self)
+        elif "end" in content[0]:
+            self.__no_args_dict["end"](self)
+        else:
+            self.comment(content)
+        return self._program[start_len:]
 
-        # While and For
-        elif "end" in line and ("for" in line or "while" in line):
-            map_obj.end_func()
-
-        elif "for" in line:
-            content = line.split()[1:]
-            map_obj.for_loop(content)
-
-        elif "while" in line:
-            content = line.split()[1:]
-            map_obj.while_loop(content)
-
-    map_obj.get_output_program()
-
-# TODO: add comments support, break support, increment operation support.
+# TODO: (optional) add increment operation support.
 
 
 if __name__ == "__main__":
-    run()
+    f = open("test_while.txt", "r")
+    data = f.readlines()
+    map_obj = Mapper()
+    for text in data:
+        map_obj.process_input(text)
+    map_obj.get_output_program()
