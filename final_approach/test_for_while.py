@@ -540,7 +540,7 @@ class TestFor(unittest.TestCase):
                 "{\n",
                 "\tfor(int j = 20; j >= 10; j--)\n",
                 "\t{\n",
-            ]
+            ],
         )
 
     def test_init_iter_1(self):
@@ -557,11 +557,7 @@ class TestFor(unittest.TestCase):
         self.test_map_obj.for_loop(test_content)
         self.assertEqual(
             self.test_map_obj.get_program_list(),
-            [
-                "int i = 5;\n",
-                "for(; i <= 10; i++)\n",
-                "{\n"
-            ]
+            ["int i = 5;\n", "for(; i <= 10; i++)\n", "{\n"],
         )
 
     def test_init_iter_2(self):
@@ -578,11 +574,7 @@ class TestFor(unittest.TestCase):
         self.test_map_obj.for_loop(test_content)
         self.assertEqual(
             self.test_map_obj.get_program_list(),
-            [
-                "int i = 2;\n",
-                "for(i = 7; i <= 15; i++)\n",
-                "{\n"
-            ]
+            ["int i = 2;\n", "for(i = 7; i <= 15; i++)\n", "{\n"],
         )
 
     def test_init_iter_3(self):
@@ -599,14 +591,126 @@ class TestFor(unittest.TestCase):
         self.test_map_obj.for_loop(test_content)
         self.assertEqual(
             self.test_map_obj.get_program_list(),
-            [
-                "int i = 10;\n",
-                "for(; i >= 5; i--)\n",
-                "{\n"
-            ]
+            ["int i = 10;\n", "for(; i >= 5; i--)\n", "{\n"],
         )
 
     def test_init_end_1(self):
         """
         Testing when range_end is initialized before auto increment
         """
+        test_input = "initialize num = 10"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range till num"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            ["int num = 10;\n", "for(int i = 1; i <= num; i++)\n", "{\n"],
+        )
+
+    def test_init_end_2(self):
+        """
+        Testing when range_end is initialized before increment by 2
+        """
+        test_input = "initialize num = 10"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range till num increment by 2"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            ["int num = 10;\n", "for(int i = 1; i <= num; i+=2)\n", "{\n"],
+        )
+
+    def test_both_start_end_init_1(self):
+        """
+        Testing when both range_start and range_end is initialized auto increment
+        """
+        test_input = "initialize abc = 5"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "initialize num = 15"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range from abc till num"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int abc = 5;\n",
+                "int num = 15;\n",
+                "for(int i = abc; i <= num; i++)\n",
+                "{\n",
+            ],
+        )
+
+    def test_both_start_end_init_2(self):
+        """
+        Testing when both range_start and range_end is initialized auto decrement
+        """
+        test_input = "initialize abc = 5"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "initialize num = 15"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range from num till abc"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int abc = 5;\n",
+                "int num = 15;\n",
+                "for(int i = num; i >= abc; i--)\n",
+                "{\n",
+            ],
+        )
+
+    def test_both_start_end_init_3(self):
+        """
+        Testing when both range_start and range_end is initialized decrement by 3
+        """
+        test_input = "initialize abc = 5"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "initialize num = 15"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range from num till abc decrement by 3"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int abc = 5;\n",
+                "int num = 15;\n",
+                "for(int i = num; i >= abc; i-=3)\n",
+                "{\n",
+            ],
+        )
+
+
+    def test_init_start_1(self):
+        """
+        Testing when range_start is initialized and range_end is not init
+        """
+        test_input = "initialize i = 2"
+        test_content = test_input.split()
+        self.test_map_obj.initialize_variable(test_content)
+
+        test_input = "for i in range till num"
+        test_content = test_input.split()
+        with self.assertRaises(VariableNotDeclared):
+            self.test_map_obj.for_loop(test_content)

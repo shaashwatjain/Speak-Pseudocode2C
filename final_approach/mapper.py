@@ -198,8 +198,6 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-    #  FIXME: if initialize count = 10 -> int count = 10;    (Rajdeep's part)
-    #  FIXME: if initialize count =10 -> char count = "=10";
     def while_loop(self, content):
         """
         while loop construct
@@ -210,81 +208,33 @@ class Mapper:
         bin_op = {"and": "&&", "or": "||"}
 
         string = "while("
-
-        # used to prevent double printing of 1 or 0
-        #  flag = 1
-        #  for i, word in enumerate(content):
-        #      if word in rel_op:
-        #
-        #          # if lhs is not digit and not initialized then initialize it
-        #          if content[i + 1] in ["1", "0"]:
-        #              flag = 0
-        #
-        #          if not content[i - 1].isdigit():
-        #              if not self.variable_obj.check_variable_in_scope(
-        #                  content[i - 1], self._current_indent
-        #              ):
-        #                  self.initialize_variable(['', content[i - 1], "0"])
-        #
-        #          # If lhs is digit and rhs is not initialized then initialize rhs
-        #          else:
-        #              if not content[
-        #                  i + 1
-        #              ].isdigit() and not self.variable_obj.check_variable_in_scope(
-        #                  content[i + 1], self._current_indent
-        #              ):
-        #                  self.initialize_variable(['', content[i + 1], "0"])
-        #
-        #          # If rhs is not digit and not initialized then raise exception
-        #          if not (
-        #              content[i + 1].isdigit()
-        #              or self.variable_obj.check_variable_in_scope(
-        #                  content[i + 1], self._current_indent
-        #              )
-        #          ):
-        #              raise VariableNotDeclared
-        #
-        #          string += "{0} {1} {2}".format(content[i - 1], word, content[i + 1])
-        #
-        #      elif word in bin_op.keys():
-        #          string += " " + bin_op[word] + " "
-        #
-        #      elif word in ["true", "1"] and flag:
-        #          string += "1"
-        #          flag = 1
-        #
-        #      elif word in ["false", "0"] and flag:
-        #          string += "0"
-        #          flag = 1
+        # used to initialize only 1 uninitialized variable
         flag = 1
         for i, word in enumerate(content):
             if word in rel_op:
                 string += " " + word + " "
 
-            elif word.isdigit():
+            elif word.isdigit() or word in ["true", "false"]:
                 string += word
 
-            elif word in bin_op:
+            elif word in bin_op.keys():
                 string += " " + bin_op[word] + " "
 
-            elif word in ["true", "false"]:
-                string += word
             else:
                 if self.variable_obj.check_variable_in_scope(word, self._current_indent):
                     string += word
                 else:
                     if flag:
-                        self.initialize_variable(['', word, "0"])
+                        self.initialize_variable(["", word, "0"])
                         string += word
                         flag = 0
                     else:
                         raise VariableNotDeclared
 
-
-
         self.insert_line(string + ")")
         self.insert_line("{")
         self.increase_indent()
+
 
     #################################
     # Helper functions for for loop #
@@ -297,12 +247,14 @@ class Mapper:
             val = ""
         return oper, val
 
+
     def helper_greater_(self, x, y):
         if x > y:
             oper = "--"
         else:
             oper = "++"
         return oper
+
 
     #######################
     # For loop constructs #
@@ -329,7 +281,6 @@ class Mapper:
                 type_ = "char "
                 range_start_val = ord(range_start)
 
-
             elif range_start != "range" and self.variable_obj.get_variable(
                 range_start, self._current_indent
             ):
@@ -338,9 +289,11 @@ class Mapper:
                 range_start_val = obj.var_value
 
             else:
-            #  elif range_start == "range":
+                #  elif range_start == "range":
                 # checking if range_start==range and iter is declared before
-                if self.variable_obj.check_variable_in_scope(iterator, self._current_indent):
+                if self.variable_obj.check_variable_in_scope(
+                    iterator, self._current_indent
+                ):
                     obj = self.variable_obj.get_variable(iterator, self._current_indent)
                     type_ = str(obj.var_type.name) + " "
                     range_start_val = obj.var_value
@@ -352,7 +305,6 @@ class Mapper:
 
         else:
             range_start_val = int(range_start)
-        print(range_start_val)
 
         # For range ending
         range_end = content[pos + 1]
