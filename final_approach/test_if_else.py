@@ -67,7 +67,7 @@ class TestNull(unittest.TestCase):
         test_input = " "
         self.test_map_obj.process_input(test_input)
         self.assertEqual(self.test_map_obj.get_program_list(), [])
-        
+
 class TestIfElseifElse(unittest.TestCase):
 
     def setUp(self) -> None:

@@ -433,10 +433,9 @@ class Mapper:
 # TODO: (optional) add increment operation support.
 
 
-if __name__ == "__main__":
-    f = open("test_for.txt", "r")
-    data = f.readlines()
-    map_obj = Mapper()
-    for text in data:
-        map_obj.process_input(text)
-    map_obj.get_output_program()
+f = open("test_while.txt", "r")
+data = f.readlines()
+map_obj = Mapper()
+for text in data:
+    map_obj.process_input(text)
+map_obj.get_output_program()

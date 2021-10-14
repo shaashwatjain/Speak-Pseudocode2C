@@ -1,5 +1,6 @@
-import time 
+import time
 from tkinter import *
+from tkinter import ttk
 
 root = Tk(className="Speech to C Code Framework")
 root.geometry("1920x1080")
@@ -20,7 +21,7 @@ codeInput = f2.read()
 f2.close()
 for i in voiceInput:
     root.update()
-    
+
     if "start" in i or "begin" in i:
         t1.insert(END, i)
         t1.pack()
@@ -33,9 +34,9 @@ for i in voiceInput:
         t2.pack()
         root.update()
         time.sleep(5)
-        
+
         root.quit()
-        text = t2.get("1.0", "end-1c")  
+        text = t2.get("1.0", "end-1c")
         outputFile = open("outputCode.c", "w")
         outputFile.write(text)
         outputFile.close()

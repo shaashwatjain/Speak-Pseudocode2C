@@ -1,0 +1,5 @@
+wordtodigits==1.0.2
+word2number==1.1
+PyAudio==0.2.11
+six==1.15.0
+protobuf==3.18.1

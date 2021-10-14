@@ -27,7 +27,7 @@ class TestDeclare(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.declare_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ["float x;\n"])
-    
+
     def test_character(self):
         """
         3. Declaring character by mentioning character keyword explicitely.
@@ -39,7 +39,7 @@ class TestDeclare(unittest.TestCase):
 
     def test_no_type(self):
         """
-        4. Declaring variable without mentioning type. 
+        4. Declaring variable without mentioning type.
         """
         test_input = "declare var"
         test_content = test_input.split(" ")
@@ -48,22 +48,22 @@ class TestDeclare(unittest.TestCase):
 
     def test_redeclaring(self):
         """
-        5. Redeclaring variable which is defined before. 
+        5. Redeclaring variable which is defined before.
         """
         test_input = "declare new_variable int"
         test_content = test_input.split(" ")
         self.test_map_obj.declare_variable(test_content)
         self.assertRaises(VariableAlreadyDeclared, self.test_map_obj.declare_variable, test_content)
-    
+
     def test_multi_vars(self):
         """
-        6. Declaring multiple variables in a single line of pseudocode. 
+        6. Declaring multiple variables in a single line of pseudocode.
         """
         test_input = "declare var1 var2 var3 integer"
         test_content = test_input.split(" ")
         self.test_map_obj.declare_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ["int var1;\n", "int var2;\n", "int var3;\n"])
-    
+
 
 class TestInput(unittest.TestCase):
     def setUp(self) -> None:
@@ -71,7 +71,7 @@ class TestInput(unittest.TestCase):
 
     def tearDown(self) -> None:
         del self.test_map_obj
-    
+
     def test_no_type(self):
         """
         7. Taking input without mentioning type.
@@ -80,7 +80,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'scanf("%d", &x);\n'])
-    
+
     def test_integer(self):
         """
         8. Taking input of integer.
@@ -89,7 +89,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'scanf("%d", &x);\n'])
-    
+
     def test_character(self):
         """
         9. Taking input of character.
@@ -98,7 +98,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['char x;\n', 'scanf("%c", &x);\n'])
-    
+
     def test_float(self):
         """
         10. Taking input of float.
@@ -107,7 +107,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['float x;\n', 'scanf("%f", &x);\n'])
-    
+
     def test_multi_int(self):
         """
         11. Taking input of multiple integers.
@@ -116,7 +116,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'scanf("%d", &x);\n', 'int y;\n', 'scanf("%d", &y);\n', 'int z;\n', 'scanf("%d", &z);\n'])
-    
+
     def test_multi_char(self):
         """
         12. Taking input of multiple characters.
@@ -125,7 +125,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['char x;\n', 'scanf("%c", &x);\n', 'char y;\n', 'scanf("%c", &y);\n', 'char z;\n', 'scanf("%c", &z);\n'])
-    
+
     def test_multi_float(self):
         """
         13. Taking input of multiple floats.
@@ -134,7 +134,7 @@ class TestInput(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.input_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['float x;\n', 'scanf("%f", &x);\n', 'float y;\n', 'scanf("%f", &y);\n', 'float z;\n', 'scanf("%f", &z);\n'])
-    
+
 
 class TestInitialize(unittest.TestCase):
     def setUp(self) -> None:
@@ -142,7 +142,7 @@ class TestInitialize(unittest.TestCase):
 
     def tearDown(self) -> None:
         del self.test_map_obj
-    
+
     def test_integer(self):
         """
         14. Initializing with integer type.
@@ -151,7 +151,7 @@ class TestInitialize(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.initialize_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int i = 21;\n'])
-    
+
     def test_float(self):
         """
         15. Initializing with float type.
@@ -160,7 +160,7 @@ class TestInitialize(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.initialize_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['float i = 3.14;\n'])
-    
+
     def test_character(self):
         """
         16. Initializing with character type.
@@ -169,7 +169,7 @@ class TestInitialize(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.initialize_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['char i = "h";\n'])
-    
+
 
 class TestAssign(unittest.TestCase):
     def setUp(self) -> None:
@@ -177,7 +177,7 @@ class TestAssign(unittest.TestCase):
 
     def tearDown(self) -> None:
         del self.test_map_obj
-    
+
     def test_variable(self):
         """
         17. Assigning variable.
@@ -186,7 +186,7 @@ class TestAssign(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.assign_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int i = c;\n'])
-    
+
     def test_relop(self):
         """
         18. Assigning relational operations.
@@ -204,7 +204,7 @@ class TestAssign(unittest.TestCase):
         self.test_map_obj.assign_variable(test_content3)
         self.test_map_obj.assign_variable(test_content4)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int i1 = a + b;\n', 'int i2 = a - b;\n', 'int i3 = a * b;\n', 'int i4 = a / b;\n'])
-    
+
     def test_increment_var(self):
         """
         19. Assigning relational operations on variable with some value.
@@ -230,7 +230,7 @@ class TestPrint(unittest.TestCase):
 
     def tearDown(self) -> None:
         del self.test_map_obj
-    
+
     def test_string(self):
         """
         20. Printing some string.
@@ -239,7 +239,7 @@ class TestPrint(unittest.TestCase):
         test_content = test_input.split(" ")
         self.test_map_obj.print_variables(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['printf("hello world\\n");\n'])
-        
+
     def test_variable(self):
         """
         21. Printing some variable.
@@ -251,7 +251,7 @@ class TestPrint(unittest.TestCase):
         test_content2 = test_input2.split(" ")
         self.test_map_obj.print_variables(test_content2)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'printf("%d\\n", x);\n'])
-        
+
     def test_string_variale_combination(self):
         """
         22. Printing some string with variable.
@@ -263,7 +263,7 @@ class TestPrint(unittest.TestCase):
         test_content2 = test_input2.split(" ")
         self.test_map_obj.print_variables(test_content2)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'printf("the value of x is %d metres in height\\n", x);\n'])
-        
+
     def test_string_multiple_variale_combination(self):
         """
         23. Printing string and multiple variables.
@@ -275,10 +275,10 @@ class TestPrint(unittest.TestCase):
         test_content2 = test_input2.split(" ")
         self.test_map_obj.print_variables(test_content2)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int x;\n', 'int y;\n', 'printf("the length and breadth of rectangle are %d and %d metres\\n", x, y);\n'])
-    
+
     def test_undefined_variable(self):
         """
-        24. Printing variable which is not declared.  
+        24. Printing variable which is not declared.
         """
         test_input = "print variable x"
         test_content = test_input.split(" ")
