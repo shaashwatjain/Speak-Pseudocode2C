@@ -3,3 +3,9 @@ word2number==1.1
 PyAudio==0.2.11
 six==1.15.0
 protobuf==3.18.1
+
+1) start the framework -> start google_text_to_speech and mapper start the pseudocode
+2) exit the framework -> handle the scoping and save the rhs text box in a file
+3) Add save button
+4) Add return 0 functionality
+5) (Additional) -> set of rules, coloring of text
