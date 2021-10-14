@@ -182,6 +182,8 @@ class Mapper:
                 comparison_string += "&&" + " "
             elif word == "=":
                 comparison_string += "==" + " "
+            elif word == "not":
+                comparison_string += "!"
             else:
                 if word != 'if' and word != 'else':
                     comparison_string += word + " "
