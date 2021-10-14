@@ -208,33 +208,36 @@ class Mapper:
         bin_op = {"and": "&&", "or": "||"}
 
         string = "while("
-        # used to initialize only 1 uninitialized variable
+
         flag = 1
         for i, word in enumerate(content):
             if word in rel_op:
                 string += " " + word + " "
 
-            elif word.isdigit() or word in ["true", "false"]:
+            elif word.isdigit():
                 string += word
 
-            elif word in bin_op.keys():
+            elif word in bin_op:
                 string += " " + bin_op[word] + " "
 
+            elif word in ["true", "false"]:
+                string += word
             else:
                 if self.variable_obj.check_variable_in_scope(word, self._current_indent):
                     string += word
                 else:
                     if flag:
-                        self.initialize_variable(["", word, "0"])
+                        self.initialize_variable(['', word, "0"])
                         string += word
                         flag = 0
                     else:
                         raise VariableNotDeclared
 
+
+
         self.insert_line(string + ")")
         self.insert_line("{")
         self.increase_indent()
-
 
     #################################
     # Helper functions for for loop #
@@ -247,14 +250,12 @@ class Mapper:
             val = ""
         return oper, val
 
-
     def helper_greater_(self, x, y):
         if x > y:
             oper = "--"
         else:
             oper = "++"
         return oper
-
 
     #######################
     # For loop constructs #
@@ -289,20 +290,9 @@ class Mapper:
                 range_start_val = obj.var_value
 
             else:
-                #  elif range_start == "range":
-                # checking if range_start==range and iter is declared before
-                if self.variable_obj.check_variable_in_scope(
-                    iterator, self._current_indent
-                ):
-                    obj = self.variable_obj.get_variable(iterator, self._current_indent)
-                    type_ = str(obj.var_type.name) + " "
-                    range_start_val = obj.var_value
-
-                else:
-                    range_start = "1"
-                    range_start_val = 1
+                range_start = "1"
+                range_start_val = 1
             is_init = 0
-
         else:
             range_start_val = int(range_start)
 
@@ -434,7 +424,7 @@ class Mapper:
 
 
 if __name__ == "__main__":
-    f = open("test_for.txt", "r")
+    f = open("test_while.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for text in data:

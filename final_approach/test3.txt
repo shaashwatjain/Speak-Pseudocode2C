@@ -1,0 +1,18 @@
+while count < 10
+endwhile
+
+
+while count > 10
+endwhile
+
+
+while count != 10
+endwhile
+
+
+while 1
+endwhile
+
+
+while 0
+endwhile

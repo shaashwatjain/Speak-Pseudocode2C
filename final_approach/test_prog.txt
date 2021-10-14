@@ -1,0 +1,13 @@
+start the program
+    initialize num
+    initialize i = 2
+    print "Enter the number to find the smallest divisor"
+    input num
+    while i <= num
+        if num % i = 0
+            print "The smallest number is i"
+            break
+        endif
+        Increment i
+    endwhile
+end
