@@ -1,9 +1,0 @@
-start the program
-    initialize total = 0
-    for i in range from 0 till 100 increment by 1
-        if i % 3 == 0 or i % 5 == 0
-            assign total = total + i
-        endif
-    endfor
-    print the sum of number is variable total
-end

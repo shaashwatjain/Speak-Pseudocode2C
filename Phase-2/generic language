@@ -1,0 +1,18 @@
+starting:
+    start the program
+    begin the program
+
+printing:
+    print [text]
+    output [text]
+    display [text]
+
+declare:
+    declare [num1 and num2] integer
+
+read:
+    read num1
+
+end:
+    exit the code
+    end the code
