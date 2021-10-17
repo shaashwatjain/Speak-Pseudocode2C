@@ -86,6 +86,8 @@ class Pseudocode2c(threading.Thread):
         self.undo_button.configure(height=3, width=10)
         self.undo_button.place(x=1350, y=55)
 
+        self.lines_to_delete = 0
+
         self.left_text = Text(
             self.Frame, relief=GROOVE, height=40, width=100, borderwidth=2
         )
@@ -183,6 +185,12 @@ def listen_print_loop(responses, obj):
             if transcript[0] == " ":
                 transcript = transcript[1:]
                 transcript += " "
+
+            if re.search(r"\b(exit|quit)\b", transcript, re.I):
+                flag = 0
+            # Exit recognition if any of the transcribed phrases could be
+            # one of our keywords.
+
             try:
                 transcript = wordtodigits.convert(transcript)
                 transcript = transcript.lower()
@@ -190,8 +198,11 @@ def listen_print_loop(responses, obj):
                 indent = pre_indentation(transcript, indent)
 
                 # LEFT
-                resultant = "\t"*indent + transcript
-                obj.insert_lhs(resultant)
+                if flag:
+                    resultant = "\t"*indent + transcript
+                else:
+                    resultant = "exit pseudo code"
+                obj.insert_lhs(resultant+"\n")
                 #Nedd to have a fn call to add text in lhs
 
                 # RIGHT
@@ -201,17 +212,15 @@ def listen_print_loop(responses, obj):
                 for line in list_for_program:
                     print(line, end="")
                     obj.insert_rhs(line)
+                    obj.lines_to_delete = len_source_code
 
                 indent = post_indentation(transcript, indent)
             except:
                 print("Conversion failed")
                 raise SpeechToTextException
 
-            # Exit recognition if any of the transcribed phrases could be
-            # one of our keywords.
-            if re.search(r"\b(exit|quit)\b", transcript, re.I):
-                print("Exiting..")
-                break
+        if not flag:
+            break
 
 
 def InitializeStream(obj):
@@ -243,5 +252,5 @@ def InitializeStream(obj):
 
 if __name__=="__main__":
     gui = Pseudocode2c()
-    print("running GST")
+    print("running Google Speech to text...")
     InitializeStream(gui)
