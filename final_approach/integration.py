@@ -1,10 +1,12 @@
-from speech_to_text import replacement, pre_indentation, post_indentation, MicrophoneStream
-from exceptions import SpeechToTextException
-from google.cloud import speech_v1p1beta1 as speech
-from corrections import corr_list
-import wordtodigits
 import re
+
+import wordtodigits
+from google.cloud import speech_v1p1beta1 as speech
+
+from corrections import corr_list
+from exceptions import SpeechToTextException
 from mapper import Mapper
+from speech_to_text import (MicrophoneStream, post_indentation, pre_indentation, replacement)
 
 # Audio recording parameters
 RATE = 16000
@@ -51,9 +53,12 @@ def listen_print_loop(responses):
 
                 # LEFT
                 resultant = "\t"*indent + transcript
+                #Nedd to have a fn call to add text in lhs
 
                 # RIGHT
                 list_for_program = mapper_obj.process_input(resultant)
+                len_source_code = len(list_for_program)
+                # Need to have a fn call to rhs and pass len_source_code
                 for line in list_for_program:
                     print(line, end="")
 

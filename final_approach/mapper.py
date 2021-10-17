@@ -1,6 +1,6 @@
-from variable_mapper import Variable
-from userDefinedTypes import VariableTypes
 from exceptions import *
+from userDefinedTypes import VariableTypes
+from variable_mapper import Variable
 
 
 class Mapper:
@@ -434,11 +434,10 @@ class Mapper:
 
 # TODO: (optional) add increment operation support.
 
-
-if __name__ == "__main__":
-    f = open("3. divisible by 13.txt", "r")
-    data = f.readlines()
-    map_obj = Mapper()
-    for text in data:
-        map_obj.process_input(text)
-    map_obj.get_output_program()
+#  if __name__ == "__main__":
+#      f = open("3. divisible by 13.txt", "r")
+#      data = f.readlines()
+#      map_obj = Mapper()
+#      for text in data:
+#          map_obj.process_input(text)
+#      map_obj.get_output_program()
