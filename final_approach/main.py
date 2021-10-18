@@ -6,7 +6,7 @@ import sys
 import threading
 import time
 from tkinter import *
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 import wordtodigits
 from google.cloud import speech_v1p1beta1 as speech
@@ -14,7 +14,7 @@ from google.cloud import speech_v1p1beta1 as speech
 from corrections import corr_list
 from exceptions import SpeechToTextException
 from mapper import Mapper
-from speech_to_text import (MicrophoneStream, post_indentation, pre_indentation, replacement)
+from speech_to_text import ( MicrophoneStream, post_indentation, pre_indentation, replacement)
 
 # Audio recording parameters
 RATE = 16000
@@ -24,6 +24,7 @@ CHUNK = int(RATE / 10)  # 100ms
 class Pseudocode2c(threading.Thread):
     def __init__(self):
         self.path = os.getcwd()
+        self.alive = True
         threading.Thread.__init__(self)
         self.start()
 
@@ -143,6 +144,8 @@ class Pseudocode2c(threading.Thread):
         self.right_text.delete(num_lines_to_delete, "end")
 
     def exit_code(self):
+        self.alive = False
+        sys.exit(0)
         self.root.destroy()
 
     def insert_lhs(self, text_to_write):
@@ -150,6 +153,11 @@ class Pseudocode2c(threading.Thread):
 
     def insert_rhs(self, text_to_write):
         self.right_text.insert("end", text_to_write)
+
+    def show_alert(self, text_to_write):
+        messagebox.showerror(
+            title="Exception", message="Oops! {0} occured".format(text_to_write)
+        )
 
 
 def listen_print_loop(responses, obj):
@@ -188,6 +196,8 @@ def listen_print_loop(responses, obj):
 
             if re.search(r"\b(exit|quit)\b", transcript, re.I):
                 flag = 0
+                if not gui.alive:
+                    sys.exit(0)
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
 
@@ -199,11 +209,11 @@ def listen_print_loop(responses, obj):
 
                 # LEFT
                 if flag:
-                    resultant = "\t"*indent + transcript
+                    resultant = "\t" * indent + transcript
                 else:
                     resultant = "exit pseudo code"
-                obj.insert_lhs(resultant+"\n")
-                #Nedd to have a fn call to add text in lhs
+                obj.insert_lhs(resultant + "\n")
+                # Nedd to have a fn call to add text in lhs
 
                 # RIGHT
                 list_for_program = mapper_obj.process_input(resultant)
@@ -213,11 +223,12 @@ def listen_print_loop(responses, obj):
                     print(line, end="")
                     obj.insert_rhs(line)
                     obj.lines_to_delete = len_source_code
-
                 indent = post_indentation(transcript, indent)
+
             except:
                 print("Conversion failed")
-                raise SpeechToTextException
+                obj.show_alert(sys.exc_info()[0])
+                #  raise SpeechToTextException
 
         if not flag:
             break
@@ -250,7 +261,7 @@ def InitializeStream(obj):
         listen_print_loop(responses, obj)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     gui = Pseudocode2c()
-    print("running Google Speech to text...")
+    print("Running Google Speech to text...")
     InitializeStream(gui)
