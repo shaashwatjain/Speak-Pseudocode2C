@@ -4,3 +4,7 @@ class VariableNotDeclared(Exception):
 
 class VariableAlreadyDeclared(Exception):
     pass
+
+
+class SpeechToTextException(Exception):
+    pass

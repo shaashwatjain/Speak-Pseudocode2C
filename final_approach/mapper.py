@@ -1,6 +1,6 @@
-from variable_mapper import Variable
-from userDefinedTypes import VariableTypes
 from exceptions import *
+from userDefinedTypes import VariableTypes
+from variable_mapper import Variable
 
 
 class Mapper:
@@ -182,6 +182,8 @@ class Mapper:
                 comparison_string += "&&" + " "
             elif word == "=":
                 comparison_string += "==" + " "
+            elif word == "not":
+                comparison_string += "!"
             else:
                 if word != 'if' and word != 'else':
                     comparison_string += word + " "
@@ -397,6 +399,11 @@ class Mapper:
     def continue_stmt(self):
         self.insert_line("continue;")
 
+    def exit(self, content):
+        self._current_indent = 1
+        self.insert_line("return 0;")
+        self.end_func()
+
     __no_args_dict = {
         "start": start_the_program,
         "end": end_func,
@@ -413,7 +420,8 @@ class Mapper:
         "else": continued_if,
         "for": for_loop,
         "while": while_loop,
-        "comment": comment
+        "comment": comment,
+        "exit": exit
     }
 
     def process_input(self, line: str) -> list:
@@ -432,10 +440,10 @@ class Mapper:
 
 # TODO: (optional) add increment operation support.
 
-
-f = open("test_while.txt", "r")
-data = f.readlines()
-map_obj = Mapper()
-for text in data:
-    map_obj.process_input(text)
-map_obj.get_output_program()
+#  if __name__ == "__main__":
+#      f = open("3. divisible by 13.txt", "r")
+#      data = f.readlines()
+#      map_obj = Mapper()
+#      for text in data:
+#          map_obj.process_input(text)
+#      map_obj.get_output_program()
