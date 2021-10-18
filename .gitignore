@@ -1,8 +1,8 @@
-__pycache__/
-transcript.txt
-.vscode
-.c
-.exe
+**/__pycache__/*
+**/transcript.txt
+**/.vscode/*
+**/*.c
+**/*.exe
 final_approach/Output
-LICENSE
-final_approach/*.stats
+**/LICENSE
+**/*.stats
