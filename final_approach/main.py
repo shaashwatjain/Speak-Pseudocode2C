@@ -42,7 +42,7 @@ class Pseudocode2c(threading.Thread):
         _ana1color = "#ffffff"  # X11 color: 'white'
         _ana2color = "#ffffff"  # X11 color: 'white'
         font14 = (
-            "-family {Segoe UI} -size 15 -weight bold -slant "
+            "-family {Segoe UI} -size 15 -weight normal -slant "
             "roman -underline 0 -overstrike 0"
         )
         font16 = (
@@ -90,13 +90,15 @@ class Pseudocode2c(threading.Thread):
         self.lines_to_delete = 0
 
         self.left_text = Text(
-            self.Frame, relief=GROOVE, height=40, width=100, borderwidth=2
+            self.Frame, relief=GROOVE, height=25, width=70, borderwidth=2
         )
+        self.left_text.configure(font=font14)
         self.left_text.pack(padx=80, side=LEFT)
 
         self.right_text = Text(
-            self.Frame, relief=GROOVE, height=40, width=100, borderwidth=2
+            self.Frame, relief=GROOVE, height=25, width=70, borderwidth=2
         )
+        self.right_text.configure(font=font14)
         self.right_text.pack(side=LEFT)
 
         self.compile_button = Button(
