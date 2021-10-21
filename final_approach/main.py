@@ -122,7 +122,7 @@ class Pseudocode2c(threading.Thread):
             self.Frame, text="Exit the Program", command=self.exit_code
         )
         self.exit_button.configure(height=3)
-        self.exit_button.place(x=1650, y=900)
+        self.exit_button.place(x=1650, y=890)
 
         self.root.mainloop()
 
