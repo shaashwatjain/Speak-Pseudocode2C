@@ -8,21 +8,21 @@ int main()
     printf("Enter the number of prime numbers to print till\n");
     scanf("%d", &num);
 
-    if (num >= 1)
+    if(num >= 1)
     {
         printf("First %d prime numbers are:\n", num);
         printf("2\n");
     }
 
-    for (count = 2; count <= num;)
+    for(count = 2; count <= num;)
     {
-        for (c = 2; c <= i - 1; c++)
+        for(c = 2; c <= i - 1; c++)
         {
-            if (i % c == 0)
+            if(i % c == 0)
                 break;
         }
 
-        if (c == i)
+        if(c == i)
         {
             printf("%d\n", i);
             count++;
@@ -36,7 +36,7 @@ int main()
 
 
 /*
-start the pseudocode
+    start the pseudocode
     declare num
     declare count
     declare c
@@ -47,9 +47,9 @@ start the pseudocode
         print First num prime number are
       print 2
     endif
-    for count in range from 2 until count less than equal to num
-        for c in range from 2 until c less than equal to i-1 increment c
-            if i mod c eual to 0
+    for count in range from 2 till count less than equal to num no update
+        for c in range from 2 till c less than equal to i - 1 increment by 1
+            if i mod c equal to 0
                 break
             endif
         endfor
@@ -59,5 +59,5 @@ start the pseudocode
         endif
         assign i = i + 1
     endfor
-End
+    End
 */

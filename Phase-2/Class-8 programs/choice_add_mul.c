@@ -5,9 +5,9 @@
 
 int main()
 {
-    int num;
+    int number;
     printf("Enter the number ");
-    scanf("%d", &num);
+    scanf("%d", &number);
 
     int choice;
     printf("1. To computer sum\n2. To compute product\nEnter the choice: ");
@@ -18,7 +18,7 @@ int main()
     if(choice == 2)
         total = 1;
 
-    for(int i = 1; i <= num; i++)
+    for(int i = 1; i <= number; i++)
         if(choice == 1)
             total += i;
         else
@@ -30,8 +30,8 @@ int main()
 
 /*
     Start the pseudocode
-    declare num
-    input num
+    declare number
+    input number
     declare choice
     print 1. To compute sum 2. To compute product
     input choice
@@ -39,7 +39,7 @@ int main()
     if choice equals 2
         assign total = 1
     endif
-    for i in range from 1 till num increment i
+    for i in range from 1 till number
         if choice equal 1
             assign total = total + i
         endif
