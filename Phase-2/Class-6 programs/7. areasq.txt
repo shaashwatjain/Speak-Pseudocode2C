@@ -1,7 +1,7 @@
 start the program 
-    integer side 
+    declare side integer 
     print Enter side of square
-    read side 
-    result = side * side 
-    print result 
-exit the code 
+    input side 
+    assign result = side * side 
+    print variable result 
+exit 

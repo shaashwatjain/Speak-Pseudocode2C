@@ -9,7 +9,7 @@ int main()
     printf("Enter an exponent ");
     scanf("%d", &exponent);
 
-    while (exponent != 0)
+    while(exponent != 0)
     {
         result *= base;
         --exponent;
@@ -21,18 +21,18 @@ int main()
 }
 
 /*
-Start the pseudocode
-    Initialize base
-    Initialize exponent
-    set result to 1
-    print "Enter the base number"
+    Start the pseudocode
+    declare base
+    declare exponent
+    iniitialize result = 1
+    print Enter the base number
     input base
-    print "Enter the exponent number"
+    print Enter the exponent number
     input exponent
     while exponent not equal to 0
-        result multiply equal base
-        Decrement exponent
+        assign result = result * base
+        assign exponent = exponent - 1
     endwhile
-    print "Answer is result"
-End
+    print Answer is variable result
+    End
 */

@@ -9,11 +9,11 @@ int main()
     int count = 0;
     printf("The next 20 leap years are\n");
 
-    while (count < 20)
+    while(count < 20)
     {
-        if (year % 4 == 0)
+        if(year % 4 == 0)
         {
-            if (year % 100 != 0 || year % 400 == 0)
+            if(year % 100 != 0 || year % 400 == 0)
             {
                 ++count;
                 printf("%d\n", year);
@@ -22,25 +22,26 @@ int main()
 
         ++year;
     }
+
     return 0;
 }
 
 /*
-Start the pseudocode
-    Initialize current
-    Print "What is the current year"
-    Input current
-    set year to current plus 1
-    set count to 0
-    print "The next 20 years are"
+    Start the pseudocode
+    initialize current
+    print What is the current year
+    input current
+    assign year = current + 1
+    initialize count = 0
+    print The next 20 years are
     while count less than 20
         if year mod 4 equal to 0
             if year mod 100 not equal to 0 or year mod 400 equal to zero
-                increment count
-                print "year"
+                assign count = count + 1
+                print variable year
             endif
         endif
-        increment year
+        assign year = year + 1
     endwhile
-End
+    End
 */

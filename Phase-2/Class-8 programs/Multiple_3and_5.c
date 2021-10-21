@@ -5,12 +5,12 @@
 
 int main()
 {
-    int num;
-    printf("Enter the number till you need to compute sum");
-    scanf("%d", &num);
+    int number;
+    printf("Enter the number till you need to compute sum: ");
+    scanf("%d", &number);
     int total = 0;
 
-    for(int i = 0; i <= num; i++)
+    for(int i = 0; i <= number; i++)
         if(i % 3 == 0 || i % 5 == 0)
             total += i;
 
@@ -19,16 +19,16 @@ int main()
 }
 
 /*
-Start the pseudocode
-    initialize num
-    print "Enter the number till you need to compute sum"
-    read num
-    initialize total equal to 0
-    for i in range from 0 till num increment i
+    Start the pseudocode
+    declare number
+    print Enter the number till you need to compute sum
+    input number
+    initialize total = 0
+    for i in range from 0 till number increment by 1
         if i mod 3 is zero or i mod 5 is zero
-            total plus equal to i
+            assign total = total + i
         endif
     endfor
-    print the sum of number is total
-End
+    print the sum of number is variable total
+    End
 */

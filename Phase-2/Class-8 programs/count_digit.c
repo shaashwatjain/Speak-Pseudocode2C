@@ -2,14 +2,14 @@
 #include<stdio.h>
 int main()
 {
-    int num;
+    int number;
     int count = 0;
     printf("Enter an integer: ");
-    scanf("%d", &num);
+    scanf("%d", &number);
 
-    while (num != 0)
+    while(number != 0)
     {
-        num /= 10;
+        number /= 10;
         ++count;
     }
 
@@ -19,15 +19,15 @@ int main()
 }
 
 /*
-Start the pseudocode
-    Initialize num
-    set count to 0
-    print "Enter an integer"
-    input num
-    while num not equal to 0
-        num divide equal 10
-        increment count
+    Start the pseudocode
+    Initialize number
+    initialize count = 0
+    print Enter an integer
+    input number
+    while number not equal to 0
+        assign number = number / 10
+        assign count = count + 1
     endwhile
-    print "Number of digits is count"
-End
+    print Number of digits is variable count
+    End
 */

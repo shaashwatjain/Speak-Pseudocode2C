@@ -3,13 +3,14 @@
 #include<stdio.h>
 int main()
 {
-    int num;
-    int i=2;
+    int number;
+    int i = 2;
     printf("Enter the number to find the smallest divisor\n");
-    scanf("%d", &num);
-    while(i <= num)
+    scanf("%d", &number);
+
+    while(i <= number)
     {
-        if(num % i == 0)
+        if(number % i == 0)
         {
             printf("The smallest number is %d\n", i);
             break;
@@ -17,21 +18,22 @@ int main()
 
         i++;
     }
+
     return 0;
 }
 
 /*
-Start the pseudocode
-    initialize num
-    set i to 2
-    print "Enter the number to find the smallest divisor"
-    input num
-    while i less than equal to num
-        if num mod i equal to 0
-            print "The smallest number is i"
+    Start the pseudocode
+    declare number
+    initialize i = 2
+    print Enter the number to find the smallest divisor
+    input number
+    while i less than equal to number
+        if number mod i equal to 0
+            print The smallest number is variable i
             break
         endif
-        Increment i
+        assign i = i + 1
     endwhile
-end
+    end
 */

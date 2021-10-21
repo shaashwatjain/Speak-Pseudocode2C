@@ -3,24 +3,25 @@
 #include <stdio.h>
 int main()
 {
-    int num, i;
+    int number, i;
     printf("Enter an integer: ");
-    scanf("%d", &num);
+    scanf("%d", &number);
 
-    for (i = 1; i <= 10; ++i)
-        printf("%d * %d = %d \n", num, i, num * i);
+    for(i = 1; i <= 10; i++)
+        printf("%d * %d = %d \n", number, i, number * i);
 
     return 0;
 }
 
 /*
-Start the pseudocode
-    Initialize num
-    Initialize i
-    Print "Enter the integer"
-    Input num
-    for i in range from 1 till 10 increment i
-        Print "num, i, num multiply i"
+    Start the pseudocode
+    declare number
+    declare i
+    print Enter the integer
+    input number
+    for i in range from 1 till 10
+        assign res = number * i
+        print variable number * variable i = variable res
     endfor
-End
+    End
 */

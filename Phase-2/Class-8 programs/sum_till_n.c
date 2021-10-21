@@ -3,12 +3,13 @@
 #include<stdio.h>
 #include<string.h>
 
-int main() {
+int main()
+{
     int n;
     scanf("%d", &n);
     int total = 0;
 
-    for (int i = 0; i <= n; i++)
+    for(int i = 0; i <= n; i++)
         total += i;
 
     printf("The sum of the number is %d\n", total);
@@ -18,11 +19,11 @@ int main() {
 /*
     Pseudocode:-
     Start the pseudocode
-    read a number
-    initialize total equal to 0
-    for i in range of n+1
-        add i to total
+    input number
+    initialize total = 0
+    for i in range from 0 till n
+        assign total = total + i
     endfor
-    print the sum of number is total
+    print the sum of number is variable total
     End
 */
