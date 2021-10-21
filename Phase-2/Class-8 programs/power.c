@@ -22,17 +22,17 @@ int main()
 
 /*
 Start the pseudocode
-    Initialize base
-    Initialize exponent
-    set result to 1
-    print "Enter the base number"
+    declare base
+    declare exponent
+    iniitialize result = 1
+    print Enter the base number
     input base
-    print "Enter the exponent number"
+    print Enter the exponent number
     input exponent
     while exponent not equal to 0
-        result multiply equal base
-        Decrement exponent
+        assign result = result * base
+        assign exponent = exponent - 1
     endwhile
-    print "Answer is result"
+    print Answer is variable result
 End
 */

@@ -18,11 +18,11 @@ int main() {
 /*
     Pseudocode:-
     Start the pseudocode
-    read a number
-    initialize total equal to 0
+    input number
+    initialize total = 0
     for i in range of n+1
-        add i to total
+        assign total = total + i
     endfor
-    print the sum of number is total
+    print the sum of number is variable total
     End
 */

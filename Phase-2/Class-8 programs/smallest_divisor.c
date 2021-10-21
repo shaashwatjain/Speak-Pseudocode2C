@@ -22,16 +22,16 @@ int main()
 
 /*
 Start the pseudocode
-    initialize num
-    set i to 2
-    print "Enter the number to find the smallest divisor"
+    declare num
+    initialize i = 2
+    print Enter the number to find the smallest divisor
     input num
     while i less than equal to num
         if num mod i equal to 0
-            print "The smallest number is i"
+            print The smallest number is variable i
             break
         endif
-        Increment i
+        assign i = i + 1
     endwhile
 end
 */

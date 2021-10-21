@@ -37,15 +37,15 @@ int main()
 
 /*
 start the pseudocode
-    Initialize num
-    Initialize count
-    Initialize c
-    Set i to 3
-    Print "Enter the number of prime number to prill till"
-    Input num
+    declare num
+    declare count
+    declare c
+    initialize i = 3
+    print Enter the number of prime number to prill till
+    input num
     If nums greater than equal to 1
-      Print "First num prime number are"
-      print "2"
+        print First num prime number are
+      print 2
     endif
     for count in range from 2 until count less than equal to num
         for c in range from 2 until c less than equal to i-1 increment c
@@ -54,10 +54,10 @@ start the pseudocode
             endif
         endfor
         if c equal to i
-            Print "i"
-            increment count
+            Print variable i
+            assign count = count + 1
         endif
-        increment i
+        assign i = i + 1
     endfor
 End
 */

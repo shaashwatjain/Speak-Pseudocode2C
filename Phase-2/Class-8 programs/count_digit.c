@@ -21,13 +21,13 @@ int main()
 /*
 Start the pseudocode
     Initialize num
-    set count to 0
-    print "Enter an integer"
+    initialize count = 0
+    print Enter an integer
     input num
     while num not equal to 0
-        num divide equal 10
-        increment count
+        assign num = num / 10
+        assign count = count + 1
     endwhile
-    print "Number of digits is count"
+    print Number of digits is variable count
 End
 */

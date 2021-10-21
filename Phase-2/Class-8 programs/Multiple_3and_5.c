@@ -20,15 +20,15 @@ int main()
 
 /*
 Start the pseudocode
-    initialize num
-    print "Enter the number till you need to compute sum"
-    read num
-    initialize total equal to 0
+    declare num
+    print Enter the number till you need to compute sum
+    input num
+    initialize total = 0
     for i in range from 0 till num increment i
         if i mod 3 is zero or i mod 5 is zero
-            total plus equal to i
+            assign total = total + i
         endif
     endfor
-    print the sum of number is total
+    print the sum of number is variable total
 End
 */

@@ -30,23 +30,23 @@ int main()
 
 /*
     Start the pseudocode
-    initialize num
-    read num
-    initalize choice
-    Print "1. To compute sum 2. To compute product"
+    declare num
+    input num
+    declare choice
+    print 1. To compute sum 2. To compute product
     input choice
-    set total to 0
+    initialize total = 0
     if choice equals 2
-        set total to 1
+        assign total = 1
     endif
     for i in range from 1 till num increment i
         if choice equal 1
-            total plus equal i
+            assign total = total + i
         endif
         else
-            total multiply equal i
+            assign total = total * i
         endelse
     endfor
-    print the result is total
+    print the result is variable total
     End
 */

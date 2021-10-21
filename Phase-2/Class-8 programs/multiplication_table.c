@@ -15,12 +15,13 @@ int main()
 
 /*
 Start the pseudocode
-    Initialize num
-    Initialize i
-    Print "Enter the integer"
-    Input num
+    declare num
+    declare i
+    print Enter the integer
+    input num
     for i in range from 1 till 10 increment i
-        Print "num, i, num multiply i"
+        assign res = num * i
+        print variable num * variable i = variable res
     endfor
 End
 */

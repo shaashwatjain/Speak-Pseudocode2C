@@ -18,14 +18,14 @@ int main()
 
 /*
     Start the pseudocode
-    initialize num
-    initialize i
-    print "Enter a positive integer"
+    declare num
+    declare i
+    print Enter a positive integer
     input num
-    print "Factors of num are"
+    print Factors of num are
     for i in range from 1 to num increment i
         if num mod i equal to 0
-            print "i"
+            print variable i
         endif
     endfor
 end

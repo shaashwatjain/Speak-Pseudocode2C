@@ -27,20 +27,20 @@ int main()
 
 /*
 Start the pseudocode
-    Initialize current
-    Print "What is the current year"
-    Input current
-    set year to current plus 1
-    set count to 0
-    print "The next 20 years are"
+    initialize current
+    print What is the current year
+    input current
+    assign year = current + 1
+    initialize count = 0
+    print The next 20 years are
     while count less than 20
         if year mod 4 equal to 0
             if year mod 100 not equal to 0 or year mod 400 equal to zero
-                increment count
-                print "year"
+                assign count = count + 1
+                print variable year
             endif
         endif
-        increment year
+        assign year = year + 1
     endwhile
 End
 */
