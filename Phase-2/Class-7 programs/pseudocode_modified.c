@@ -47,8 +47,8 @@ int main(){
 start the program
 declare integer num
 read num
-if num%13 = 0
-print The number is divisible ny 13
+if num % 13 = 0
+print The number is divisible by 13
 else
 print Number not divisible by 13
 end if
@@ -57,20 +57,21 @@ end program
 Write a program to check if a number is even or not
 
 #include<stdio.h>
-int main(){
-int number=0;
-printf("Enter a number:");
-scanf("%d",&number);
-if(number%2==0){
-printf("number is even");
-}
-return 0;
+int main()
+{
+    int number=0;
+    printf("Enter a number:");
+    scanf("%d",&number);
+    if(number%2==0)
+    {
+        printf("number is even");
+    }
+    return 0;
 }
 
 start the program
-set integer number to 0
 print Enter a number
-read number
+input number integer
 if number % 2 = 0
     print number is even
 endif
@@ -80,29 +81,33 @@ end program
 Write a program to check if a number is 0,50 or 100.
 
 #include<stdio.h>
-int main(){
-int number=0;
-printf("enter a number:");
-scanf("%d",&number);
-if(number==10){
-printf("number is equals to 10");
-}
-else if(number==50){
-printf("number is equal to 50");
-}
-else if(number==100){
-printf("number is equal to 100");
-}
-else{
-printf("number is not equal to 10, 50 or 100");
-}
-return 0;
+int main()
+{
+    int number=0;
+    printf("enter a number:");
+    scanf("%d",&number);
+    if(number==10)
+    {
+        printf("number is equals to 10");
+    }
+    else if(number==50)
+    {
+        printf("number is equal to 50");
+    }
+    else if(number==100)
+    {
+        printf("number is equal to 100");
+    }
+    else
+    {
+        printf("number is not equal to 10, 50 or 100");
+    }
+    return 0;
 }
 
 start the program
-set integer number to 0
-print "Enter a number"
-read number
+print Enter a number
+input number integer
 if number = 0
     print Number equals 0
 else if number = 50
@@ -138,11 +143,9 @@ int main() {
 }
 
 start the program
-declare integer number1
-declare integer number2
 print "Enter two integers"
-read number1
-read number2
+input number1 integer
+input number2 integer
 if number1 >= number2
     if number1 = number2
         print Result number1 = number2
@@ -154,49 +157,12 @@ else
 end if
 end program
 
-Write a program to check if a character is a vowel or a consonant.
-
-#include <stdio.h>
-int main()
-{
-    char ch;
-    bool isVowel = false;
-
-    printf("Enter an alphabet: ");
-    scanf("%c",&ch);
-
-    if(ch=='a'||ch=='A'||ch=='e'||ch=='E'||ch=='i'||ch=='I'
-    		||ch=='o'||ch=='O'||ch=='u'||ch=='U')
-    {
-    	isVowel = true;
-
-    }
-    if (isVowel == true)
-        printf("%c is a Vowel", ch);
-    else
-        printf("%c is a Consonant", ch);
-    return 0;
-}
-
-start the program
-initialize character ch
-print "Enter an alphabet"
-read ch
-if ch=a or ch=A or ch=e or ch=E or ch=i or ch=I
-or ch=o or ch= O or ch=u or ch=U
-    print vowel
-else
-    print not a vowel
-end program
 
 
 Write a program to check if the input year is a leap year.
 int main()
 {
-    int y;
-
-    printf("Enter year: ");
-    scanf("%d",&y);
+    int y = 2004;
 
     if(y % 4 == 0)
     {
@@ -217,12 +183,10 @@ int main()
 }
 
 start the program
-declare integer y
-print "Enter year"
-read y
-if y%4=0
-    if y%100 =0
-        if y%400 = 0
+initialize y = 2004
+if y % 4 = 0
+    if y % 100 = 0
+        if y % 400 = 0
             print y is leap year
         else
             print y is not leap year
