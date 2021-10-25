@@ -60,7 +60,7 @@ class Mapper:
             var_type = VariableTypes.int
 
         for i in range(len(content)):
-            self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
+            self.variable_obj.insert_variable(content[i], self._current_indent, var_type, 2)
             self.insert_line(f"{var_type.name} {content[i]};")
 
     def initialize_variable(self, content):
