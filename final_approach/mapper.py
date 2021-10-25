@@ -200,6 +200,15 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
+    # Helper to check if a string is int or not
+    # This method is valid for negative numbers also
+    def is_digit(self, n):
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
+
     def while_loop(self, content):
         """
         while loop construct
@@ -216,7 +225,7 @@ class Mapper:
             if word in rel_op:
                 string += " " + word + " "
 
-            elif word.isdigit() or word in ["true", "false"]:
+            elif self.is_digit(word) or word in ["true", "false"]:
                 string += word
 
             elif word in bin_op.keys():
@@ -278,7 +287,7 @@ class Mapper:
 
         # Required if value of pre initialized iterator is changed
         is_init = 1
-        if not range_start.isdigit():
+        if not self.is_digit(range_start):
             if range_start in ["a", "z"]:
                 type_ = "char "
                 range_start_val = ord(range_start)
@@ -303,6 +312,9 @@ class Mapper:
                 else:
                     range_start = "1"
                     range_start_val = 1
+            if range_start_val is None:
+                range_start_val = 1
+
             is_init = 0
 
         else:
@@ -310,7 +322,7 @@ class Mapper:
 
         # For range ending
         range_end = content[pos + 1]
-        if not range_end.isdigit():
+        if not self.is_digit(range_end):
             if range_end in ["z", "a"]:
                 type_ = "char "
                 range_end_val = ord(range_end)
@@ -328,11 +340,12 @@ class Mapper:
                         )
                         + " "
                     )
-                    range_end_val = int(
-                        self.variable_obj.get_variable(
-                            content[pos + 1], self._current_indent
-                        ).var_value
-                    )
+                    range_end_val = self.variable_obj.get_variable(
+                        content[pos + 1], self._current_indent
+                    ).var_value
+
+                    if range_end_val is None:
+                        range_end_val = range_start_val + 1
                 else:
                     raise VariableNotDeclared
         else:
@@ -345,9 +358,11 @@ class Mapper:
             if is_init:
                 init = "{0} = {1}".format(iterator, range_start)
 
-            range_start = int(
-                self.variable_obj.get_variable(content[0], self._current_indent).var_value
-            )
+            range_start = self.variable_obj.get_variable(
+                content[0], self._current_indent
+            ).var_value
+            if range_start is None:
+                range_start = 1
 
         # evaluate the condition of for loop
         cond_oper = "<=" if range_start_val < range_end_val else ">="
@@ -438,12 +453,12 @@ class Mapper:
             self.comment(content)
         return self._program[start_len:]
 
-# TODO: (optional) add increment operation support.
+#  TODO: (optional) add increment operation support.
 
-#  if __name__ == "__main__":
-#      f = open("3. divisible by 13.txt", "r")
-#      data = f.readlines()
-#      map_obj = Mapper()
-#      for text in data:
-#          map_obj.process_input(text)
-#      map_obj.get_output_program()
+if __name__ == "__main__":
+    f = open("test.txt", "r")
+    data = f.readlines()
+    map_obj = Mapper()
+    for text in data:
+        map_obj.process_input(text)
+    map_obj.get_output_program()
