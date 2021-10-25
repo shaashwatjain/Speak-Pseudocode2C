@@ -440,10 +440,10 @@ class Mapper:
 
 # TODO: (optional) add increment operation support.
 
-if __name__ == "__main__":
-    f = open("../Phase-2/Class-6 Programs/2. add.txt", "r")
-    data = f.readlines()
-    map_obj = Mapper()
-    for text in data:
-        map_obj.process_input(text)
-    map_obj.get_output_program()
+# if __name__ == "__main__":
+#     f = open("../Phase-2/Class-6 Programs/2. add.txt", "r")
+#     data = f.readlines()
+#     map_obj = Mapper()
+#     for text in data:
+#         map_obj.process_input(text)
+#     map_obj.get_output_program()
