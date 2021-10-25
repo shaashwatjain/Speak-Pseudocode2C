@@ -130,8 +130,10 @@ class Mapper:
                 result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
             except VariableNotDeclared:
                 assn_stmt = "int " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent)
         self.insert_line(assn_stmt)
 
     def print_variables(self, content_list):
@@ -237,7 +239,6 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
-
     #################################
     # Helper functions for for loop #
     #################################
@@ -249,14 +250,12 @@ class Mapper:
             val = ""
         return oper, val
 
-
     def helper_greater_(self, x, y):
         if x > y:
             oper = "--"
         else:
             oper = "++"
         return oper
-
 
     #######################
     # For loop constructs #
@@ -284,7 +283,7 @@ class Mapper:
                 range_start_val = ord(range_start)
 
             elif range_start != "range" and self.variable_obj.get_variable(
-                range_start, self._current_indent
+                    range_start, self._current_indent
             ):
                 obj = self.variable_obj.get_variable(range_start, self._current_indent)
                 type_ = str(obj.var_type.name) + " "
@@ -294,7 +293,7 @@ class Mapper:
                 #  elif range_start == "range":
                 # checking if range_start==range and iter is declared before
                 if self.variable_obj.check_variable_in_scope(
-                    iterator, self._current_indent
+                        iterator, self._current_indent
                 ):
                     obj = self.variable_obj.get_variable(iterator, self._current_indent)
                     type_ = str(obj.var_type.name) + " "
@@ -321,12 +320,12 @@ class Mapper:
                 )
                 if variable_exist:
                     type_ = (
-                        str(
-                            self.variable_obj.get_variable(
-                                content[pos + 1], self._current_indent
-                            ).var_type.name
-                        )
-                        + " "
+                            str(
+                                self.variable_obj.get_variable(
+                                    content[pos + 1], self._current_indent
+                                ).var_type.name
+                            )
+                            + " "
                     )
                     range_end_val = int(
                         self.variable_obj.get_variable(
@@ -438,12 +437,13 @@ class Mapper:
             self.comment(content)
         return self._program[start_len:]
 
+
 # TODO: (optional) add increment operation support.
 
-#  if __name__ == "__main__":
-#      f = open("3. divisible by 13.txt", "r")
-#      data = f.readlines()
-#      map_obj = Mapper()
-#      for text in data:
-#          map_obj.process_input(text)
-#      map_obj.get_output_program()
+if __name__ == "__main__":
+    f = open("../Phase-2/Class-6 Programs/2. add.txt", "r")
+    data = f.readlines()
+    map_obj = Mapper()
+    for text in data:
+        map_obj.process_input(text)
+    map_obj.get_output_program()
