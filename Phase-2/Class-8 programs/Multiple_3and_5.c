@@ -25,7 +25,7 @@ int main()
     input number
     initialize total = 0
     for i in range from 0 till number increment by 1
-        if i mod 3 is zero or i mod 5 is zero
+        if i mod 3 equals zero or i mod 5 equals zero
             assign total = total + i
         endif
     endfor

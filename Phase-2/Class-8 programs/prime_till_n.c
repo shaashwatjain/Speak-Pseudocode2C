@@ -43,17 +43,17 @@ int main()
     initialize i = 3
     print Enter the number of prime number to prill till
     input num
-    If nums greater than equal to 1
+    If num greater than equal to 1
         print First num prime number are
       print 2
     endif
     for count in range from 2 till count less than equal to num no update
         for c in range from 2 till c less than equal to i - 1 increment by 1
-            if i mod c equal to 0
+            if i mod c equals 0
                 break
             endif
         endfor
-        if c equal to i
+        if c equals i
             Print variable i
             assign count = count + 1
         endif

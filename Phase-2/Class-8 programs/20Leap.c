@@ -35,8 +35,8 @@ int main()
     initialize count = 0
     print The next 20 years are
     while count less than 20
-        if year mod 4 equal to 0
-            if year mod 100 not equal to 0 or year mod 400 equal to zero
+        if year mod 4 equals 0
+            if year mod 100 not equals 0 or year mod 400 equals zero
                 assign count = count + 1
                 print variable year
             endif
