@@ -416,14 +416,19 @@ class Mapper:
     def continue_stmt(self):
         self.insert_line("continue;")
 
-    def exit(self, content):
-        self._current_indent = 1
-        self.insert_line("return 0;")
-        self.end_func()
+    def exit_func(self):
+        while(self._current_indent > 1):
+            self.end_func()
+        
+        if(self._current_indent == 1):
+            self.insert_line("return 0;")
+            self.end_func()
+        
 
     __no_args_dict = {
         "start": start_the_program,
         "end": end_func,
+        "exit": exit_func,
         "break": break_stmt,
         "continue": continue_stmt,
     }
@@ -437,8 +442,7 @@ class Mapper:
         "else": continued_if,
         "for": for_loop,
         "while": while_loop,
-        "comment": comment,
-        "exit": exit
+        "comment": comment
     }
 
     def process_input(self, line: str) -> list:
