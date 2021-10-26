@@ -160,7 +160,7 @@ class Pseudocode2c(threading.Thread):
         if os.name=="nt":
             os.system("gcc {0} -o out && out.exe".format(self.file_name))
         else:
-            os.system("gcc {0} -o out && ./out.out".format(self.file_name))
+            os.system("gcc {0} -o out && ./out".format(self.file_name))
 
 
     def remove_junk(self):
