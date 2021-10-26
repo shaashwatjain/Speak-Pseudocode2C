@@ -130,8 +130,10 @@ class Mapper:
                 result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
             except VariableNotDeclared:
                 assn_stmt = "int " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent)
         self.insert_line(assn_stmt)
 
     def print_variables(self, content_list):
@@ -455,8 +457,8 @@ class Mapper:
 
 #  TODO: (optional) add increment operation support.
 
-#  if __name__ == "__main__":
-#      f = open("test.txt", "r")
+# if __name__ == "__main__":
+#      f = open("../Phase-2/Class-6 programs/2. add.txt", "r")
 #      data = f.readlines()
 #      map_obj = Mapper()
 #      for text in data:
