@@ -83,7 +83,8 @@ class Pseudocode2c(threading.Thread):
             highlightcolor="black",
         )
 
-        self.start_button = Button(self.Frame, text="Start the Framework", default=DISABLED)
+        self.start_button = Button(self.Frame, text="Start the Framework")
+        self.start_button["state"]=DISABLED
         self.start_button.configure(height=3)
         self.start_button.place(relx = 0.18, rely = 0.02)
 
