@@ -157,7 +157,11 @@ class Pseudocode2c(threading.Thread):
             self.show_alert("File Not Saved")
 
         os.chdir(self.output_dir)
-        os.system("gcc {0} -o out && out.exe".format(self.file_name))
+        if os.name=="nt":
+            os.system("gcc {0} -o out && out.exe".format(self.file_name))
+        else:
+            os.system("gcc {0} -o out && ./out.out".format(self.file_name))
+
 
     def remove_junk(self):
         num_lines_to_delete = "end-{0}l".format(self.lines_to_delete.pop() + 1)
