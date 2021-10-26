@@ -8,6 +8,8 @@ import time
 from tkinter import *
 from tkinter import messagebox, ttk
 
+from pathlib import Path
+
 import wordtodigits
 from google.cloud import speech_v1p1beta1 as speech
 
@@ -23,16 +25,21 @@ CHUNK = int(RATE / 10)  # 100ms
 
 class Pseudocode2c(threading.Thread):
     def __init__(self):
-        self.path = os.getcwd()
+        self.path = str(Path(os.getcwd()))
         self.alive = True
         threading.Thread.__init__(self)
+        self.is_save = 0
         self.start()
 
     def callback(self):
         self.root.quit()
 
     def run(self):
-        self.output_dir = self.path + "\\Output"
+        if os.name=="nt":
+            self.fs_sign = "\\"
+        else:
+            self.fs_sign = "/"
+        self.output_dir = self.path + self.fs_sign + "Output"
         if not os.path.isdir(self.output_dir):
             os.mkdir(self.output_dir)
 
@@ -131,17 +138,23 @@ class Pseudocode2c(threading.Thread):
         self.root.mainloop()
 
     def save_code(self):
+        self.is_save = 1
         text_to_write = self.right_text.get("1.0", "end-1c")
         self.file_name = self.file_name.get("1.0", "end-1c")
         if self.file_name == "":
             self.file_name = "SampleCode.c"
-        self.file_path = self.output_dir + "\\" + self.file_name
+        self.file_path = self.output_dir + self.fs_sign + self.file_name
+        print(self.file_path)
         outputFile = open(self.file_path, "w")
         print("file saved as", self.file_path)
         outputFile.write(text_to_write)
         outputFile.close()
 
     def compile_program(self):
+        # To check whether file is saved or not
+        if not self.is_save:
+            self.show_alert("File Not Saved")
+
         os.chdir(self.output_dir)
         os.system("gcc {0} -o out && out.exe".format(self.file_name))
 
