@@ -32,11 +32,6 @@ def replacement(string1):
     if split_string[0] == "print":
         return string1
     repl_dict = {
-        "is equal to": "=",
-        "equals to": "=",
-        "equal to": "=",
-        "equals": "=",
-        "equal": "=",
         "is not equal to": "!=",
         "is not equals to": "!=",
         "not equals to": "!=",
@@ -44,6 +39,11 @@ def replacement(string1):
         "not equals": "!=",
         "not equal": "!=",
         "is not": "!=",
+        "is equal to": "=",
+        "equals to": "=",
+        "equal to": "=",
+        "equals": "=",
+        "equal": "=",
         "not": "!",
         "addition": "+",
         "add": "+",

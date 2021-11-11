@@ -17,13 +17,13 @@ void main()
 }
 
 start the program
-declare integer num
+declare number
 print Enter a number
-read num
-if num > 0
-    print num is a positive number
-else if num < 0
-    print num is a negative number
+read number
+if number > 0
+    print variable number is a positive number
+else if number < 0
+    print number is a negative number
 else
     print 0 is neither positive nor negative
 end if
