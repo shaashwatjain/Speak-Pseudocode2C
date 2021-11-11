@@ -19,11 +19,11 @@ void main()
 start the program
 declare number
 print Enter a number
-read number
+input number
 if number > 0
     print variable number is a positive number
 else if number < 0
-    print number is a negative number
+    print variable number is a negative number
 else
     print 0 is neither positive nor negative
 end if
@@ -45,8 +45,8 @@ int main(){
 }
 
 start the program
-declare integer num
-read num
+declare num integer
+input num
 if num % 13 = 0
 print The number is divisible by 13
 else
@@ -59,8 +59,8 @@ Write a program to check if a number is even or not
 #include<stdio.h>
 int main()
 {
-    int number=0;
     printf("Enter a number:");
+    int number;
     scanf("%d",&number);
     if(number%2==0)
     {
@@ -83,8 +83,8 @@ Write a program to check if a number is 0,50 or 100.
 #include<stdio.h>
 int main()
 {
-    int number=0;
     printf("enter a number:");
+    int number;
     scanf("%d",&number);
     if(number==10)
     {
@@ -108,14 +108,14 @@ int main()
 start the program
 print Enter a number
 input number integer
-if number = 0
-    print Number equals 0
+if number = 10
+    print number is equals to 10
 else if number = 50
-    print Number equals 50
+    print number is equal to 50
 else if number = 100
-    print Number equals 100
+    print number is equal to 100
 else
-    print Number not equals 0,50 or 100
+    print number is not equal to 10, 50 or 100
 end if
 end program
 
@@ -125,7 +125,8 @@ Write a program to input two numbers and check which one is greater.
 int main() {
     int number1, number2;
     printf("Enter two integers: ");
-    scanf("%d %d", &number1, &number2);
+    scanf("%d", &number1);
+    scanf("%d", &number2);
 
     if (number1 >= number2) {
       if (number1 == number2) {
@@ -143,17 +144,18 @@ int main() {
 }
 
 start the program
+declare number1 number2 integer
 print "Enter two integers"
-input number1 integer
-input number2 integer
+input number1 
+input number2 
 if number1 >= number2
     if number1 = number2
-        print Result number1 = number2
+        print Result: variable number1 = variable number2
     else
-        print Result number1 > number2
+        print Result: variable number1 > variable number2
     end if
 else
-    print Result number1 < number2
+    print Result: variable number1 < variable number2
 end if
 end program
 
@@ -187,15 +189,15 @@ initialize y = 2004
 if y % 4 = 0
     if y % 100 = 0
         if y % 400 = 0
-            print y is leap year
+            print variable y is leap year
         else
-            print y is not leap year
+            print variable y is not leap year
         end if
     else
-        print y is a leap year
+        print variable y is a leap year
     end if
 else
-    print y is not a leap year
+    print variable y is not a leap year
 end if
 return 0
 
