@@ -25,7 +25,7 @@ int main()
     input number
     print Factors of number are
     for i in range from 1 till number
-        if number mod i equal to 0
+        if number mod i equals 0
             print variable i
         endif
     endfor

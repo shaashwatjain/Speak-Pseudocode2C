@@ -221,7 +221,7 @@ class TestAssign(unittest.TestCase):
         self.test_map_obj.assign_variable(test_content2)
         self.test_map_obj.assign_variable(test_content3)
         self.test_map_obj.assign_variable(test_content4)
-        self.assertEqual(self.test_map_obj.get_program_list(), ['int a = a + 2;\n', 'int a = a - 2;\n', 'int a = a * 2;\n', 'int a = a / 2;\n'])
+        self.assertEqual(self.test_map_obj.get_program_list(), ['int a = a + 2;\n', 'a = a - 2;\n', 'a = a * 2;\n', 'a = a / 2;\n'])
 
 
 class TestPrint(unittest.TestCase):

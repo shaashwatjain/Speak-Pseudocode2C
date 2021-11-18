@@ -130,8 +130,10 @@ class Mapper:
                 result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
             except VariableNotDeclared:
                 assn_stmt = "int " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent)
         self.insert_line(assn_stmt)
 
     def print_variables(self, content_list):
@@ -283,12 +285,14 @@ class Mapper:
 
         # For range starting
         range_start = content[pos - 1]
+        raw_type_ = VariableTypes.int
         type_ = "int "
 
         # Required if value of pre initialized iterator is changed
         is_init = 1
         if not self.is_digit(range_start):
             if range_start in ["a", "z"]:
+                raw_type_ = VariableTypes.char
                 type_ = "char "
                 range_start_val = ord(range_start)
 
@@ -324,6 +328,7 @@ class Mapper:
         range_end = content[pos + 1]
         if not self.is_digit(range_end):
             if range_end in ["z", "a"]:
+                raw_type_ = VariableTypes.char
                 type_ = "char "
                 range_end_val = ord(range_end)
 
@@ -354,6 +359,9 @@ class Mapper:
         # if iterator is not defined
         if not self.variable_obj.check_variable_in_scope(iterator, self._current_indent):
             init = "{0}{1} = {2}".format(type_, iterator, range_start)
+            # Add declare stmt here type_ is not working here
+            self.variable_obj.insert_variable(iterator, self._current_indent, raw_type_)
+
         else:
             if is_init:
                 init = "{0} = {1}".format(iterator, range_start)
@@ -414,14 +422,19 @@ class Mapper:
     def continue_stmt(self):
         self.insert_line("continue;")
 
-    def exit(self, content):
-        self._current_indent = 1
-        self.insert_line("return 0;")
-        self.end_func()
+    def exit_func(self):
+        while(self._current_indent > 1):
+            self.end_func()
+
+        if(self._current_indent == 1):
+            self.insert_line("return 0;")
+            self.end_func()
+
 
     __no_args_dict = {
         "start": start_the_program,
         "end": end_func,
+        "exit": exit_func,
         "break": break_stmt,
         "continue": continue_stmt,
     }
@@ -435,8 +448,7 @@ class Mapper:
         "else": continued_if,
         "for": for_loop,
         "while": while_loop,
-        "comment": comment,
-        "exit": exit
+        "comment": comment
     }
 
     def process_input(self, line: str) -> list:
