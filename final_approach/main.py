@@ -130,6 +130,13 @@ class Pseudocode2c(threading.Thread):
         self.save_button.configure(height=3)
         self.save_button.place(relx = 0.7, rely = 0.9)
 
+
+        self.read_button = Button(
+            self.Frame, text="read", command=self.read_lhs_complete
+        )
+        self.read_button.configure(height=3, width=5)
+        self.read_button.place(relx = 0.8, rely = 0.9)
+
         self.exit_button = Button(
             self.Frame, text="Exit the Program", command=self.exit_code
         )
@@ -185,6 +192,15 @@ class Pseudocode2c(threading.Thread):
         messagebox.showerror(
             title="Exception", message="Oops! {0} occured".format(text_to_write)
         )
+
+    def read_lhs_complete(self):
+        psu_code = self.left_text.get(1.0, "end-1c")
+        self.right_text.delete("1.0","end")
+        mapper_obj = Mapper()
+        for i in psu_code.split('\n'):
+            src_code = mapper_obj.process_input(i)
+            for j in src_code:
+                self.insert_rhs(j)
 
 
 def listen_print_loop(responses, obj):
