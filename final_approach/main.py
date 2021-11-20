@@ -198,9 +198,12 @@ class Pseudocode2c(threading.Thread):
         self.right_text.delete("1.0","end")
         mapper_obj = Mapper()
         for i in psu_code.split('\n'):
-            src_code = mapper_obj.process_input(i)
-            for j in src_code:
-                self.insert_rhs(j)
+            try:
+                src_code = mapper_obj.process_input(i)
+                for j in src_code:
+                    self.insert_rhs(j)
+            except:
+                self.show_alert(sys.exc_info()[0])
 
 
 def listen_print_loop(responses, obj):
@@ -237,7 +240,7 @@ def listen_print_loop(responses, obj):
                 transcript = transcript[1:]
                 transcript += " "
 
-            if re.search(r"\b(exit|quit)\b", transcript, re.I):
+            if re.search(r"^(exit|quit)\b", transcript, re.I):
                 flag = 0
                 if not gui.alive:
                     sys.exit(0)
@@ -251,10 +254,7 @@ def listen_print_loop(responses, obj):
                 indent = pre_indentation(transcript, indent)
 
                 # LEFT
-                if flag:
-                    resultant = "\t" * indent + transcript
-                else:
-                    resultant = "exit pseudocode"
+                resultant = "\t" * indent + transcript
                 obj.insert_lhs(resultant + "\n")
                 # Nedd to have a fn call to add text in lhs
 

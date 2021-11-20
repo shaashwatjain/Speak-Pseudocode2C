@@ -453,7 +453,7 @@ class Mapper:
 
     def process_input(self, line: str) -> list:
         start_len = len(self._program)
-        line = line.strip()
+        line = line.strip().lower()
         content = line.split(" ")
         if content[0] in self.__content_args_dict:
             self.__content_args_dict[content[0]](self, content)

@@ -2,6 +2,7 @@ from __future__ import division
 
 import pyaudio
 from six.moves import queue
+from replacements import repl_dict
 
 # Audio recording parameters
 RATE = 16000
@@ -31,49 +32,6 @@ def replacement(string1):
     split_string = string1.split(" ")
     if split_string[0] == "print":
         return string1
-    repl_dict = {
-        "is not equal to": "!=",
-        "is not equals to": "!=",
-        "not equals to": "!=",
-        "not equal to": "!=",
-        "not equals": "!=",
-        "not equal": "!=",
-        "is not": "!=",
-        "is equal to": "=",
-        "equals to": "=",
-        "equal to": "=",
-        "equals": "=",
-        "equal": "=",
-        "not": "!",
-        "addition": "+",
-        "add": "+",
-        "plus": "+",
-        "subtract": "-",
-        "minus": "-",
-        "multiplied by": "*",
-        "multiply by": "*",
-        "multiply": "*",
-        "into": "*",
-        " x ": "*",
-        "divided by": "/",
-        "divide by": "/",
-        "divide": "/",
-        "modulus": "%",
-        "modulo": "%",
-        "mod": "%",
-        "is less than equals to": "<=",
-        "is less than equal to": "<=",
-        "is less than": "<",
-        "is greater than equals to": ">=",
-        "is greater than equal to": ">=",
-        "is greater than": ">",
-        "less than equals to": "<=",
-        "less than equal to": "<=",
-        "less than": "<",
-        "greater than equals to": ">=",
-        "greater than equal to": ">=",
-        "greater than": ">",
-    }
     for key in repl_dict.keys():
         string1 = string1.replace(key, repl_dict[key])
     return string1
