@@ -1,0 +1,10 @@
+Start the pseudocode
+declare number
+declare i
+print Enter the integer
+input number
+for i in range from 1 till 10
+    assign res = number * i
+    print variable number * variable i = variable res
+endfor
+End

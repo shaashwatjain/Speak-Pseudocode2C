@@ -1,0 +1,11 @@
+Start the pseudocode
+declare number
+initialize count = 0
+print Enter an integer
+input number
+while number != 0
+    assign number = number / 10
+    assign count = count + 1
+endwhile
+print Number of digits is variable count
+End

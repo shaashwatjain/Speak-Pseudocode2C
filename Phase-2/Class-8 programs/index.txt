@@ -1,0 +1,10 @@
+1) Write a program that prints the next 20 leap years.
+2) Write a program to either compute the sum or the product of 1, …, n.
+3) Write a program to count number of digits in a integer.
+4) Write a program to find all the factors of a number.
+5) Write a program that find sum of multiples of three or five, e.g. 3, 5, 6, 9, 10, 12, 15 for n=17
+6) Write a program that prints a multiplication table for a number.
+7) Write a program to calculate the power of a numer.
+8) Write a program which calculates the smallest divisor of a number.
+9) Write a program to calculate the sum of numbers, If the user enters a negative number, it's not added to the result.
+10) Write a program for fibonacci sequence.

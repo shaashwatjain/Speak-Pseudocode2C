@@ -1,0 +1,16 @@
+Start the pseudocode
+    declare number
+    declare value
+    print Enter the number of integer to consider for sum
+    input number
+    initialize sum = 0
+    for i in range till number
+        print enter a number variable i
+        input value
+        if value < 0
+            continue
+        endif
+        assign sum = sum + value
+    endfor
+    print sum is variable sum
+end

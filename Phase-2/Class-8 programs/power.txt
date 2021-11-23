@@ -1,0 +1,14 @@
+Start the pseudocode
+declare base
+declare exponent
+initialize result = 1
+print Enter the base number
+input base
+print Enter the exponent number
+input exponent
+while exponent != 0
+    assign result = result * base
+    assign exponent = exponent - 1
+endwhile
+print Answer is variable result
+End

@@ -1,0 +1,19 @@
+Start the pseudocode
+declare number
+input number
+declare choice
+print 1. To compute sum 2. To compute product
+input choice
+initialize total = 0
+if choice = 2
+    assign total = 1
+endif
+for i in range from 1 till number
+    if choice = 1
+        assign total = total + i
+    else
+        assign total = total * i
+    endif
+endfor
+print the result is variable total
+End

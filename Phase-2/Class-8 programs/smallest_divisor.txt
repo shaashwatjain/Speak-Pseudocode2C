@@ -1,0 +1,13 @@
+Start the pseudocode
+declare number
+initialize i = 2
+print Enter the number to find the smallest divisor
+input number
+while i <= number
+    if number % i = 0
+        print The smallest number is variable i
+        break
+    endif
+    assign i = i + 1
+endwhile
+end

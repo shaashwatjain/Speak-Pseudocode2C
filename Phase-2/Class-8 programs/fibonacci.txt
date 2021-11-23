@@ -1,0 +1,18 @@
+Start the pseudocode
+    declare number
+    initialize a = 0
+    initialize value = 1
+    assign next = a + value
+    print enter the number of terms
+    input number
+    print fibonacci series
+    print variable a
+    print variable value
+
+    for i in range from 3 till number
+        print variable next
+        assign a = value
+        assign value = next
+        assign next = a + value
+    endfor
+end
