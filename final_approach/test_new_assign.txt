@@ -1,0 +1,22 @@
+start the pseudocode
+    testing initialize
+    assign p = 12 + 1
+    assign q = 2.2 + 1
+    assign r = h + c
+    assign z = x + r 
+    assign y = q + t 
+    assign z = r + o
+    assign i = p + q
+    assign j = p + 2
+    assign k = p + 2.2
+
+    assign a = 10
+    assign b = 12
+    assign c = b
+    assign d = t
+
+    declare number
+    assign value = 1
+    assign next = a + value
+    
+end

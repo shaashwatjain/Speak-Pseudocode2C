@@ -1,3 +1,4 @@
+from typing import final
 from exceptions import *
 from userDefinedTypes import VariableTypes
 from variable_mapper import Variable
@@ -63,24 +64,24 @@ class Mapper:
             self.variable_obj.insert_variable(content[i], self._current_indent, var_type)
             self.insert_line(f"{var_type.name} {content[i]};")
 
-    def initialize_variable(self, content):
-        """
-        pseudocode format: initialize <variable name> = <variable value>
-        """
-        content.pop(0)
-        var_name = content[0]
-        var_value = content[-1]
-        if var_value.isnumeric():
-            self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.int, int(var_value))
-            self.insert_line(f"int {var_name} = {int(var_value)};")
-        else:
-            try:
-                is_float = float(var_value)
-                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.float)
-                self.insert_line(f"float {var_name} = {is_float};")
-            except ValueError:
-                self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.char)
-                self.insert_line(f"char {var_name} = \"{var_value}\";")
+    # def initialize_variable(self, content):
+    #     """
+    #     pseudocode format: initialize <variable name> = <variable value>
+    #     """
+    #     content.pop(0)
+    #     var_name = content[0]
+    #     var_value = content[-1]
+    #     if var_value.isnumeric():
+    #         self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.int, int(var_value))
+    #         self.insert_line(f"int {var_name} = {int(var_value)};")
+    #     else:
+    #         try:
+    #             is_float = float(var_value)
+    #             self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.float)
+    #             self.insert_line(f"float {var_name} = {is_float};")
+    #         except ValueError:
+    #             self.variable_obj.insert_variable(var_name, self._current_indent, VariableTypes.char)
+    #             self.insert_line(f"char {var_name} = \"{var_value}\";")
 
     def input_variable(self, content):
         """
@@ -118,24 +119,148 @@ class Mapper:
         """
         content.pop(0)
         assn_stmt = ""
-        try:
-            # if variable already declared
-            if self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
-                assn_stmt = " ".join(content) + ";"
-            else:
-                raise VariableNotDeclared
-        except VariableNotDeclared:
-            # variable not declared earlier
-            try:
-                result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
-                type_var = result_var_1.var_type.name
-                assn_stmt = type_var + " " + " ".join(content) + ";"
-                self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
-            except VariableNotDeclared:
-                assn_stmt = "int " + " ".join(content) + ";"
-                self.variable_obj.insert_variable(content[0], self._current_indent)
-        self.insert_line(assn_stmt)
+        if len(content) == 3:   # if "assign a = 12"
+            if content[-1].isnumeric():
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = "int "
+                assn_stmt += " ".join(content) + ";"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int)
+                except:
+                    pass
 
+            elif "." in content[-1]:
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = "float "
+                assn_stmt += " ".join(content) + ";"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
+                except:
+                    pass
+            
+            elif self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
+                result_var_1 = self.variable_obj.get_variable(content[-1], self._current_indent)
+                type_var = result_var_1.var_type.name
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = result_var_1.var_type.name + " " 
+                assn_stmt += " ".join(content) + ";"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
+                except:
+                    pass
+            
+            else:
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = "char "
+                assn_stmt += content[0] + " = '" + content[-1] + "';"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
+                except:
+                    pass 
+            
+            self.insert_line(assn_stmt)
+        
+        elif len(content) == 5:     # if "assign a = b + c" 
+            if content[-1].isnumeric() and content[-3].isnumeric() and content[-2] != "/":      # b and c numeric
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = "int "
+                assn_stmt += " ".join(content) + ";"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int)
+                except:
+                    pass 
+
+            elif "." in content[-1] or "." in content[-3] or content[-2] == "/":    # decimal in b or c or division operation 
+                if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                    assn_stmt = "float "
+                assn_stmt += " ".join(content) + ";"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
+                except:
+                    pass 
+
+            else:
+                if self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) and self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):   # b and c are variables 
+                    assn_stmt = ""
+                    final_type = ""
+                    result_var_1 = self.variable_obj.get_variable(content[-3], self._current_indent)
+                    result_var_2 = self.variable_obj.get_variable(content[-1], self._current_indent)
+                    if result_var_2.var_type.name == result_var_1.var_type.name:
+                        final_type = result_var_1.var_type 
+                    else:
+                        if "char" in [result_var_1.var_type.name, result_var_2.var_type.name]:
+                            final_type = VariableTypes.char
+                        elif "float" in [result_var_1.var_type.name, result_var_2.var_type.name]:
+                            final_type = VariableTypes.float
+                        else:
+                            final_type = result_var_1.var_type
+                    if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                        assn_stmt = final_type.name + " "
+                    assn_stmt += " ".join(content) + ";"
+                    try:
+                        self.variable_obj.insert_variable(content[0], self._current_indent, final_type)
+                    except:
+                        pass 
+
+                elif self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) or self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):    # b or c is variable but not both
+                    final_type = []
+                    result_var_1, result_var_2 = "", ""
+                    # fetching variable details from variable mapper object
+                    if self.variable_obj.check_variable_in_scope(content[-3], self._current_indent):
+                        result_var_1 = self.variable_obj.get_variable(content[-3], self._current_indent)
+                        type_var = result_var_1.var_type.name
+                        final_type.append(result_var_1.var_type)
+                        result_var_1 = content[-3]
+                    else:
+                        if content[-3].isnumeric():
+                            final_type.append(VariableTypes.int)
+                            result_var_1 = content[-3]
+                        elif "." in content[-3]:
+                            final_type.append(VariableTypes.float)
+                            result_var_1 = content[-3]
+                        else:
+                            final_type.append(VariableTypes.char)
+                            result_var_1 = "'" + content[-3] + "'"
+                    
+                    if self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
+                        result_var_2 = self.variable_obj.get_variable(content[-1], self._current_indent)
+                        if final_type == "":
+                            type_var = result_var_2.var_type.name
+                            final_type.append(result_var_2.var_type)
+                        result_var_2 = content[-1]
+                    else:
+                        if content[-1].isnumeric():
+                            final_type.append(VariableTypes.int)
+                            result_var_2 = content[-1]
+                        elif "." in content[-1]:
+                            final_type.append(VariableTypes.float)
+                            result_var_2 = content[-1]
+                        else:
+                            final_type.append(VariableTypes.char)
+                            result_var_2 = "'" + content[-1] + "'"
+
+                    # checking variable types
+                    if VariableTypes.char in final_type:
+                        final_type = VariableTypes.char
+                    elif VariableTypes.float in final_type:
+                        final_type = VariableTypes.float
+                    else:
+                        final_type = final_type[0]
+
+                    if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                        assn_stmt = final_type.name + " "
+                    assn_stmt += content[0] + " = " + result_var_1 + " " + content[-2] + " " + result_var_2 + ";"
+                    
+                else:
+                    if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
+                        assn_stmt = "char "
+                    assn_stmt += content[0] + " = '" + content[2] + "' "+ content[3] + " '" + content[4] + "';"
+                try:
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
+                except:
+                    pass 
+            self.insert_line(assn_stmt)
+        
     def print_variables(self, content_list):
         """
         pseudocode format: print variable <variable name>
@@ -439,7 +564,7 @@ class Mapper:
         "continue": continue_stmt,
     }
     __content_args_dict = {
-        "initialize": initialize_variable,
+        # "initialize": initialize_variable,
         "assign": assign_variable,
         "input": input_variable,
         "declare": declare_variable,
@@ -468,7 +593,7 @@ class Mapper:
 #  TODO: (optional) add increment operation support.
 
 if __name__ == "__main__":
-    f = open("test.txt", "r")
+    f = open("test_new_assign.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for text in data:
