@@ -3,30 +3,31 @@
 #include<stdio.h>
 int main()
 {
-    int num, i;
+    int number, i;
     printf("Enter a positive integer: ");
-    scanf("%d", &num);
-    printf("Factors of %d are: ", num);
+    scanf("%d", &number);
+    printf("Factors of %d are: ", number);
 
-    for (i = 1; i <= num; ++i)
+    for(i = 1; i <= number; i++)
     {
-        if (num % i == 0)
+        if(number % i == 0)
             printf("%d ", i);
     }
+
     return 0;
 }
 
 /*
     Start the pseudocode
-    initialize num
-    initialize i
-    print "Enter a positive integer"
-    input num
-    print "Factors of num are"
-    for i in range from 1 to num increment i
-        if num mod i equal to 0
-            print "i"
+    declare number
+    declare i
+    print Enter a positive integer
+    input number
+    print Factors of number are
+    for i in range from 1 till number
+        if number mod i equals 0
+            print variable i
         endif
     endfor
-end
+    end
 */

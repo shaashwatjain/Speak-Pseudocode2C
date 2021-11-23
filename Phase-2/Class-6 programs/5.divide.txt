@@ -1,9 +1,9 @@
 start the program 
-	integer num1 and num2 
+	declare num1 num2 
 	print Enter first number 
-	read num1 
+	input num1 
 	print Enter second number 
-    read num2 
-	sum = num1 / num2
-	print sum 
-exit the code
+    input num2 
+	assign sum = num1 / num2
+	print variable sum 
+exit 

@@ -1,9 +1,9 @@
 start the program 
-    integer a and b
+    declare a b integer
     print Enter base length
-    read a 
+    input a 
     print Enter perpendicular height   
-    read b 
-    result = a * b * 1/2
-    print result 
-exit the code 
+    input b 
+    assign result = a * b * 1/2
+    print variable result 
+exit 

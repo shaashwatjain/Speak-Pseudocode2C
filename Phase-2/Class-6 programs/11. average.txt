@@ -1,12 +1,12 @@
 start the program 
-    integer num1, num2 and num3
+    declare num1 num2 num3 integer
     print Enter first number  
-    read num1
+    input num1
     print Enter second number  
-    read num2 
+    input num2 
     print Enter third number  
-    read num3 
-    result = num1 + num2 + num3
-    result = result / 3
-    print result 
-exit the code
+    input num3 
+    assign result = num1 + num2 + num3
+    assign result = result / 3
+    print variable result 
+exit 

@@ -236,3 +236,11 @@ class TestOperator(unittest.TestCase):
         self.test_map_obj.continued_if(test_content5)
         self.test_map_obj.process_input(test_input6)
         self.assertEqual(self.test_map_obj.get_program_list(), ["if(!x && y )\n", "{\n", "}\n"])
+
+    def test_op11(self):
+        test_input5 = "if year % 100 != 0 or year % 400 = 0"
+        test_input6 = "end"
+        test_content5 = test_input5.split(" ")
+        self.test_map_obj.continued_if(test_content5)
+        self.test_map_obj.process_input(test_input6)
+        self.assertEqual(self.test_map_obj.get_program_list(), ['if(year % 100 != 0 || year % 400 == 0 )\n', '{\n', '}\n'])

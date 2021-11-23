@@ -8,3 +8,7 @@ class VariableAlreadyDeclared(Exception):
 
 class SpeechToTextException(Exception):
     pass
+
+
+class ReturnTypeIncompatibleException(Exception):
+    pass

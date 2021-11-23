@@ -714,3 +714,143 @@ class TestFor(unittest.TestCase):
         test_content = test_input.split()
         with self.assertRaises(VariableNotDeclared):
             self.test_map_obj.for_loop(test_content)
+
+
+    def test_decl_end_1(self):
+        """
+        Testing when range_end is declared and range_start is int
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for i in range from 2 till var increment by 1"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "for(int i = 2; i <= var; i++)\n",
+                "{\n",
+            ],
+        )
+
+
+    def test_decl_start_1(self):
+        """
+        Testing when range_start is declared and range_end is int
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for i in range from var till 5"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "for(int i = var; i <= 5; i++)\n",
+                "{\n",
+            ],
+        )
+
+
+    def test_decl_start_end_1(self):
+        """
+        Testing when both range_start and range_end is declared auto increment
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "declare num"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for i in range from var till num"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "int num;\n",
+                "for(int i = var; i <= num; i++)\n",
+                "{\n",
+            ],
+        )
+
+    def test_decl_start_end_2(self):
+        """
+        Testing when both range_start and range_end is declared no update
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "declare num"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for i in range from var till num no update"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "int num;\n",
+                "for(int i = var; i <= num; )\n",
+                "{\n",
+            ],
+        )
+
+
+    def test_decl_iter_1(self):
+        """
+        Testing when iterator is declared auto increment
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for var in range till 10"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "for(; var <= 10; var++)\n",
+                "{\n",
+            ],
+        )
+
+
+    def test_decl_iter_2(self):
+        """
+        Testing when iterator and range_end is declared auto increment
+        """
+        test_input = "declare var"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "declare num"
+        test_content = test_input.split()
+        self.test_map_obj.declare_variable(test_content)
+
+        test_input = "for num in range till var"
+        test_content = test_input.split()
+        self.test_map_obj.for_loop(test_content)
+        self.assertEqual(
+            self.test_map_obj.get_program_list(),
+            [
+                "int var;\n",
+                "int num;\n",
+                "for(; num <= var; num++)\n",
+                "{\n",
+            ],
+        )

@@ -1,6 +1,6 @@
-from variable_mapper import Variable
-from userDefinedTypes import VariableTypes
 from exceptions import *
+from userDefinedTypes import VariableTypes
+from variable_mapper import Variable
 
 
 class Mapper:
@@ -130,8 +130,10 @@ class Mapper:
                 result_var_1 = self.variable_obj.get_variable(content[2], self._current_indent)
                 type_var = result_var_1.var_type.name
                 assn_stmt = type_var + " " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
             except VariableNotDeclared:
                 assn_stmt = "int " + " ".join(content) + ";"
+                self.variable_obj.insert_variable(content[0], self._current_indent)
         self.insert_line(assn_stmt)
 
     def print_variables(self, content_list):
@@ -200,6 +202,15 @@ class Mapper:
         self.insert_line("{")
         self.increase_indent()
 
+    # Helper to check if a string is int or not
+    # This method is valid for negative numbers also
+    def is_digit(self, n):
+        try:
+            int(n)
+            return True
+        except ValueError:
+            return False
+
     def while_loop(self, content):
         """
         while loop construct
@@ -216,7 +227,7 @@ class Mapper:
             if word in rel_op:
                 string += " " + word + " "
 
-            elif word.isdigit() or word in ["true", "false"]:
+            elif self.is_digit(word) or word in ["true", "false"]:
                 string += word
 
             elif word in bin_op.keys():
@@ -274,12 +285,14 @@ class Mapper:
 
         # For range starting
         range_start = content[pos - 1]
+        raw_type_ = VariableTypes.int
         type_ = "int "
 
         # Required if value of pre initialized iterator is changed
         is_init = 1
-        if not range_start.isdigit():
+        if not self.is_digit(range_start):
             if range_start in ["a", "z"]:
+                raw_type_ = VariableTypes.char
                 type_ = "char "
                 range_start_val = ord(range_start)
 
@@ -303,6 +316,9 @@ class Mapper:
                 else:
                     range_start = "1"
                     range_start_val = 1
+            if range_start_val is None:
+                range_start_val = 1
+
             is_init = 0
 
         else:
@@ -310,8 +326,9 @@ class Mapper:
 
         # For range ending
         range_end = content[pos + 1]
-        if not range_end.isdigit():
+        if not self.is_digit(range_end):
             if range_end in ["z", "a"]:
+                raw_type_ = VariableTypes.char
                 type_ = "char "
                 range_end_val = ord(range_end)
 
@@ -328,11 +345,12 @@ class Mapper:
                         )
                         + " "
                     )
-                    range_end_val = int(
-                        self.variable_obj.get_variable(
-                            content[pos + 1], self._current_indent
-                        ).var_value
-                    )
+                    range_end_val = self.variable_obj.get_variable(
+                        content[pos + 1], self._current_indent
+                    ).var_value
+
+                    if range_end_val is None:
+                        range_end_val = range_start_val + 1
                 else:
                     raise VariableNotDeclared
         else:
@@ -341,13 +359,18 @@ class Mapper:
         # if iterator is not defined
         if not self.variable_obj.check_variable_in_scope(iterator, self._current_indent):
             init = "{0}{1} = {2}".format(type_, iterator, range_start)
+            # Add declare stmt here type_ is not working here
+            self.variable_obj.insert_variable(iterator, self._current_indent, raw_type_)
+
         else:
             if is_init:
                 init = "{0} = {1}".format(iterator, range_start)
 
-            range_start = int(
-                self.variable_obj.get_variable(content[0], self._current_indent).var_value
-            )
+            range_start = self.variable_obj.get_variable(
+                content[0], self._current_indent
+            ).var_value
+            if range_start is None:
+                range_start = 1
 
         # evaluate the condition of for loop
         cond_oper = "<=" if range_start_val < range_end_val else ">="
@@ -399,9 +422,19 @@ class Mapper:
     def continue_stmt(self):
         self.insert_line("continue;")
 
+    def exit_func(self):
+        while(self._current_indent > 1):
+            self.end_func()
+
+        if(self._current_indent == 1):
+            self.insert_line("return 0;")
+            self.end_func()
+
+
     __no_args_dict = {
         "start": start_the_program,
         "end": end_func,
+        "exit": exit_func,
         "break": break_stmt,
         "continue": continue_stmt,
     }
@@ -420,7 +453,7 @@ class Mapper:
 
     def process_input(self, line: str) -> list:
         start_len = len(self._program)
-        line = line.strip()
+        line = line.strip().lower()
         content = line.split(" ")
         if content[0] in self.__content_args_dict:
             self.__content_args_dict[content[0]](self, content)
@@ -432,11 +465,10 @@ class Mapper:
             self.comment(content)
         return self._program[start_len:]
 
-# TODO: (optional) add increment operation support.
-
+#  TODO: (optional) add increment operation support.
 
 if __name__ == "__main__":
-    f = open("test_for.txt", "r")
+    f = open("test.txt", "r")
     data = f.readlines()
     map_obj = Mapper()
     for text in data:
