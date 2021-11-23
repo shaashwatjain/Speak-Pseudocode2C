@@ -123,13 +123,13 @@ class Mapper:
         """
         content.pop(0)
         assn_stmt = ""
-        if len(content) == 3:   # if "assign a = b"
+        if len(content) == 3:   # if "assign a = 3"
             if content[-1].isnumeric():
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "int "
                 assn_stmt += " ".join(content) + ";"
                 try:
-                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int)
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int, int(content[-1]))
                 except:
                     pass
 
@@ -158,7 +158,7 @@ class Mapper:
                     assn_stmt = "char "
                 assn_stmt += content[0] + " = '" + content[-1] + "';"
                 try:
-                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
+                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char, content[-1])
                 except:
                     pass 
             
@@ -367,7 +367,7 @@ class Mapper:
                     string += word
                 else:
                     if flag:
-                        self.initialize_variable(["", word, "0"])
+                        self.assign_variable(["", word, "0"])
                         string += word
                         flag = 0
                     else:
