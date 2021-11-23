@@ -116,10 +116,12 @@ class Mapper:
         pseudocode format: <variable result> = <variable 1> <operator> <variable 2>
         if variable already declared, just output the assignment statement
         else, check the type of the <variable 1> and assign that type to the result variable
+        assign a = b
+        assign a = b + c 
         """
         content.pop(0)
         assn_stmt = ""
-        if len(content) == 3:   # if "assign a = 12"
+        if len(content) == 3:   # if "assign a = b"
             if content[-1].isnumeric():
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "int "

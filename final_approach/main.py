@@ -145,7 +145,7 @@ class Pseudocode2c(threading.Thread):
 
         rules_file = open("rules.txt", "r")
         rules_content = rules_file.read()
-        messagebox.showinfo("showinfo", rules_content)
+        messagebox.showinfo("Points to Remember!", rules_content)
         rules_file.close()
 
         self.root.mainloop()
