@@ -541,6 +541,21 @@ class Mapper:
         if len(str_to_write) > 3:
             self.insert_line(str_to_write)
 
+    def return_statement(self, content: list):
+        if len(content) == 2 and "return" in content[0]:
+            if content[1].isnumeric():
+                line_to_insert = "return " + content[1] + ";"
+                self.insert_line(line_to_insert)
+            else:
+                fetched_variable = self.variable_obj.get_variable(content[1], self._current_indent)
+                if fetched_variable.var_type.name == "int":
+                    line_to_insert = "return " + content[1] + ";"
+                    self.insert_line(line_to_insert)
+                else:
+                    raise ReturnTypeIncompatibleException
+        else:
+            raise ReturnTypeIncompatibleException
+
     def break_stmt(self):
         self.insert_line("break;")
 
@@ -552,7 +567,6 @@ class Mapper:
             self.end_func()
 
         if(self._current_indent == 1):
-            self.insert_line("return 0;")
             self.end_func()
 
 
@@ -573,7 +587,8 @@ class Mapper:
         "else": continued_if,
         "for": for_loop,
         "while": while_loop,
-        "comment": comment
+        "comment": comment, 
+        "return": return_statement,
     }
 
     def process_input(self, line: str) -> list:

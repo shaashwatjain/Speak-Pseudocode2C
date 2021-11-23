@@ -143,6 +143,11 @@ class Pseudocode2c(threading.Thread):
         self.exit_button.configure(height=3)
         self.exit_button.place(relx = 0.85, rely = 0.9)
 
+        rules_file = open("rules.txt", "r")
+        rules_content = rules_file.read()
+        messagebox.showinfo("showinfo", rules_content)
+        rules_file.close()
+
         self.root.mainloop()
 
     def save_code(self):
