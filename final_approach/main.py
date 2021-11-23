@@ -166,6 +166,7 @@ class Pseudocode2c(threading.Thread):
         outputFile = open(self.file_path, "w")
         print("file saved as", self.file_path)
         outputFile.write(text_to_write)
+        self.show_alert("File is saved", 0)
         outputFile.close()
 
     def compile_program(self):
@@ -175,17 +176,19 @@ class Pseudocode2c(threading.Thread):
 
         os.chdir(self.output_dir)
         if os.name=="nt":
+            os.system("cls")
             os.system("gcc {0} -o out && out.exe".format(self.saved_file_name))
         else:
+            os.system("clear")
             os.system("gcc {0} -o out && ./out".format(self.saved_file_name))
 
+        self.show_alert("Please check the terminal", 0)
 
     def remove_junk(self):
-        num_lines_to_delete = "end-{0}l".format(self.lines_to_delete.pop() + 1)
-        self.right_text.delete(num_lines_to_delete, "end")
         self.left_text.delete("end-2l", "end")
         self.insert_lhs("\n")
-        self.insert_rhs("\n")
+        self.read_lhs_complete()
+
 
     def exit_code(self):
         self.alive = False
@@ -198,15 +201,22 @@ class Pseudocode2c(threading.Thread):
     def insert_rhs(self, text_to_write):
         self.right_text.insert("end", text_to_write)
 
-    def show_alert(self, text_to_write):
-        messagebox.showerror(
-            title="Exception", message="Oops! {0} occured".format(text_to_write)
-        )
+    def show_alert(self, text_to_write, flag=1):
+        if flag:
+            messagebox.showerror(
+                title="Exception", message="Oops! {0} occured".format(text_to_write)
+            )
+        else:
+            messagebox.showinfo(
+                title="Notification", message=text_to_write
+            )
+
 
     def read_lhs_complete(self):
         psu_code = self.left_text.get(1.0, "end-1c")
         self.right_text.delete("1.0","end")
         global mapper_obj
+        mapper_obj = Mapper()
         for i in psu_code.split('\n'):
             try:
                 src_code = mapper_obj.process_input(i)
