@@ -1,0 +1,17 @@
+start the program
+    initialize year = 2004
+    if year % 4 = 0
+        if year % 100 = 0
+            if year % 400 = 0
+                print variable year is leap year
+            else
+                print variable year is not leap year
+            end if
+        else
+            print variable year is a leap year
+        end if
+    else
+        print variable year is not a leap year
+    end if
+    return 0
+end the program

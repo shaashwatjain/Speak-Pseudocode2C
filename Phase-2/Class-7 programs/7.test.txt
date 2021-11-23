@@ -1,0 +1,14 @@
+	declare counter and total and number integer
+	declare number number
+	declare number 
+	declare counter int
+	declare counter numeral
+	declare counter number
+	declare sum number
+	declare counter and number
+	declare counter and
+	declare counter, sum
+	declare integer number and total
+	declare character word
+	declare float point
+	for iterator from range 1 until 9 increase by 2

@@ -1,0 +1,12 @@
+start the program
+declare number
+print Enter a number
+input number
+if number > 0
+    print variable number is a positive number
+else if number < 0
+    print variable number is a negative number
+else
+    print 0 is neither positive nor negative
+end if
+end program

@@ -1,0 +1,14 @@
+start the program
+declare first second temp integer
+print enter first number
+input first
+print enter second number
+input second
+print before swapping
+print number 1 is variable first and number 2 is variable second
+intialise temp = first
+intialise first = second
+intialise second = temp
+print after swapping
+print number 1 is variable first and number 2 is variable second
+end the program

@@ -1,0 +1,10 @@
+1.Write a program to find if a number is positive or negative.
+2.Write a program to check if a number is divisible by 13 or not.
+3.Write a program to check if a number is even or not.
+4.Write a program to check if a number is 0,50 or 100.
+5.Write a program to input two numbers and check which one is greater.
+6.Write a program to check if the input year is a leap year.
+7.Write a program to calculate sum of first n natural numbers.
+8.Write a program to swap two integers.
+9.Write a program to display first n natural numbers.
+10.Write a program to print a pattern.

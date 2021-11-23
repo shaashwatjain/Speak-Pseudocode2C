@@ -1,0 +1,15 @@
+start the program
+declare a b integer
+print Enter two integers
+input a 
+input b
+if a >= b
+    if a = b
+        print variable a = variable b
+    else
+        print variable a > variable b
+    end if
+else
+    print variable a < variable b
+end if
+end program

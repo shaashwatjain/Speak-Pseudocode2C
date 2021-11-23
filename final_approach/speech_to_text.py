@@ -28,12 +28,15 @@ def post_indentation(transcript, indent):
 
 
 def replacement(string1):
-    # TODO: Add support for non conversion in print statements
     split_string = string1.split(" ")
     if split_string[0] == "print":
         return string1
     for key in repl_dict.keys():
         string1 = string1.replace(key, repl_dict[key])
+    if '-' in string1:
+        ind = string1.index('-')
+        if(string1[ind+1] == ' '):
+            string1 = string1[:ind+1] + string1[ind+2:]
     return string1
 
 

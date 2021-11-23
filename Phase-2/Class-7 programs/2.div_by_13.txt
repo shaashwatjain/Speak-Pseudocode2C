@@ -1,0 +1,9 @@
+start the program
+declare number integer
+input number
+if number % 13 = 0
+print The number is divisible by 13
+else
+print Number not divisible by 13
+end if
+end program

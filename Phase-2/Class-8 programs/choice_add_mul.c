@@ -36,17 +36,16 @@ int main()
     print 1. To compute sum 2. To compute product
     input choice
     initialize total = 0
-    if choice equals 2
+    if choice = 2
         assign total = 1
     endif
     for i in range from 1 till number
-        if choice equal 1
+        if choice = 1
             assign total = total + i
-        endif
         else
             assign total = total * i
-        endelse
-    endfor
+        end if
+    end for
     print the result is variable total
     End
 */

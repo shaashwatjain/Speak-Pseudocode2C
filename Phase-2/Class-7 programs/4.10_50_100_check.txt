@@ -1,0 +1,13 @@
+start the program
+print Enter a number
+input number integer
+if number = 10
+    print number is equals to 10
+else if number = 50
+    print number is equal to 50
+else if number = 100
+    print number is equal to 100
+else
+    print number is not equal to 10, 50 or 100
+end if
+end program

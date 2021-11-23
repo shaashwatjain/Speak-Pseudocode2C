@@ -46,3 +46,11 @@ repl_dict = {
     "more than equal to": ">=",
     "more than": ">",
 }
+
+repl_dict_while = {
+    "upto": "till",
+    "until": "till",
+    "to": "till",
+    "increase": "increment",
+    "decrease": "decrement"
+}

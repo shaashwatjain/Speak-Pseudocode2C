@@ -1,0 +1,11 @@
+start the pseudocode
+	declare length count integer
+	initialise sum = 0
+	print Enter the value of length
+	input length
+	for count in range 1 upto length
+		assign sum = sum + count
+	end for
+	print Sum of first variable length natural numbers is variable sum
+end program
+

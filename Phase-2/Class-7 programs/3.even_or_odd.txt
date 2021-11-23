@@ -1,0 +1,10 @@
+start the program
+print Enter a number
+input number integer
+if number % 2 = 0
+    print number is even
+else
+	print number is odd
+endif
+return 0
+end program
