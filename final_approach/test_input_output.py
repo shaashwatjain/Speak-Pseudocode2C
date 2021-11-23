@@ -149,7 +149,7 @@ class TestInitialize(unittest.TestCase):
         """
         test_input = "initialize i = 21"
         test_content = test_input.split(" ")
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['int i = 21;\n'])
     
     def test_float(self):
@@ -158,7 +158,7 @@ class TestInitialize(unittest.TestCase):
         """
         test_input = "initialize i = 3.14"
         test_content = test_input.split(" ")
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
         self.assertEqual(self.test_map_obj.get_program_list(), ['float i = 3.14;\n'])
     
     def test_character(self):
@@ -167,8 +167,8 @@ class TestInitialize(unittest.TestCase):
         """
         test_input = "initialize i = h"
         test_content = test_input.split(" ")
-        self.test_map_obj.initialize_variable(test_content)
-        self.assertEqual(self.test_map_obj.get_program_list(), ['char i = "h";\n'])
+        self.test_map_obj.assign_variable(test_content)
+        self.assertEqual(self.test_map_obj.get_program_list(), ["char i = 'h';\n"])
     
 
 class TestAssign(unittest.TestCase):
@@ -185,43 +185,52 @@ class TestAssign(unittest.TestCase):
         test_input = "assign i = c"
         test_content = test_input.split(" ")
         self.test_map_obj.assign_variable(test_content)
-        self.assertEqual(self.test_map_obj.get_program_list(), ['int i = c;\n'])
+        self.assertEqual(self.test_map_obj.get_program_list(), ["char i = 'c';\n"])
     
     def test_relop(self):
         """
         18. Assigning relational operations.
         """
+        test_input01 = "assign a = 2"
+        test_input02 = "assign b = 2"
         test_input1 = "assign i1 = a + b"
         test_input2 = "assign i2 = a - b"
         test_input3 = "assign i3 = a * b"
         test_input4 = "assign i4 = a / b"
+        test_content01 = test_input01.split(" ")
+        test_content02 = test_input02.split(" ")
         test_content1 = test_input1.split(" ")
         test_content2 = test_input2.split(" ")
         test_content3 = test_input3.split(" ")
         test_content4 = test_input4.split(" ")
+        self.test_map_obj.assign_variable(test_content01)
+        self.test_map_obj.assign_variable(test_content02)
         self.test_map_obj.assign_variable(test_content1)
         self.test_map_obj.assign_variable(test_content2)
         self.test_map_obj.assign_variable(test_content3)
         self.test_map_obj.assign_variable(test_content4)
-        self.assertEqual(self.test_map_obj.get_program_list(), ['int i1 = a + b;\n', 'int i2 = a - b;\n', 'int i3 = a * b;\n', 'int i4 = a / b;\n'])
+        self.assertEqual(self.test_map_obj.get_program_list(), ['int a = 2;\n', 'int b = 2;\n', 'int i1 = a + b;\n', 'int i2 = a - b;\n', 'int i3 = a * b;\n', 'float i4 = a / b;\n'])
     
     def test_increment_var(self):
         """
         19. Assigning relational operations on variable with some value.
         """
+        test_input0 = "assign a = 3"
         test_input1 = "assign a = a + 2"
         test_input2 = "assign a = a - 2"
         test_input3 = "assign a = a * 2"
         test_input4 = "assign a = a / 2"
+        test_content0 = test_input0.split(" ")
         test_content1 = test_input1.split(" ")
         test_content2 = test_input2.split(" ")
         test_content3 = test_input3.split(" ")
         test_content4 = test_input4.split(" ")
+        self.test_map_obj.assign_variable(test_content0)
         self.test_map_obj.assign_variable(test_content1)
         self.test_map_obj.assign_variable(test_content2)
         self.test_map_obj.assign_variable(test_content3)
         self.test_map_obj.assign_variable(test_content4)
-        self.assertEqual(self.test_map_obj.get_program_list(), ['int a = a + 2;\n', 'a = a - 2;\n', 'a = a * 2;\n', 'a = a / 2;\n'])
+        self.assertEqual(self.test_map_obj.get_program_list(), ['int a = 3;\n', 'a = a + 2;\n', 'a = a - 2;\n', 'a = a * 2;\n', 'a = a / 2;\n'])
 
 
 class TestPrint(unittest.TestCase):

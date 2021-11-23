@@ -85,7 +85,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize i = 0"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i != 10"
         test_content = test_input.split()
@@ -101,7 +101,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize count = 0"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while 10 < count "
         test_content = test_input.split()
@@ -117,7 +117,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize num = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while num > count"
         test_content = test_input.split()
@@ -133,7 +133,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize num = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while count > num"
         test_content = test_input.split()
@@ -205,11 +205,11 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize j = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "initialize num = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i < num"
         test_content = test_input.split()
@@ -238,7 +238,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize j = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i < num"
         test_content = test_input.split()
@@ -257,7 +257,7 @@ class TestWhile(unittest.TestCase):
 
         test_input = "initialize j = 100"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i < 100 and j > 50"
         test_content = test_input.split()
@@ -279,7 +279,7 @@ class TestWhile(unittest.TestCase):
 
         test_input = "initialize j = 100"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i < 100 or j > 50"
         test_content = test_input.split()
@@ -333,7 +333,7 @@ class TestWhile(unittest.TestCase):
         """
         test_input = "initialize j = 100"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "while i < 100 and j > 50 or 0"
         test_content = test_input.split()
@@ -550,7 +550,7 @@ class TestFor(unittest.TestCase):
 
         test_input = "initialize i = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range till 10"
         test_content = test_input.split()
@@ -567,7 +567,7 @@ class TestFor(unittest.TestCase):
 
         test_input = "initialize i = 2"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range 7 till 15"
         test_content = test_input.split()
@@ -584,7 +584,7 @@ class TestFor(unittest.TestCase):
 
         test_input = "initialize i = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range till 5"
         test_content = test_input.split()
@@ -600,7 +600,7 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize num = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range till num"
         test_content = test_input.split()
@@ -616,7 +616,7 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize num = 10"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range till num increment by 2"
         test_content = test_input.split()
@@ -632,11 +632,11 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize abc = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "initialize num = 15"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range from abc till num"
         test_content = test_input.split()
@@ -657,11 +657,11 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize abc = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "initialize num = 15"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range from num till abc"
         test_content = test_input.split()
@@ -682,11 +682,11 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize abc = 5"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "initialize num = 15"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range from num till abc decrement by 3"
         test_content = test_input.split()
@@ -708,7 +708,7 @@ class TestFor(unittest.TestCase):
         """
         test_input = "initialize i = 2"
         test_content = test_input.split()
-        self.test_map_obj.initialize_variable(test_content)
+        self.test_map_obj.assign_variable(test_content)
 
         test_input = "for i in range till num"
         test_content = test_input.split()
