@@ -16,18 +16,3 @@ int main()
 
     return 0;
 }
-
-/*
-    Start the pseudocode
-    declare number
-    declare i
-    print Enter a positive integer
-    input number
-    print Factors of number are
-    for i in range from 1 till number
-        if number mod i equals 0
-            print variable i
-        endif
-    endfor
-    end
-*/

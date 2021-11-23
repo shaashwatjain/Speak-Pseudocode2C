@@ -17,17 +17,3 @@ int main()
 
     return 0;
 }
-
-/*
-    Start the pseudocode
-    Initialize number
-    initialize count = 0
-    print Enter an integer
-    input number
-    while number not equal to 0
-        assign number = number / 10
-        assign count = count + 1
-    endwhile
-    print Number of digits is variable count
-    End
-*/

@@ -5,10 +5,9 @@ import subprocess
 import sys
 import threading
 import time
+from pathlib import Path
 from tkinter import *
 from tkinter import messagebox, ttk
-
-from pathlib import Path
 
 import wordtodigits
 from google.cloud import speech_v1p1beta1 as speech
@@ -16,12 +15,13 @@ from google.cloud import speech_v1p1beta1 as speech
 from corrections import corr_list
 from exceptions import SpeechToTextException
 from mapper import Mapper
-from speech_to_text import ( MicrophoneStream, post_indentation, pre_indentation, replacement)
+from speech_to_text import (MicrophoneStream, post_indentation, pre_indentation, replacement)
 
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
+mapper_obj = Mapper()
 
 class Pseudocode2c(threading.Thread):
     def __init__(self):
@@ -49,15 +49,15 @@ class Pseudocode2c(threading.Thread):
         _ana1color = "#ffffff"  # X11 color: 'white'
         _ana2color = "#ffffff"  # X11 color: 'white'
         font14 = (
-            "-family {Segoe UI} -size 15 -weight normal -slant "
+            "-family {Fira Mono} -size 15 -weight normal -slant "
             "roman -underline 0 -overstrike 0"
         )
         font16 = (
-            "-family {Swis721 BlkCn BT} -size 40 -weight bold "
+            "-family {Roboto Mono} -size 9 -weight bold "
             "-slant roman -underline 0 -overstrike 0"
         )
         font9 = (
-            "-family {Segoe UI} -size 9 -weight normal -slant "
+            "-family {Times New Roman} -size 9 -weight normal -slant "
             "roman -underline 0 -overstrike 0"
         )
 
@@ -66,8 +66,8 @@ class Pseudocode2c(threading.Thread):
         self.root.title(
             "Speak Pseudocode2c: A framework to convert pseudocode to c code"
         )
-        self.root.configure(background="#fafafa")
-        self.root.configure(highlightbackground="#c8e6c9")
+        self.root.configure(background="#E0F2F1")
+        self.root.configure(highlightbackground="#80DEEA")
         self.root.configure(highlightcolor="black")
 
         self.menubar = Menu(self.root, font=font9, bg=_bgcolor, fg=_fgcolor)
@@ -78,26 +78,31 @@ class Pseudocode2c(threading.Thread):
         self.Frame.configure(
             borderwidth="2",
             relief=GROOVE,
-            background="#d9d9d9",
-            highlightbackground="#d9d9d9",
+            background="#80CBC4",
+            highlightbackground="#4DB6AC",
             highlightcolor="black",
         )
 
-        self.start_button = Button(self.Frame, text="Start the Framework")
+        self.start_button = Button(self.Frame, text="Start the Framework", bg="#B0BEC5", fg="#000000", font=font16)
         self.start_button["state"]=DISABLED
         self.start_button.configure(height=3)
         self.start_button.place(relx = 0.18, rely = 0.02)
 
         self.undo_button = Button(
-            self.Frame, text="Undo", command=lambda: self.remove_junk()
+            self.Frame, text="Undo", command=lambda: self.remove_junk(), bg="#ECEFF1", activebackground="#26A69A", font=font16
         )
         self.undo_button.configure(height=3, width=10)
         self.undo_button.place(relx = 0.72, rely = 0.02)
 
+        self.note_button = Button(self.Frame, text ="To stop listening say 'exit'.", bg="#B0BEC5", font=font16)
+        self.note_button["state"]=DISABLED
+        self.note_button.configure(height=2, width=30)
+        self.note_button.place(relx = 0.81, rely = 0.02)
+
         self.lines_to_delete = []
 
-        Label(self.Frame, text = "Spoken Pseudocode").place(relx = 0.025, rely = 0.08, relheight=0.05, relwidth=0.12)
-        Label(self.Frame, text = "Converted C Code").place(relx = 0.525, rely = 0.08, relheight=0.05, relwidth=0.12)
+        Label(self.Frame, text = "Spoken Pseudocode", font=font16).place(relx = 0.026, rely = 0.08, relheight=0.05, relwidth=0.12)
+        Label(self.Frame, text = "Converted C Code", font=font16).place(relx = 0.526, rely = 0.08, relheight=0.05, relwidth=0.12)
 
         self.left_text = Text(
             self.Frame, relief=GROOVE, borderwidth=2
@@ -114,34 +119,34 @@ class Pseudocode2c(threading.Thread):
         # self.right_text.pack(side=RIGHT)
 
         self.compile_button = Button(
-            self.Frame, text="compile the program", command=self.compile_program
+            self.Frame, text="Compile the Program", command=self.compile_program, bg="#ECEFF1", activebackground="#26A69A", font=font16
         )
-        self.compile_button.configure(height=3)
-        self.compile_button.place(relx = 0.18, rely = 0.9)
-
-        self.file_name = Text(
-            self.Frame, relief=GROOVE, height=1, width=20, borderwidth=1
-        )
-        self.file_name.place(relx = 0.6, rely = 0.925)
-
-        self.save_button = Button(
-            self.Frame, text="Save the Program", command=self.save_code
-        )
-        self.save_button.configure(height=3)
-        self.save_button.place(relx = 0.7, rely = 0.9)
-
+        self.compile_button.configure(height=3, width = 20)
+        self.compile_button.place(relx = 0.1, rely = 0.9)
 
         self.read_button = Button(
-            self.Frame, text="read", command=self.read_lhs_complete
+            self.Frame, text="Convert Pseudocode", command=self.read_lhs_complete, bg="#ECEFF1", activebackground="#26A69A", font=font16
         )
-        self.read_button.configure(height=3, width=5)
-        self.read_button.place(relx = 0.8, rely = 0.9)
+        self.read_button.configure(height=3, width=18)
+        self.read_button.place(relx = 0.3, rely = 0.9)
+
+        self.file_name = Text(
+            self.Frame, relief=GROOVE, height=1, width=18, borderwidth=1
+        )
+        self.file_name.place(relx = 0.635, rely = 0.925)
+        Label(self.Frame, text="Custom File Name", font=font16).place(relx=0.55, rely=0.925)
+
+        self.save_button = Button(
+            self.Frame, text="Save the Program", command=self.save_code, bg="#ECEFF1", activebackground="#26A69A", font=font16
+        )
+        self.save_button.configure(height=3)
+        self.save_button.place(relx = 0.75, rely = 0.9)
 
         self.exit_button = Button(
-            self.Frame, text="Exit the Program", command=self.exit_code
+            self.Frame, text="Exit the Program", command=self.exit_code, bg="#ECEFF1", activebackground="#26A69A", font=font16
         )
         self.exit_button.configure(height=3)
-        self.exit_button.place(relx = 0.85, rely = 0.9)
+        self.exit_button.place(relx = 0.88, rely = 0.9)
 
         rules_file = open("rules.txt", "r")
         rules_content = rules_file.read()
@@ -153,10 +158,10 @@ class Pseudocode2c(threading.Thread):
     def save_code(self):
         self.is_save = 1
         text_to_write = self.right_text.get("1.0", "end-1c")
-        self.file_name = self.file_name.get("1.0", "end-1c")
-        if self.file_name == "":
-            self.file_name = "SampleCode.c"
-        self.file_path = self.output_dir + self.fs_sign + self.file_name
+        self.saved_file_name = self.file_name.get("1.0", "end-1c")
+        if self.saved_file_name == "":
+            self.saved_file_name = "SampleCode.c"
+        self.file_path = self.output_dir + self.fs_sign + self.saved_file_name
         print(self.file_path)
         outputFile = open(self.file_path, "w")
         print("file saved as", self.file_path)
@@ -170,9 +175,9 @@ class Pseudocode2c(threading.Thread):
 
         os.chdir(self.output_dir)
         if os.name=="nt":
-            os.system("gcc {0} -o out && out.exe".format(self.file_name))
+            os.system("gcc {0} -o out && out.exe".format(self.saved_file_name))
         else:
-            os.system("gcc {0} -o out && ./out".format(self.file_name))
+            os.system("gcc {0} -o out && ./out".format(self.saved_file_name))
 
 
     def remove_junk(self):
@@ -201,7 +206,7 @@ class Pseudocode2c(threading.Thread):
     def read_lhs_complete(self):
         psu_code = self.left_text.get(1.0, "end-1c")
         self.right_text.delete("1.0","end")
-        mapper_obj = Mapper()
+        global mapper_obj
         for i in psu_code.split('\n'):
             try:
                 src_code = mapper_obj.process_input(i)
@@ -228,7 +233,7 @@ def listen_print_loop(responses, obj):
     """
     indent = 0
     flag = 1
-    mapper_obj = Mapper()
+    global mapper_obj
     for response in responses:
         if not response.results:
             continue
@@ -251,6 +256,15 @@ def listen_print_loop(responses, obj):
                     sys.exit(0)
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
+
+            if re.search(r"^(compile|Compile)\b", transcript, re.I):
+                gui.save_code()
+                gui.compile_program()
+                sys.exit(0)
+
+            if re.search(r"^(save|Save)\b", transcript, re.I):
+                gui.save_code()
+                continue
 
             try:
                 transcript = wordtodigits.convert(transcript)
