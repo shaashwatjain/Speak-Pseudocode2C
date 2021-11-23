@@ -119,7 +119,7 @@ class Mapper:
         if variable already declared, just output the assignment statement
         else, check the type of the <variable 1> and assign that type to the result variable
         assign a = b
-        assign a = b + c 
+        assign a = b + c
         """
         content.pop(0)
         assn_stmt = ""
@@ -141,18 +141,18 @@ class Mapper:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
                 except:
                     pass
-            
+
             elif self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
                 result_var_1 = self.variable_obj.get_variable(content[-1], self._current_indent)
                 type_var = result_var_1.var_type.name
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
-                    assn_stmt = result_var_1.var_type.name + " " 
+                    assn_stmt = result_var_1.var_type.name + " "
                 assn_stmt += " ".join(content) + ";"
                 try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
                 except:
                     pass
-            
+
             else:
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "char "
@@ -160,11 +160,11 @@ class Mapper:
                 try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char, content[-1])
                 except:
-                    pass 
-            
+                    pass
+
             self.insert_line(assn_stmt)
-        
-        elif len(content) == 5:     # if "assign a = b + c" 
+
+        elif len(content) == 5:     # if "assign a = b + c"
             if content[-1].isnumeric() and content[-3].isnumeric() and content[-2] != "/":      # b and c numeric
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "int "
@@ -172,25 +172,25 @@ class Mapper:
                 try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int)
                 except:
-                    pass 
+                    pass
 
-            elif "." in content[-1] or "." in content[-3] or content[-2] == "/":    # decimal in b or c or division operation 
+            elif "." in content[-1] or "." in content[-3] or content[-2] == "/":    # decimal in b or c or division operation
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "float "
                 assn_stmt += " ".join(content) + ";"
                 try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
                 except:
-                    pass 
+                    pass
 
             else:
-                if self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) and self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):   # b and c are variables 
+                if self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) and self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):   # b and c are variables
                     assn_stmt = ""
                     final_type = ""
                     result_var_1 = self.variable_obj.get_variable(content[-3], self._current_indent)
                     result_var_2 = self.variable_obj.get_variable(content[-1], self._current_indent)
                     if result_var_2.var_type.name == result_var_1.var_type.name:
-                        final_type = result_var_1.var_type 
+                        final_type = result_var_1.var_type
                     else:
                         if "char" in [result_var_1.var_type.name, result_var_2.var_type.name]:
                             final_type = VariableTypes.char
@@ -204,7 +204,7 @@ class Mapper:
                     try:
                         self.variable_obj.insert_variable(content[0], self._current_indent, final_type)
                     except:
-                        pass 
+                        pass
 
                 elif self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) or self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):    # b or c is variable but not both
                     final_type = []
@@ -225,7 +225,7 @@ class Mapper:
                         else:
                             final_type.append(VariableTypes.char)
                             result_var_1 = "'" + content[-3] + "'"
-                    
+
                     if self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
                         result_var_2 = self.variable_obj.get_variable(content[-1], self._current_indent)
                         if final_type == "":
@@ -254,7 +254,7 @@ class Mapper:
                     if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                         assn_stmt = final_type.name + " "
                     assn_stmt += content[0] + " = " + result_var_1 + " " + content[-2] + " " + result_var_2 + ";"
-                    
+
                 else:
                     if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                         assn_stmt = "char "
@@ -262,9 +262,9 @@ class Mapper:
                 try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
                 except:
-                    pass 
+                    pass
             self.insert_line(assn_stmt)
-        
+
     def print_variables(self, content_list):
         """
         pseudocode format: print variable <variable name>
@@ -367,7 +367,7 @@ class Mapper:
                     string += word
                 else:
                     if flag:
-                        self.assign_variable(["", word, "0"])
+                        self.assign_variable(["", word, "=", "0"])
                         string += word
                         flag = 0
                     else:
@@ -591,7 +591,7 @@ class Mapper:
         "else": continued_if,
         "for": for_loop,
         "while": while_loop,
-        "comment": comment, 
+        "comment": comment,
         "return": return_statement,
     }
 
