@@ -114,53 +114,34 @@ class Mapper:
                 self.insert_line(f"scanf(\"{current_var.fmt_specifier}\", &{current_var.var_name});")
 
     def assign_variable(self, content):
-        """
-        pseudocode format: <variable result> = <variable 1> <operator> <variable 2>
-        if variable already declared, just output the assignment statement
-        else, check the type of the <variable 1> and assign that type to the result variable
-        assign a = b
-        assign a = b + c
-        """
         content.pop(0)
         assn_stmt = ""
         if len(content) == 3:   # if "assign a = 3"
             if content[-1].isnumeric():
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "int "
-                assn_stmt += " ".join(content) + ";"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int, int(content[-1]))
-                except:
-                    pass
+                assn_stmt += " ".join(content) + ";"
 
             elif "." in content[-1]:
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "float "
-                assn_stmt += " ".join(content) + ";"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
-                except:
-                    pass
+                assn_stmt += " ".join(content) + ";"
 
             elif self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
                 result_var_1 = self.variable_obj.get_variable(content[-1], self._current_indent)
                 type_var = result_var_1.var_type.name
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = result_var_1.var_type.name + " "
-                assn_stmt += " ".join(content) + ";"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, result_var_1.var_type)
-                except:
-                    pass
+                assn_stmt += " ".join(content) + ";"
 
             else:
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "char "
-                assn_stmt += content[0] + " = '" + content[-1] + "';"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char, content[-1])
-                except:
-                    pass
+                assn_stmt += content[0] + " = '" + content[-1] + "';"
 
             self.insert_line(assn_stmt)
 
@@ -168,20 +149,14 @@ class Mapper:
             if content[-1].isnumeric() and content[-3].isnumeric() and content[-2] != "/":      # b and c numeric
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "int "
-                assn_stmt += " ".join(content) + ";"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.int)
-                except:
-                    pass
+                assn_stmt += " ".join(content) + ";"
 
             elif "." in content[-1] or "." in content[-3] or content[-2] == "/":    # decimal in b or c or division operation
                 if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                     assn_stmt = "float "
-                assn_stmt += " ".join(content) + ";"
-                try:
                     self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.float)
-                except:
-                    pass
+                assn_stmt += " ".join(content) + ";"
 
             else:
                 if self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) and self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):   # b and c are variables
@@ -200,11 +175,8 @@ class Mapper:
                             final_type = result_var_1.var_type
                     if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                         assn_stmt = final_type.name + " "
-                    assn_stmt += " ".join(content) + ";"
-                    try:
                         self.variable_obj.insert_variable(content[0], self._current_indent, final_type)
-                    except:
-                        pass
+                    assn_stmt += " ".join(content) + ";"
 
                 elif self.variable_obj.check_variable_in_scope(content[-3], self._current_indent) or self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):    # b or c is variable but not both
                     final_type = []
@@ -253,16 +225,14 @@ class Mapper:
 
                     if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                         assn_stmt = final_type.name + " "
+                        self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
                     assn_stmt += content[0] + " = " + result_var_1 + " " + content[-2] + " " + result_var_2 + ";"
 
                 else:
                     if not self.variable_obj.check_variable_in_scope(content[0], self._current_indent):
                         assn_stmt = "char "
+                        self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
                     assn_stmt += content[0] + " = '" + content[2] + "' "+ content[3] + " '" + content[4] + "';"
-                try:
-                    self.variable_obj.insert_variable(content[0], self._current_indent, VariableTypes.char)
-                except:
-                    pass
             self.insert_line(assn_stmt)
 
     def print_variables(self, content_list):
