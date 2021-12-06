@@ -1,0 +1,10 @@
+start the program
+declare float number square
+print please enter any integer value
+input number
+assign square = number * number
+print square of a given number variable number is = variable square
+return 0
+end program
+
+

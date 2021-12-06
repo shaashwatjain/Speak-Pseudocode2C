@@ -7,4 +7,4 @@
 7.Write a program to calculate sum of first n natural numbers.
 8.Write a program to swap two integers.
 9.Write a program to display first n natural numbers.
-10.Write a program to print a pattern.
+10.Write a program to display sqaure of a number.
