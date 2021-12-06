@@ -1,15 +1,15 @@
 start the program
-declare a b integer
+declare first second integer
 print Enter two integers
-input a 
-input b
-if a >= b
-    if a = b
-        print variable a = variable b
+input first
+input second
+if first >= second
+    if first = second
+        print variable first = variable second
     else
-        print variable a > variable b
+        print variable first > variable second
     end if
 else
-    print variable a < variable b
+    print variable first < variable second
 end if
 end program

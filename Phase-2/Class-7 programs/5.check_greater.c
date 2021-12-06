@@ -1,25 +1,25 @@
 #include <stdio.h>
 int main() 
 {
-    int a, b;
+    int first, second;
     printf("Enter two integers: ");
-    scanf("%d", &a);
-    scanf("%d", &b);
+    scanf("%d", &first);
+    scanf("%d", &second);
 
-    if (a >= b) 
+    if (first >= second) 
     {
-      if (a == b) 
+      if (first == second) 
       {
-        printf("%d = %d",a,b);
+        printf("%d = %d",first,second);
       }
       else 
       {
-        printf("%d > %d", a, b);
+        printf("%d > %d", first, second);
       }
     }
     else 
     {
-        printf("%d < %d",a, b);
+        printf("%d < %d",first, second);
     }
 
     return 0;
