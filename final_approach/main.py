@@ -174,6 +174,8 @@ class Pseudocode2c(threading.Thread):
         if not self.is_save:
             self.show_alert("File Not Saved")
 
+        self.show_alert("Please check the terminal", 0)
+
         os.chdir(self.output_dir)
         if os.name=="nt":
             os.system("cls")
@@ -181,8 +183,6 @@ class Pseudocode2c(threading.Thread):
         else:
             os.system("clear")
             os.system("gcc {0} -o out && ./out".format(self.saved_file_name))
-
-        self.show_alert("Please check the terminal", 0)
 
     def remove_junk(self):
         self.left_text.delete("end-2l", "end")

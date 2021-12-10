@@ -1,6 +1,8 @@
 corr_list = [
     "start",
     "pseudocode",
+    "compile",
+    "save",
     "set",
     "if",
     "or",
@@ -22,5 +24,4 @@ corr_list = [
     "not",
     "exit",
     "end",
-    "and"
 ]

@@ -1,0 +1,10 @@
+- Use meaningful english words for variables.
+- Supported types: integer, character, and float.
+- Avoid using "to".
+- for loop Syntax: for "iterator" in range from "start" till "end".
+- Use the 'variable' keyword before the variable name to print its value.
+- At most 3 operands are allowed in "assign" statement.
+- To compile the program, say "compile". It will save and then compile.
+- To save the program, say "save".
+- To stop listening at any point, say "exit".
+- After compiling the program restart the framework.
