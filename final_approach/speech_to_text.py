@@ -37,6 +37,10 @@ def replacement(string1):
         ind = string1.index('-')
         if(string1[ind+1] == ' '):
             string1 = string1[:ind+1] + string1[ind+2:]
+    if '.' in string1:
+        ind = string1.index('.')
+        if(string1[ind+1] == ' '):
+            string1 = string1[:ind+1] + string1[ind+2:]
     return string1
 
 
