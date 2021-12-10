@@ -305,7 +305,7 @@ class Mapper:
                         else:
                             final_type.append(VariableTypes.char)
                             result_var_2 = "'" + content[-3] + "'"
-                    
+
                     if self.variable_obj.check_variable_in_scope(content[-1], self._current_indent):
                         result_var_3 = self.variable_obj.get_variable(content[-1], self._current_indent)
                         if final_type == "":
