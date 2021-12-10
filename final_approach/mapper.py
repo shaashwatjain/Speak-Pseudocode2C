@@ -3,6 +3,7 @@ from exceptions import *
 from userDefinedTypes import VariableTypes
 from variable_mapper import Variable
 from nlp import NLP
+nlp_obj = NLP()
 
 
 class Mapper:
@@ -11,7 +12,6 @@ class Mapper:
         self._index = 0
         self._current_indent = 0
         self.variable_obj = Variable()
-        self.nlp_obj = NLP()
 
     def start_the_program(self):
         """
@@ -677,7 +677,7 @@ class Mapper:
     def process_input(self, line: str) -> list:
         start_len = len(self._program)
         line = line.strip().lower()
-        line = self.nlp_obj.process_nlp(line)
+        line = nlp_obj.process_nlp(line)
         content = line.split(" ")
         if content[0] in self.__content_args_dict:
             self.__content_args_dict[content[0]](self, content)
