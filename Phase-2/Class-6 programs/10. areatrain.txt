@@ -4,6 +4,6 @@ start the program
     input a 
     print Enter perpendicular height   
     input b 
-    assign result = a * b * 1/2
+    assign result = a * b * 0.5
     print variable result 
 exit 

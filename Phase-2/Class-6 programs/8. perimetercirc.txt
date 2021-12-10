@@ -2,6 +2,6 @@ start the program
     declare radius integer 
     print Enter radius of circle 
     input radius 
-    assign result = 2 * radius * 22 / 7
+    assign result = 2 * radius * 3.14
     print variable result 
 exit 
