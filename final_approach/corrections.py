@@ -1,26 +1,18 @@
 corr_list = [
     "start",
     "pseudocode",
-    "end",
     "set",
     "if",
     "or",
     "then",
     "till",
     "number",
-    "algorithm",
-    "element",
-    "increment",
     "enter",
-    "second",
     # Srishti
     "input",
-    "sum",
-    "average",
-    "divide",
     "output",
-    "element",
     "declare",
+    "second",
     "variable",
     "store",
     "assign",
@@ -28,5 +20,7 @@ corr_list = [
     "else",
     "print",
     "not",
-    "exit"
+    "exit",
+    "end",
+    "and"
 ]
