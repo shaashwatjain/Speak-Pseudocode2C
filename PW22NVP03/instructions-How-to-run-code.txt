@@ -1,0 +1,19 @@
+1) Make sure your system has Python3 and gcc compiler installed.
+
+2) To run the framework you need to set the enivronment variable of Google cloud platform.
+
+        export GOOGLE_APPLICATION_CREDENTIALS={path to the json key}
+
+   JSON key is required to access the Google cloud platform.
+   We are not attaching JSON key as it is connected to personal Google account.
+
+3) Go to src directory and open terminal in the same directory.
+
+4) Install the requred packages by:
+    pip install -r requirements.txt
+    pip install tk
+    python -m spacy download en_core_web_sm
+
+6) To run the framework: python3 main.py
+
+7) To run the test files: pytest test_for_while.py test_if_else.py test_input_output.py
